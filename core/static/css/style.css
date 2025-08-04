@@ -1,0 +1,473 @@
+/* core/static/css/style.css */
+
+/* --- Estilos Generales y Layout --- */
+
+/* Aplica a la etiqueta <body> en base.html */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif; /* Puedes ajustar la fuente */
+    background-color: #f4f4f4; /* Un gris muy claro para el fondo */
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+/* QUÉ HACE: Configura el cuerpo de la página para usar Flexbox.
+              Asegura que el contenido ocupe al menos el 100% de la altura de la ventana (viewport height),
+              lo que es útil para mantener el footer en la parte inferior incluso con poco contenido.
+              Define la fuente, color de fondo, color de texto y altura de línea general.
+   DÓNDE ESTÁ EN HTML: Aplica a la etiqueta `<body>` en `base.html`. */
+
+/* Aplica al elemento <main> en base.html */
+.content {
+    flex: 1; /* Permite que el contenido principal ocupe el espacio restante */
+    /* Añadido para dar un poco de espacio entre el navbar y el contenido */
+    padding-top: 20px;
+}
+/* QUÉ HACE: Esta clase se aplica al elemento <main> en base.html.
+              Con 'flex: 1;', asegura que el área del contenido principal (`<main>`)
+              se expanda para ocupar todo el espacio vertical disponible entre el header y el footer,
+              empujando así el footer hacia la parte inferior de la página.
+              Se añadió un padding-top para estética.
+   DÓNDE ESTÁ EN HTML: Aplica al `<main class="content">` en `base.html`. */
+
+/* Aplica a la etiqueta <footer> en base.html */
+footer {
+    background-color: #f8f9fa; /* Fondo claro para el pie de página */
+    padding: 20px 0; /* Espacio interno de 20px arriba y abajo, 0 a los lados */
+    text-align: center; /* Centra el texto dentro del footer */
+    border-top: 1px solid #e9ecef; /* Borde superior suave */
+}
+/* QUÉ HACE: Define los estilos básicos para el pie de página.
+              Le da un color de fondo gris claro, un padding interno, centra el texto
+              y le añade un borde superior. El margen superior ahora lo maneja Bootstrap (`mt-auto`).
+   DÓNDE ESTÁ EN HTML: Aplica a la etiqueta `<footer>` en `base.html`. */
+
+/* Aplica a todas las etiquetas <a> */
+a {
+    color: #8B4513; /* Un color marrón/terracota para enlaces estándar. */
+    text-decoration: none; /* Elimina el subrayado predeterminado de los enlaces. */
+}
+/* QUÉ HACE: Define el color y elimina el subrayado por defecto de todos los enlaces.
+   DÓNDE ESTÁ EN HTML: Aplica a todas las etiquetas `<a>` en cualquier vista (base.html, home.html, login.html, etc.). */
+
+/* Aplica a todas las etiquetas <a> cuando el cursor está sobre ellas */
+a:hover {
+    text-decoration: underline; /* Añade un subrayado al pasar el cursor. */
+}
+/* QUÉ HACE: Añade un subrayado a los enlaces cuando el usuario pasa el ratón por encima.
+   DÓNDE ESTÁ EN HTML: Aplica a todas las etiquetas `<a>` en cualquier vista al hacer hover. */
+
+
+/* --- Estilos de la Barra de Navegación (Navbar) --- */
+
+/* Aplica al `<a class="navbar-brand">` dentro de la `<nav>` en `base.html`. */
+.navbar-brand {
+    font-weight: bold; /* Texto en negrita para la marca */
+    color: #8B4513 !important; /* Color tierra/marrón para la marca (¡important fuerza la aplicación!) */
+}
+/* QUÉ HACE: Estiliza el texto de la marca en la barra de navegación.
+              Lo pone en negrita y le da un color marrón específico. El `!important`
+              es usado para sobrescribir cualquier estilo de Bootstrap que pudiera
+              estar aplicando un color diferente.
+   DÓNDE ESTÁ EN HTML: Aplica al `<a class="navbar-brand">` dentro de la `<nav>` en `base.html`. */
+
+/* Aplica a las etiquetas `<a class="nav-link">` dentro de los `<li>` en la barra de navegación en `base.html`. */
+.nav-link {
+    color: #5A2D0D !important; /* Otro tono de marrón para los enlaces de navegación */
+    transition: color 0.3s ease; /* Añadido: Transición suave para el color al pasar el ratón */
+}
+/* QUÉ HACE: Estiliza los enlaces individuales dentro de la barra de navegación.
+              Les da un tono de marrón ligeramente diferente. El `!important`
+              también se usa aquí para asegurar que sobrescriba los estilos de Bootstrap.
+              Se añadió una transición para el efecto hover.
+   DÓNDE ESTÁ EN HTML: Aplica a las etiquetas `<a class="nav-link">` dentro de los `<li>`
+                        en la lista `<ul>` de la barra de navegación en `base.html`. */
+
+/* Nuevo estilo para los nav-links al pasar el ratón */
+.nav-link:hover {
+    color: #8B4513 !important; /* Color de tu marca al pasar el ratón */
+}
+/* QUÉ HACE: Cambia el color de los enlaces de navegación a un tono más distintivo al pasar el ratón. */
+
+
+/* --- Estilos de Botones Personalizados (General) --- */
+
+/* Aplica a los botones o enlaces con la clase `btn-primary-custom`
+   DÓNDE ESTÁ EN HTML: Por ejemplo:
+                        - `<a class="btn btn-primary-custom btn-lg">` en `home.html`.
+                        - `<button type="submit" class="btn btn-primary-custom w-100">` en `login.html` y `register.html`.
+                        - `<button type="submit" class="btn btn-primary-custom">` en `profile_edit.html`. */
+.btn-primary-custom {
+    background-color: #8B4513; /* Fondo color tierra */
+    border-color: #8B4513; /* Borde del mismo color */
+    color: #fff; /* Texto blanco */
+}
+/* QUÉ HACE: Define un estilo base para un botón primario personalizado. Le da un color de fondo y borde
+              marrón tierra, y el texto en blanco. */
+
+/* Aplica al mismo elemento que `.btn-primary-custom` cuando está en estado `hover`. */
+.btn-primary-custom:hover {
+    background-color: #A0522D; /* Tono más oscuro al pasar el ratón */
+    border-color: #A0522D; /* Borde del mismo tono */
+    color: #fff; /* Texto blanco (por si acaso el hover cambiara el color del texto) */
+}
+/* QUÉ HACE: Cambia el color de fondo y el borde del botón `.btn-primary-custom`
+              cuando el usuario pasa el cursor por encima. */
+
+
+/* --- Estilos para Imágenes de Tarjetas (Productos - Home) --- */
+
+/* Aplica a las etiquetas `<img class="card-img-top">` dentro de los elementos con la clase `.card` en `home.html`. */
+.card-img-top {
+    width: 100%; /* Ocupa todo el ancho de la tarjeta */
+    height: 200px; /* Altura fija para uniformidad */
+    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse, recortando si es necesario */
+}
+/* QUÉ HACE: Estiliza las imágenes dentro de las tarjetas de productos.
+              Asegura que todas las imágenes tengan el mismo ancho y alto fijo,
+              y que se recorten para ajustarse al espacio sin distorsión. */
+
+
+/* --- Estilos para Encabezados Personalizados (Usados en Login, Registro, Edición de Perfil) --- */
+
+/* Aplica a los `<div class="card-header custom-header">`
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`, `profile_edit.html`. */
+.custom-header {
+    background-color: #f0f0f0; /* Fondo gris claro */
+    padding: 15px; /* Relleno alrededor del texto */
+}
+/* QUÉ HACE: Define un estilo de fondo y padding para los encabezados de las tarjetas
+              de los formularios de registro, inicio de sesión y edición de perfil. */
+
+/* Aplica a las etiquetas `<h2>` dentro del `<div class="card-header custom-header">`
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`, `profile_edit.html`. */
+.custom-header h2 {
+    color: #333; /* Color de texto gris oscuro */
+}
+/* QUÉ HACE: Estiliza el elemento `<h2>` específicamente dentro de un `.custom-header`.
+              Le da un color de texto gris oscuro. */
+
+
+/* --- Estilos para el Carrusel (Home) --- */
+
+/* Aplica a las etiquetas `<img class="d-block w-100 carousel-img">` dentro de cada
+   `<div class="carousel-item">` en `home.html`. */
+.carousel-img {
+    height: 500px; /* Ajusta esta altura según lo necesites para las imágenes del carrusel */
+    object-fit: cover; /* Asegura que la imagen cubra el área, recortando si es necesario */
+    filter: brightness(80%); /* Oscurece un poco la imagen para que el texto de la leyenda sea más legible */
+}
+/* QUÉ HACE: Controla el tamaño y la apariencia de las imágenes dentro del carrusel.
+              Define una altura fija, asegura que las imágenes se ajusten bien (cubriendo el espacio)
+              y las oscurece ligeramente. */
+
+/* Aplica a las etiquetas `<div class="carousel-caption">` dentro de cada
+   `<div class="carousel-item">` en `home.html`. */
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para el texto */
+    padding: 20px; /* Espacio interno alrededor del texto */
+    border-radius: 8px; /* Bordes ligeramente redondeados */
+    bottom: 20%; /* Ajusta la posición vertical de la leyenda desde la parte inferior */
+}
+/* QUÉ HACE: Estiliza la caja que contiene el título y la descripción de cada slide del carrusel.
+              Le da un fondo semi-transparente para mejorar la legibilidad del texto sobre la imagen,
+              un padding y bordes redondeados, y lo posiciona. */
+
+/* Aplica a las etiquetas `<h5>` y `<p>` dentro de `.carousel-caption` en `home.html`. */
+.carousel-caption h5, .carousel-caption p {
+    color: #fff; /* Color de texto blanco para el título y el párrafo de la leyenda */
+}
+/* QUÉ HACE: Define el color del texto dentro de la leyenda del carrusel a blanco. */
+
+
+/* --- Estilos para el Footer Adicional - Enlaces de "Sobre Nosotros" y "Contacto" (Base) --- */
+
+/* Aplica a las etiquetas `<a class="footer-link-text">` dentro del
+   `<div class="footer-links">` en `base.html`. */
+.footer-links .footer-link-text {
+    color: #5A2D0D; /* Mismo color que los nav-links para consistencia */
+    font-weight: bold; /* Para que destaquen un poco */
+}
+/* QUÉ HACE: Define el color y el peso de la fuente para los enlaces de "Sobre Nosotros" y "Contacto"
+              cuando están en el footer. */
+
+/* Aplica al mismo elemento que `.footer-link-text` cuando está en estado `hover`. */
+.footer-links .footer-link-text:hover {
+    color: #8B4513; /* Color de tu marca al pasar el ratón */
+    text-decoration: underline !important; /* Subrayado al pasar el ratón, forzando la anulación de Bootstrap */
+}
+/* QUÉ HACE: Cambia el color y añade un subrayado a los enlaces de "Sobre Nosotros" y "Contacto"
+              cuando el usuario pasa el cursor por encima. */
+
+
+/* --- Estilos para los Íconos de Redes Sociales en el Footer (Base) --- */
+
+/* Aplica a las etiquetas `<a class="social-icon-link">` dentro del
+   `<div class="social-icons">` en `base.html`. */
+.social-icons .social-icon-link {
+    font-size: 1.8em; /* Tamaño del ícono */
+    color: #5A2D0D; /* Color por defecto de los íconos (marrón similar a los nav-links) */
+    transition: color 0.3s ease; /* Transición suave del color al pasar el ratón */
+}
+/* QUÉ HACE: Estiliza los íconos de redes sociales. Define su tamaño, color inicial y añade una
+              transición suave para los efectos de hover. */
+
+/* Colores específicos para cada red social al pasar el ratón (opcional) */
+/* Aplica al `<a class="social-icon-link instagram">` en `base.html`. */
+.social-icons .social-icon-link.instagram:hover {
+    color: #E1306C; /* Color de marca de Instagram */
+}
+/* QUÉ HACE: Cambia el color del ícono de Instagram a su color de marca cuando se pasa el ratón por encima. */
+
+/* Aplica al `<a class="social-icon-link facebook">` en `base.html`. */
+.social-icons .social-icon-link.facebook:hover {
+    color: #3b5998; /* Color de marca de Facebook */
+}
+/* QUÉ HACE: Cambia el color del ícono de Facebook a su color de marca cuando se pasa el ratón por encima. */
+
+/* Aplica al `<a class="social-icon-link tiktok">` en `base.html`. */
+.social-icons .social-icon-link.tiktok:hover {
+    color: #000; /* TikTok usa negro primariamente, o #69C9D0 para el azul */
+}
+/* QUÉ HACE: Cambia el color del ícono de TikTok a su color de marca cuando se pasa el ratón por encima. */
+
+/* Aplica al `<a class="social-icon-link youtube">` en `base.html`. */
+.social-icons .social-icon-link.youtube:hover {
+    color: #FF0000; /* Color de marca de YouTube */
+}
+/* QUÉ HACE: Cambia el color del ícono de YouTube a su color de marca cuando se pasa el ratón por encima. */
+
+/* Aplica a la etiqueta `<small>` dentro del `<footer>` en `base.html`. */
+.footer small {
+    display: block; /* Asegura que el texto ocupe su propia línea */
+    margin-top: 10px; /* Pequeño margen superior para separarlo */
+    color: #6c757d; /* Un color gris más suave para el texto de nota */
+}
+/* QUÉ HACE: Estiliza el texto de advertencia para reemplazar los enlaces reales en el footer.
+              Lo convierte en un bloque para que esté en su propia línea, le da un margen superior
+              y un color de texto más suave. */
+
+
+/* --- ESTILOS ESPECÍFICOS PARA LAS PÁGINAS DE FORMULARIO (LOGIN, REGISTRO, EDICIÓN DE PERFIL) --- */
+
+/* Aplica al `<div class="col-md-6">` dentro de la estructura de `login.html`, `register.html` y `profile_edit.html`. */
+.container.my-5 > .row.justify-content-center > .col-md-6 {
+    max-width: 500px; /* Limita el ancho máximo de la tarjeta para que no sea demasiado grande en pantallas amplias. */
+    margin-left: auto; /* Centra la columna horizontalmente. */
+    margin-right: auto; /* Centra la columna horizontalmente. */
+}
+/* QUÉ HACE: Esta regla específica apunta a la columna que contiene la tarjeta de formulario
+              en las páginas de login, registro y edición de perfil. Le da un `max-width` para que la tarjeta
+              no se extienda demasiado en pantallas grandes y la centra horizontalmente. */
+
+/* Aplica al `<div class="card shadow-sm">`
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`, `profile_edit.html`. */
+.card.shadow-sm {
+    border: none; /* Elimina el borde predeterminado de Bootstrap. */
+    border-radius: 15px; /* Bordes más redondeados para un look moderno y suave. */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important; /* Sombra más profunda y definida para un efecto flotante. */
+    overflow: hidden; /* Asegura que cualquier contenido que se salga de los bordes redondeados sea recortado. */
+    background-color: #ffffff; /* Fondo blanco puro para la tarjeta. */
+    padding: 0; /* Reinicia el padding de la tarjeta. */
+}
+/* QUÉ HACE: Mejora la apariencia de la tarjeta que contiene el formulario.
+              Quita el borde predeterminado, le da bordes más redondeados y una sombra más pronunciada
+              para un efecto "flotante" y moderno. `overflow: hidden` es importante si tienes elementos
+              que podrían salirse de los bordes redondeados. */
+
+/* Aplica al `<div class="card-header custom-header">`
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`, `profile_edit.html`. */
+.card-header.custom-header {
+    background-color: #f8f8f8; /* Un gris muy claro, casi blanco, para el fondo del encabezado. */
+    border-bottom: 1px solid #eee; /* Borde inferior sutil para separar el encabezado del cuerpo. */
+    padding: 25px; /* Más espacio interno para que el título respire. */
+    text-align: center; /* Centra el título del encabezado. */
+    border-radius: 15px 15px 0 0; /* Redondea solo las esquinas superiores. */
+}
+/* QUÉ HACE: Redefine el estilo del encabezado de la tarjeta. Le da un fondo más claro,
+              un borde inferior suave y más padding para una mejor separación visual. */
+
+/* Aplica al `<h2>` dentro del `<div class="card-header custom-header">`
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`, `profile_edit.html`. */
+.card-header.custom-header h2 {
+    color: #333; /* Color de texto gris oscuro para el título. */
+    font-weight: 700; /* Fuente más gruesa para el título. */
+    margin-bottom: 0; /* Elimina el margen inferior predeterminado del h2. */
+}
+/* QUÉ HACE: Estiliza el texto del título `<h2>` dentro del encabezado, haciéndolo más oscuro
+              y más negrita. */
+
+/* Aplica al `<div class="card-body">`
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`, `profile_edit.html`. */
+.card-body {
+    padding: 40px; /* **AJUSTE CLAVE:** Un padding más grande para dar más aire a los campos. */
+    background-color: #ffffff; /* Fondo blanco para el cuerpo. */
+}
+/* QUÉ HACE: Aumenta el espacio interno del cuerpo de la tarjeta para que los campos
+              y botones no se sientan apretados. */
+
+/* Aplica a las etiquetas `<label class="form-label">` generadas por Django para los campos.
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`, `profile_edit.html`. */
+.form-label {
+    font-weight: 500; /* Un poco de negrita para las etiquetas. */
+    color: #444; /* Color de texto gris oscuro para las etiquetas. */
+    margin-bottom: 8px; /* Espacio entre la etiqueta y el campo de entrada. */
+    display: block; /* Asegura que la etiqueta ocupe su propia línea. */
+    /* Eliminado height: 10px; ya que puede causar problemas de alineación con el texto. */
+}
+/* QUÉ HACE: Mejora la legibilidad de las etiquetas de los campos del formulario.
+              Las hace ligeramente más negritas, les da un color más oscuro y añade un pequeño
+              margen inferior. */
+
+/* Aplica a los campos de entrada de texto, password y email con la clase `form-control`.
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`, `profile_edit.html`. */
+.form-control { /* Se aplica a input[type="text"], input[type="password"], input[type="email"] si tienen form-control */
+    border-radius: 8px; /* Bordes redondeados para los campos de entrada. */
+    border: 1px solid #ddd; /* Borde delgado y sutil. */
+    padding: 12px 15px !important; /* **AJUSTE CLAVE:** Más padding interno para hacer los inputs más altos y con espacio. ¡Usamos !important! */
+    height: auto !important; /* **AJUSTE CLAVE:** Asegura que la altura se ajuste al padding. ¡Usamos !important! */
+    outline: none; /* Elimina el contorno azul/negro por defecto al enfocar. */
+    font-size: 1rem; /* Asegura un tamaño de fuente estándar. */
+    line-height: 1.5; /* Asegura una altura de línea consistente. */
+    color: #333; /* Color de texto para el valor del input. */
+    background-color: #fcfcfc; /* Fondo casi blanco para el input. */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Transición suave al enfocar. */
+    -webkit-appearance: none; /* Elimina estilos nativos de navegadores WebKit (Safari/Chrome). */
+    -moz-appearance: none;    /* Elimina estilos nativos de navegadores basados en Gecko (Firefox). */
+    appearance: none;         /* Estándar: Elimina estilos nativos del navegador. */
+}
+/* QUÉ HACE: Estiliza los campos de entrada de texto. Les da bordes redondeados,
+              un borde más suave, más padding interno y ajusta su altura.
+              Los `!important` se usan para asegurar que estos estilos sobrescriban a los de Bootstrap. */
+
+/* Aplica a los campos de entrada cuando están enfocados (activos).
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`, `profile_edit.html`. */
+.form-control:focus {
+    border-color: #A0522D; /* Color del borde al enfocar, usando tu color personalizado. */
+    box-shadow: 0 0 0 0.25rem rgba(160, 82, 45, 0.25); /* Sombra suave al enfocar. */
+    background-color: #fff; /* Fondo blanco al enfocar. */
+}
+/* QUÉ HACE: Cambia el color del borde y añade una sombra sutil cuando el campo de entrada
+              está en foco (cuando el usuario hace clic en él). */
+
+/* Aplica a los mensajes de error de Bootstrap.
+   DÓNDE ESTÁ EN HTML: Puede aparecer en `login.html`, `register.html`, `profile_edit.html` si hay errores de validación. */
+.alert.alert-danger {
+    font-size: 0.85em; /* Texto un poco más pequeño. */
+    padding: 8px 15px; /* Padding reducido. */
+    margin-top: 5px; /* Espacio reducido. */
+    border-radius: 5px; /* Bordes redondeados. */
+    background-color: #f8da; /* Un tono más suave de rojo para el fondo. */
+    color: #721c24; /* Color de texto rojo oscuro. */
+    border-color: #f5c6cb; /* Color de borde rojo claro. */
+}
+/* QUÉ HACE: Estiliza los mensajes de error de Bootstrap, haciéndolos un poco más compactos
+              y con bordes redondeados. */
+
+/* Aplica al `<a>` dentro del `<p class="mt-3 text-center">`
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`. */
+p.mt-3.text-center a {
+    color: #8B4513; /* Usa tu color primario para los enlaces. */
+    font-weight: 600; /* Un poco más de negrita. */
+    text-decoration: none; /* Sin subrayado por defecto. */
+    transition: color 0.2s ease; /* Transición suave del color. */
+}
+/* QUÉ HACE: Estiliza los enlaces de registro/login, dándoles tu color primario,
+              negrita y sin subrayado por defecto. */
+
+/* Aplica al mismo `<a>` cuando está en estado `hover`.
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`. */
+p.mt-3.text-center a:hover {
+    text-decoration: underline; /* Subrayado al pasar el ratón. */
+    color: #A0522D; /* Tono más claro al pasar el ratón. */
+}
+/* QUÉ HACE: Añade un subrayado al enlace de registro/login cuando el usuario pasa el ratón por encima. */
+
+/* Aplica al `<button type="submit" class="btn btn-primary-custom w-100">`
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`. También se puede aplicar a `profile_edit.html`
+                        si usas `w-100` allí. */
+.btn-primary-custom.w-100 {
+    padding: 16px 0; /* **AJUSTE CLAVE:** Más padding vertical para hacer el botón aún más alto y prominente. */
+    font-size: 1.2em; /* **AJUSTE CLAVE:** Tamaño de fuente un poco más grande para el texto del botón. */
+    font-weight: 700; /* Fuente más gruesa para el botón. */
+    border-radius: 8px; /* Bordes redondeados. */
+    letter-spacing: 0.5px; /* Espaciado entre letras para un mejor look. */
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease; /* Transiciones suaves. */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para el botón. */
+    margin-top: 25px !important; /* **AJUSTE CLAVE:** Margen superior para separarlo de los campos de input. ¡Usamos !important! */
+}
+/* QUÉ HACE: Mejora el estilo del botón de submit. Lo hace más grande, con texto más visible
+              y bordes redondeados para que coincida con el resto del diseño moderno. Añade un margen
+              superior para separarlo visualmente de los campos.
+              Se añadió `!important` al `margin-top` para asegurar su aplicación. */
+
+/* Aplica al mismo botón cuando el cursor está sobre él. */
+/* DÓNDE ESTÁ EN HTML: `login.html`, `register.html`. */
+.btn-primary-custom.w-100:hover {
+    transform: translateY(-1px); /* Efecto sutil de levantamiento al pasar el ratón. */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra más fuerte al pasar el ratón. */
+}
+/* QUÉ HACE: Añade un pequeño efecto interactivo al pasar el ratón sobre el botón. */
+
+/* Aplica al mismo botón cuando se hace clic en él. */
+/* DÓNDE ESTÁ EN HTML: `login.html`, `register.html`. */
+.btn-primary-custom.w-100:active {
+    transform: translateY(0); /* Vuelve a la posición normal al hacer clic. */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra más pequeña al hacer clic. */
+}
+/* QUÉ HACE: Reinicia el efecto de levantamiento y reduce la sombra al hacer clic. */
+
+/* Aplica al párrafo que contiene el enlace de "Registrarse aquí" o "Iniciar Sesión aquí".
+   DÓNDE ESTÁ EN HTML: `login.html`, `register.html`. */
+p.mt-3.text-center {
+    font-size: 0.95em;
+    color: #666;
+    margin-top: 25px !important; /* Asegura un margen superior adecuado para separarse del botón. */
+}
+/* QUÉ HACE: Estiliza el texto de pie de formulario, controlando su tamaño, color y margen superior. */
+
+/* Ocultar cualquier helptext remanente si por alguna razón no se quitó en forms.py */
+/* DÓNDE ESTÁ EN HTML: Puede aparecer debajo de los campos de formulario en `login.html`, `register.html`, `profile_edit.html`. */
+.helptext,
+.errorlist li {
+    display: none !important; /* Esto oculta los helptext y errorlist li si se renderizan. */
+}
+/* QUÉ HACE: Fuerza la ocultación de los textos de ayuda y los mensajes de error de lista que Django
+              pudiera generar automáticamente debajo de los campos del formulario. */
+
+/* Nuevos estilos para los iconos de Font Awesome en general (ej. en navbar) */
+.fa, .fas, .fab {
+    /* Puedes ajustar un tamaño base si lo necesitas, pero las clases de Font Awesome
+       ya manejan el tamaño de forma inteligente. 'me-1' de Bootstrap añade el margen. */
+    /* font-size: 1.1em; */ /* Ejemplo: un poco más grande que el texto normal si lo deseas */
+    vertical-align: middle; /* Alinea los iconos con el texto */
+}
+
+/* Estilos específicos para los iconos sociales en el footer (ya los tenías, solo los reafirmo/ajusto ligeramente) */
+/* Aplica a las etiquetas `<a class="social-icon-link">` dentro del
+   `<div class="social-icons">` en `base.html`. */
+.social-icons a {
+    font-size: 1.8em; /* Tamaño del ícono */
+    color: #5A2D0D; /* Color por defecto de los íconos (marrón similar a los nav-links) */
+    margin: 0 10px; /* Margen horizontal entre iconos */
+    transition: color 0.3s ease; /* Transición suave del color al pasar el ratón */
+    text-decoration: none; /* Asegura que no tengan subrayado */
+}
+
+/* Colores específicos para cada red social al pasar el ratón */
+.social-icons .instagram:hover {
+    color: #E1306C; /* Instagram */
+}
+.social-icons .facebook:hover {
+    color: #3b5998; /* Facebook */
+}
+.social-icons .tiktok:hover {
+    color: #000; /* TikTok (generalmente negro) */
+    /* Para el efecto de dos tonos, necesitarías SVG o pseudoelementos más complejos */
+}
+.social-icons .youtube:hover {
+    color: #FF0000; /* YouTube */
+}

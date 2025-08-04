@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            {% if producto.imagen_principal %}
+            <img src="{{ producto.imagen_principal.url }}" class="img-fluid rounded shadow-sm mb-4" alt="{{ producto.nombre }}">
+            {% else %}
+            <img src="/static/img/placeholder.png" class="card-img-top" alt="Imagen no disponible">
+
+            {% endif %}
+
+            {# Galería de imágenes adicionales #}
+            <div class="row row-cols-2 row-cols-md-3 g-3">
+                {% for img in producto.imagenes.all %} {# Itera sobre las imágenes relacionadas (usando related_name='imagenes') #}
+                <div class="col">
+                    <img src="{{ img.imagen.url }}" class="img-fluid rounded shadow-sm" alt="{{ img.descripcion|default:producto.nombre }}">
+                </div>
+                {% empty %}
+                {# <div class="col-12 text-muted">No hay imágenes adicionales para este producto.</div> #}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h1 class="mb-3">{{ producto.nombre }}</h1>
+            <p class="lead text-muted">{{ producto.categoria.nombre }}</p>
+            <h2 class="text-primary-custom mb-4">${{ producto.precio|floatformat:2 }}</h2>
+
+            <p>{{ producto.descripcion|linebreaksbr }}</p> {# `linebreaksbr` convierte saltos de línea en <br> #}
+
+            {% if producto.disponible %}
+            <span class="badge bg-success mb-3">Disponible</span>
+            {% else %}
+            <span class="badge bg-danger mb-3">No Disponible</span>
+            {% endif %}
+
+            <div class="mt-4">
+                {# Aquí puedes añadir botones como "Añadir al carrito" o "Consultar" #}
+                <a href="#" class="btn btn-primary-custom btn-lg">Consultar Producto</a>
+                <a href="{% url 'productos:lista_productos' %}" class="btn btn-outline-secondary btn-lg ms-2">Volver al listado</a>
+            </div>
+
+            <p class="text-muted mt-3">Creado: {{ producto.creado|date:"d M Y" }} | Última actualización: {{ producto.actualizado|date:"d M Y" }}</p>
+        </div>
+    </div>
+</div>
+{% endblock content %}

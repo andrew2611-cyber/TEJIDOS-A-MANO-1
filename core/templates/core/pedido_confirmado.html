@@ -1,0 +1,46 @@
+{# core/templates/core/pedido_confirmado.html #}
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg text-center p-4">
+                <div class="card-body">
+                    <h1 class="card-title text-success mb-4">
+                        <i class="fas fa-check-circle me-2"></i> ¡Pedido Confirmado!
+                    </h1>
+                    <p class="lead">Gracias por tu compra, {{ pedido.nombre_completo }}!</p>
+                    <p>Tu pedido número <strong>#{{ pedido.id }}</strong> ha sido recibido y estamos procesándolo.</p>
+                    <p>Hemos enviado una confirmación de pedido a tu correo electrónico: <strong>{{ pedido.email }}</strong></p>
+
+                    <hr class="my-4">
+
+                    <h4 class="mb-3">Detalles del Pedido:</h4>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item"><strong>Fecha:</strong> {{ pedido.fecha_pedido|date:"d M, Y H:i" }}</li>
+                        <li class="list-group-item"><strong>Estado:</strong> <span class="badge bg-info text-capitalize">{{ pedido.estado }}</span></li>
+                        <li class="list-group-item"><strong>Dirección de Envío:</strong> {{ pedido.direccion_envio }}, {{ pedido.ciudad }}, {{ pedido.codigo_postal }}, {{ pedido.pais }}</li>
+                    </ul>
+
+                    <h5 class="mb-3">Productos Comprados:</h5>
+                    <ul class="list-group mb-3">
+                        {% for item in pedido.items.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ item.cantidad }} x {{ item.producto.nombre }}
+                            <span class="fw-bold">${{ item.get_cost|floatformat:2 }}</span>
+                        </li>
+                        {% endfor %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center fw-bold text-success fs-4">
+                            Total del Pedido:
+                            <span>${{ pedido.total_pedido|floatformat:2 }}</span>
+                        </li>
+                    </ul>
+
+                    <a href="{% url 'core:home' %}" class="btn btn-primary mt-3">Volver a la Tienda</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

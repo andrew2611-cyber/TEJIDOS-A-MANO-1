@@ -1,0 +1,74 @@
+{# core/templates/core/email/pedido_confirmacion.html #}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Pedido #{{ pedido.id }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { width: 80%; margin: 20px auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
+        .header { background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .content { padding: 20px; }
+        .footer { text-align: center; margin-top: 20px; font-size: 0.9em; color: #666; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .total { font-weight: bold; text-align: right; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>¡Gracias por tu compra en Mi Tienda!</h2>
+        </div>
+        <div class="content">
+            <p>Hola <strong>{{ pedido.nombre_completo }}</strong>,</p>
+            <p>Hemos recibido tu pedido con el número <strong>#{{ pedido.id }}</strong>.</p>
+            <p>Estos son los detalles de tu compra:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in productos_en_carrito %}
+                    <tr>
+                        <td>{{ item.product.nombre }}</td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>${{ item.precio_unitario|floatformat:2 }}</td>
+                        <td>${{ item.subtotal|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="total">Total del Pedido:</td>
+                        <td class="total">${{ total_carrito|floatformat:2 }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <p>Tu pedido está actualmente en estado: <strong>{{ pedido.get_estado_display }}</strong>.</p>
+            <p>Será enviado a la siguiente dirección:</p>
+            <p>
+                <strong>{{ pedido.direccion_envio }}</strong><br>
+                {{ pedido.ciudad }}, {{ pedido.codigo_postal }}<br>
+                {{ pedido.pais }}<br>
+                Teléfono: {{ pedido.telefono|default:"N/A" }}
+            </p>
+
+            <p>Te mantendremos informado sobre el estado de tu envío.</p>
+            <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{ "now"|date:"Y" }} Mi Tienda. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>

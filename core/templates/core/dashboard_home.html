@@ -1,0 +1,54 @@
+{% extends 'core/dashboard_base.html' %}
+
+{% block dashboard_content %}
+<h1 class="mb-4">Bienvenido al Dashboard</h1>
+<p class="lead">Desde aquí puedes gestionar todos los aspectos de tu tienda Tejidos a Mano.</p>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-box"></i> Total Productos</h5>
+                <p class="card-text fs-3">{{ total_productos }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-check-circle"></i> Productos Disponibles</h5>
+                <p class="card-text fs-3">{{ productos_disponibles }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-clock"></i> Pedidos Pendientes</h5>
+                <p class="card-text fs-3">{{ pedidos_pendientes }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-shopping-bag"></i> Total Pedidos</h5>
+                <p class="card-text fs-3">{{ total_pedidos }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2 class="mt-5">Acciones Rápidas</h2>
+<div class="list-group">
+    <a href="{% url 'core:producto_crear_admin' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-plus-circle me-2"></i> Añadir Nuevo Producto
+    </a>
+    <a href="{% url 'core:producto_lista_admin' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-list me-2"></i> Ver y Editar Productos
+    </a>
+    </div>
+
+{% endblock %}

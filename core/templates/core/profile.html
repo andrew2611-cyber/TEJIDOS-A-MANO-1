@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4">
+                <h1 class="text-center mb-4">Bienvenido a tu Perfil, {{ user.username }}!</h1>
+                <p class="lead text-center">Aquí podrás gestionar tu información, pedidos y solicitudes.</p>
+
+                <div class="text-center mt-4">
+                    <p><strong>Email:</strong> {{ user.email|default:"No especificado" }}</p>
+                    <p><strong>Miembro desde:</strong> {{ user.date_joined|date:"d M Y" }}</p>
+                    {# Aquí podrías añadir más información del usuario o enlaces a otras secciones #}
+                    <a href="{% url 'core:profile_edit' %}" class="btn btn-outline-secondary">Editar Perfil</a> {# ¡ACTUALIZADO! #}{# Placeholder #}
+                </div>
+
+                <div class="text-center mt-5">
+                    {# CAMBIO CLAVE AQUÍ: de 'accounts:logout' a 'core:logout' #}
+                    <a href="{% url 'core:logout' %}" class="btn btn-danger">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

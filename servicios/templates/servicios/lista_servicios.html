@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">{{ titulo_pagina }}</h1>
+    <p class="text-center mb-4">Estos cursos son presenciales. Haz clic en uno para inscribirte:</p>
+
+    <div class="row">
+        {% for servicio in servicios %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                {% if servicio.imagen %}
+                <img src="{{ servicio.imagen.url }}" class="card-img-top" alt="{{ servicio.nombre }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ servicio.nombre }}</h5>
+                    <p class="card-text">{{ servicio.descripcion_corta|default:"Próximamente más información..." }}</p>
+                    <a href="{% url 'servicios:detalle_servicio' servicio.slug %}" class="btn btn-primary">Ver más / Inscribirme</a>
+
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <p class="text-center">No hay cursos disponibles por el momento.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

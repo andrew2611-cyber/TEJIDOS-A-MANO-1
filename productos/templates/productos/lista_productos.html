@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-3">
+            <h4 class="mb-3">Categorías</h4>
+            <div class="list-group">
+                <a href="{% url 'productos:lista_productos' %}" class="list-group-item list-group-item-action {% if not categoria %}active{% endif %}">Todas las categorías</a>
+                {% for cat in categorias %}
+                <a href="{% url 'productos:lista_productos_por_categoria' cat.slug %}" class="list-group-item list-group-item-action {% if categoria and categoria.slug == cat.slug %}active{% endif %}">
+                    {{ cat.nombre }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <h1 class="mb-4">
+                {% if categoria %}
+                    {{ categoria.nombre }}
+                {% else %}
+                    Todos nuestros Productos
+                {% endif %}
+            </h1>
+
+            {% if productos %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for producto in productos %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        {% if producto.imagen_principal %}
+                        <img src="{{ producto.imagen_principal.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+                        {% else %}
+                        <img src="/static/img/placeholder.png" class="card-img-top" alt="Imagen no disponible">
+
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ producto.nombre }}</h5>
+                            <p class="card-text text-muted">{{ producto.categoria.nombre }}</p>
+                            <p class="card-text fw-bold">${{ producto.precio|floatformat:2 }}</p>
+                            <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary-custom">Ver Detalle</a>
+                            {# `producto.get_absolute_url` es una función que añadiremos al modelo Producto #}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="alert alert-info">No hay productos disponibles en esta categoría.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

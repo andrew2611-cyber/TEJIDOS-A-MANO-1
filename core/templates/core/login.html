@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header text-center custom-header" style="background-color: #f0f0f0; padding: 15px;">
+                    <h2 style="color: #333;">Iniciar Sesión</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Username</label>
+                            <input type="text" name="username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus class="form-control textinput" required id="id_username">
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="id_password" class="form-label">Password</label>
+                            <input type="password" name="password" maxlength="200" autocapitalize="none" autocomplete="current-password" class="form-control textinput" required id="id_password">
+                        </div>
+                    
+                        <button type="submit" class="btn btn-primary-custom w-100">Iniciar Sesión</button>
+                    </form>
+                    <p class="mt-3 text-center">
+                        ¿No tienes una cuenta? <a href="/register/">Regístrate aquí</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

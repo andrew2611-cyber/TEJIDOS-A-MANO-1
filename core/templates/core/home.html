@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-4">
+        {% for producto in productos_destacados %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                {% if producto.imagen_principal %} {# <-- ¡CORREGIDO AQUÍ! #}
+                    <img src="{{ producto.imagen_principal.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+                {% else %}
+                  <img src="{% static 'img/placeholder.png' %}" class="card-img-top" alt="Imagen no disponible"> {# Mejor usar static para consistencia #}
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                    <p class="card-text text-muted">{{ producto.categoria.nombre }}</p>
+                    <p class="card-text fw-bold">${{ producto.precio|floatformat:2 }}</p>
+                    <a href="#" class="btn btn-sm btn-outline-secondary">Ver Detalle</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>No hay productos disponibles en este momento.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

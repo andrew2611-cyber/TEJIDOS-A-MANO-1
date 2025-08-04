@@ -1,0 +1,65 @@
+{% extends 'core/dashboard_base.html' %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Lista de Productos</h1>
+    <a href="{% url 'core:producto_crear_admin' %}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i> Añadir Nuevo Producto
+    </a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Disponible</th>
+                <th>Fecha Creación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in productos %}
+            <tr>
+                <td>{{ producto.id }}</td>
+                <td>
+                    {% if producto.imagen_principal %}
+                        <img src="{{ producto.imagen_principal.url }}" alt="{{ producto.nombre }}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                    {% else %}
+                        <img src="https://via.placeholder.com/50?text=No+Img" alt="Sin imagen" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                    {% endif %}
+                </td>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.categoria.nombre|default:"Sin Categoría" }}</td>
+                <td>${{ producto.precio|floatformat:2 }}</td>
+                <td>{{ producto.stock }}</td>
+                <td>
+                    {% if producto.disponible %}
+                        <span class="badge bg-success">Sí</span>
+                    {% else %}
+                        <span class="badge bg-danger">No</span>
+                    {% endif %}
+                </td>
+                <td>{{ producto.fecha_creacion|date:"Y-m-d H:i" }}</td>
+                <td>
+                    <a href="{% url 'core:producto_editar_admin' producto.pk %}" class="btn btn-sm btn-warning me-2" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="{% url 'core:producto_eliminar_admin' producto.pk %}" class="btn btn-sm btn-danger" title="Eliminar">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9" class="text-center">No hay productos registrados. <a href="{% url 'core:producto_crear_admin' %}">¡Crea uno ahora!</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'core/dashboard_base.html' %}
+{% load crispy_forms_tags %} {# Carga los tags de crispy_forms #}
+
+{% block dashboard_content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="mb-4">{{ titulo_pagina }}</h1>
+        <hr>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }} {# Renderiza el formulario con crispy-forms #}
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save me-2"></i> Guardar Producto
+                </button>
+                <a href="{% url 'core:producto_lista_admin' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i> Volver a la Lista
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
