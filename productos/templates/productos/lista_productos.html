@@ -33,14 +33,18 @@
                         <img src="{{ producto.imagen_principal.url }}" class="card-img-top" alt="{{ producto.nombre }}">
                         {% else %}
                         <img src="/static/img/placeholder.png" class="card-img-top" alt="Imagen no disponible">
-
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ producto.nombre }}</h5>
                             <p class="card-text text-muted">{{ producto.categoria.nombre }}</p>
                             <p class="card-text fw-bold">${{ producto.precio|floatformat:2 }}</p>
-                            <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary-custom">Ver Detalle</a>
-                            {# `producto.get_absolute_url` es una función que añadiremos al modelo Producto #}
+                            
+                            <!-- Botón para ver detalles del producto -->
+                            <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary-custom me-2">Ver Detalle</a>
+                            
+                            <!-- Nuevo botón para añadir al carrito -->
+                            <!-- ¡CORRECCIÓN! El nombre de la URL ahora coincide con lo que tu código busca en productos/urls.py -->
+                            <a href="{% url 'productos:agregar-carrito-simple' producto.id %}" class="btn btn-sm btn-success">Añadir al Carrito</a>
                         </div>
                     </div>
                 </div>

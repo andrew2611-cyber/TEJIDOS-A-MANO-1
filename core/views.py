@@ -1,13 +1,14 @@
-# core/views.py - ¡VERSIÓN CORREGIDA Y AMPLIADA PARA EL DASHBOARD!
+# core/views.py - ¡VERSIÓN FINAL Y CORREGIDA!
 
 from decimal import Decimal
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.contrib.auth.models import Group 
-from django.contrib.auth import get_user_model # <-- Nueva importación para el modelo de usuario
+from django.contrib.auth import get_user_model
+from django.db import transaction
 
-# ✅ Importaciones correctas y consolidadas:
+# Importaciones correctas y consolidadas
 from productos.models import Producto, Categoria 
 from .models import Pedido, ItemPedido 
 from .forms import PedidoAnonimoForm
@@ -20,14 +21,14 @@ from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
+from django.http import JsonResponse
 
-# Importar el formulario de Producto (lo usaremos para el CRUD de productos)
-from productos.forms import ProductoForm 
+# Importar los formularios de Producto y Categoría
+from productos.forms import ProductoForm, CategoriaForm
 
 
 # --- FUNCIÓNES DE AYUDA ---
 
-# Obtiene el modelo de usuario activo para poder usarlo en las vistas
 User = get_user_model()
 
 def is_admin_user(user):
@@ -317,7 +318,6 @@ def dashboard_home(request):
     Vista de la página principal del Dashboard.
     Aquí se muestran estadísticas y un resumen.
     """
-    # Contamos la cantidad de cada modelo
     total_productos = Producto.objects.count()
     productos_disponibles = Producto.objects.filter(disponible=True).count()
     total_categorias = Categoria.objects.count()
@@ -431,6 +431,69 @@ def categoria_lista_admin(request):
     return render(request, 'core/dashboard_categorias_lista.html', context)
 
 @admin_required(login_url='core:login')
+def categoria_crear_admin(request):
+    """
+    Vista para crear una nueva categoría.
+    """
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "¡Categoría creada exitosamente!")
+            return redirect('core:categoria_lista_admin')
+        else:
+            messages.error(request, "Error al crear la categoría. Por favor, revisa los datos.")
+    else:
+        form = CategoriaForm()
+    
+    context = {
+        'form': form,
+        'titulo_pagina': 'Crear Nueva Categoría',
+    }
+    return render(request, 'core/dashboard_categoria_form.html', context)
+
+@admin_required(login_url='core:login')
+def categoria_editar_admin(request, pk):
+    """
+    Vista para editar una categoría existente.
+    """
+    categoria = get_object_or_404(Categoria, pk=pk)
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST, instance=categoria)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"¡Categoría '{categoria.nombre}' actualizada exitosamente!")
+            return redirect('core:categoria_lista_admin')
+        else:
+            messages.error(request, "Error al actualizar la categoría. Por favor, revisa los datos.")
+    else:
+        form = CategoriaForm(instance=categoria)
+
+    context = {
+        'form': form,
+        'titulo_pagina': f'Editar Categoría: {categoria.nombre}',
+        'categoria': categoria,
+    }
+    return render(request, 'core/dashboard_categoria_form.html', context)
+
+@admin_required(login_url='core:login')
+def categoria_eliminar_admin(request, pk):
+    """
+    Vista para eliminar una categoría (con confirmación).
+    """
+    categoria = get_object_or_404(Categoria, pk=pk)
+    if request.method == 'POST':
+        categoria.delete()
+        messages.success(request, f"¡Categoría '{categoria.nombre}' eliminada exitosamente!")
+        return redirect('core:categoria_lista_admin')
+
+    context = {
+        'categoria': categoria,
+        'titulo_pagina': f'Confirmar Eliminación: {categoria.nombre}',
+    }
+    return render(request, 'core/dashboard_categoria_confirm_delete.html', context)
+
+@admin_required(login_url='core:login')
 def pedido_lista_admin(request):
     """
     Lista todos los pedidos en el dashboard.
@@ -481,7 +544,6 @@ def usuario_eliminar_admin(request, pk):
     user_to_delete = get_object_or_404(User, pk=pk)
 
     if request.method == 'POST':
-        # Evitar que un administrador se borre a sí mismo
         if user_to_delete == request.user:
             messages.error(request, 'No puedes borrar tu propia cuenta.')
             return redirect('core:usuario_lista_admin')
@@ -495,3 +557,125 @@ def usuario_eliminar_admin(request, pk):
         'titulo_pagina': 'Confirmar Borrado',
     }
     return render(request, 'core/dashboard_usuario_eliminar.html', context)
+
+# --- VISTAS PARA EL CARRITO ---
+
+def cart_view(request):
+    """
+    Vista para mostrar el contenido del carrito.
+    """
+    cart = request.session.get('cart', {})
+    productos_en_carrito = []
+    total_carrito = Decimal('0.00')
+
+    for product_id, item_data in cart.items():
+        try:
+            product = get_object_or_404(Producto, id=product_id)
+            cantidad = item_data.get('cantidad', 1)
+            precio_unitario = product.precio
+            subtotal = precio_unitario * cantidad
+            productos_en_carrito.append({
+                'product': product,
+                'cantidad': cantidad,
+                'precio_unitario': precio_unitario,
+                'subtotal': subtotal
+            })
+            total_carrito += subtotal
+        except Producto.DoesNotExist:
+            del cart[product_id]
+            request.session.modified = True
+            messages.warning(request, f"Un producto en tu carrito ya no está disponible y fue eliminado.")
+
+    context = {
+        'productos_en_carrito': productos_en_carrito,
+        'total_carrito': total_carrito,
+        'titulo_pagina': 'Tu Carrito de Compras',
+    }
+    return render(request, 'core/cart.html', context)
+
+
+def add_to_cart(request, product_id):
+    """
+    Vista para agregar un producto al carrito o actualizar su cantidad.
+    """
+    if request.method == 'POST':
+        try:
+            product = get_object_or_404(Producto, id=product_id)
+            cantidad = int(request.POST.get('cantidad', 1))
+            
+            cart = request.session.get('cart', {})
+            product_id_str = str(product.id)
+            
+            if product_id_str in cart:
+                cart[product_id_str]['cantidad'] += cantidad
+                messages.success(request, f"Se han agregado {cantidad} unidades más de '{product.nombre}' a tu carrito.")
+            else:
+                cart[product_id_str] = {
+                    'cantidad': cantidad,
+                    'precio': str(product.precio)
+                }
+                messages.success(request, f"'{product.nombre}' ha sido agregado a tu carrito.")
+
+            request.session['cart'] = cart
+            request.session.modified = True
+            
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({'message': 'Producto agregado al carrito con éxito', 'cart_count': len(cart)})
+            
+            # ¡CORRECCIÓN! Redirige a la vista del carrito con el nombre correcto.
+            return redirect('core:cart_view')
+
+        except Producto.DoesNotExist:
+            messages.error(request, "El producto que intentas agregar no existe.")
+        except ValueError:
+            messages.error(request, "La cantidad debe ser un número entero válido.")
+
+    return redirect('core:home')
+
+
+def remove_from_cart(request, product_id):
+    """
+    Vista para eliminar un producto del carrito.
+    """
+    cart = request.session.get('cart', {})
+    product_id_str = str(product_id)
+    
+    if product_id_str in cart:
+        product = get_object_or_404(Producto, id=product_id)
+        del cart[product_id_str]
+        request.session['cart'] = cart
+        request.session.modified = True
+        messages.success(request, f"'{product.nombre}' ha sido eliminado de tu carrito.")
+    else:
+        messages.error(request, "El producto no se encontró en tu carrito.")
+
+    return redirect('core:cart_view')
+
+
+def update_cart(request):
+    """
+    Vista para actualizar la cantidad de un producto en el carrito.
+    """
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        try:
+            new_cantidad = int(request.POST.get('cantidad', 1))
+            if new_cantidad <= 0:
+                messages.error(request, "La cantidad debe ser mayor que cero.")
+                return redirect('core:cart_view')
+        except (ValueError, TypeError):
+            messages.error(request, "Cantidad inválida.")
+            return redirect('core:cart_view')
+
+        cart = request.session.get('cart', {})
+        product_id_str = str(product_id)
+
+        if product_id_str in cart:
+            cart[product_id_str]['cantidad'] = new_cantidad
+            request.session['cart'] = cart
+            request.session.modified = True
+            messages.success(request, "Carrito actualizado.")
+        else:
+            messages.error(request, "El producto no se encontró en tu carrito.")
+
+    return redirect('core:cart_view')

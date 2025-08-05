@@ -1,12 +1,12 @@
 {% extends 'core/dashboard_base.html' %}
+{% load static %}
 
 {% block dashboard_content %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">{{ titulo_pagina }}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
-        <a href="#" class="btn btn-sm btn-primary disabled">
-            <i class="fas fa-plus me-2"></i> Añadir Nueva Categoría (Pronto)
-        
+        <a href="{% url 'core:categoria_crear_admin' %}" class="btn btn-sm btn-primary">
+            <i class="fas fa-plus me-2"></i> Añadir Nueva Categoría
         </a>
     </div>
 </div>
@@ -30,10 +30,10 @@
                 <td>{{ categoria.slug }}</td>
                 <td>{{ categoria.descripcion|default:"N/A" }}</td>
                 <td>
-                    <a class="btn btn-warning btn-sm" title="Editar Usuario">
+                    <a href="{% url 'core:categoria_editar_admin' pk=categoria.pk %}" class="btn btn-warning btn-sm" title="Editar Categoría">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a class="btn btn-danger btn-sm" title="Eliminar Usuario">
+                    <a href="{% url 'core:categoria_eliminar_admin' pk=categoria.pk %}" class="btn btn-danger btn-sm" title="Eliminar Categoría">
                         <i class="fas fa-trash-alt"></i>
                     </a>
                 </td>

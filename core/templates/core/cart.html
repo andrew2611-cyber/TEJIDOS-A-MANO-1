@@ -1,0 +1,89 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">{{ titulo_pagina }}</h1>
+
+    {% if productos_en_carrito %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Precio Unitario</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in productos_en_carrito %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                {% if item.product.imagen_principal %}
+                                    <img src="{{ item.product.imagen_principal.url }}" alt="{{ item.product.nombre }}" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                                {% else %}
+                                    <img src="{% static 'img/placeholder.png' %}" alt="Imagen no disponible" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                                {% endif %}
+                                {# Botón "Ver Detalle" ahora con estilo de botón #}
+                                <a href="{{ item.product.get_absolute_url }}" class="btn btn-sm btn-outline-secondary me-2">Ver Detalle</a>
+                                <span class="fw-bold">{{ item.product.nombre }}</span>
+                            </div>
+                        </td>
+                        <td>${{ item.precio_unitario|floatformat:2 }}</td>
+                        <td>
+                            <form action="{% url 'core:update_cart' %}" method="post" class="d-flex align-items-center">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                <input type="number" name="cantidad" value="{{ item.cantidad }}" min="1" class="form-control form-control-sm text-center" style="width: 70px;">
+                                <button type="submit" class="btn btn-sm btn-outline-primary ms-2" title="Actualizar Cantidad">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </form>
+                        </td>
+                        <td>${{ item.subtotal|floatformat:2 }}</td>
+                        <td>
+                            <a href="{% url 'core:remove_from_cart' item.product.id %}" class="btn btn-sm btn-danger" title="Eliminar Producto">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row justify-content-end mt-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Resumen del Carrito</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+                                Total:
+                                <span>${{ total_carrito|floatformat:2 }}</span>
+                            </li>
+                        </ul>
+                        <div class="d-grid gap-2 mt-3">
+                            {# Botón "Proceder al Pago" con estilo de "Añadir al Carrito" #}
+                            <a href="{% url 'core:checkout' %}" class="btn btn-success btn-sm">Proceder al Pago</a>
+                            {# Botón "Seguir Comprando" con estilo de "Ver Detalle" #}
+                            <a href="{% url 'productos:lista_productos' %}" class="btn btn-outline-secondary btn-sm">Seguir Comprando</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            <h4 class="alert-heading">¡Tu carrito está vacío!</h4>
+            <p>Parece que aún no has agregado ningún producto a tu carrito de compras.</p>
+            <hr>
+            <p class="mb-0">¡Explora nuestra tienda y encuentra tus productos favoritos!</p>
+            <a href="{% url 'productos:lista_productos' %}" class="btn btn-info mt-3">Ir a la Tienda</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}

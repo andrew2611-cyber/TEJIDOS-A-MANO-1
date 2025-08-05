@@ -1,47 +1,61 @@
 # productos/views.py
 
-from django.shortcuts import render, get_object_or_404 # Importa 'render' y 'get_object_or_404'.
-# `get_object_or_404`: Función útil para recuperar un objeto de la base de datos o lanzar un error 404 (página no encontrada) si el objeto no existe.
-from .models import Producto, Categoria # Importa los modelos que definiste en productos/models.py.
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from .models import Producto, Categoria 
+from decimal import Decimal
 
 def lista_productos(request, categoria_slug=None):
     """
-    Vista para listar productos.
-    Puede filtrar por categoría si se proporciona un slug de categoría.
+    Muestra la lista de productos disponibles, con la opción de filtrar por categoría.
     """
-    categoria = None
-    categorias = Categoria.objects.all() # Obtiene todas las categorías para mostrarlas en la navegación.
-    productos = Producto.objects.filter(disponible=True) # Empieza con todos los productos disponibles.
-
+    categoria_seleccionada = None
     if categoria_slug:
-        # Si se proporciona un slug de categoría en la URL
-        categoria = get_object_or_404(Categoria, slug=categoria_slug)
-        # Intenta obtener la categoría por su slug; si no la encuentra, lanza 404.
-        productos = productos.filter(categoria=categoria)
-        # Filtra los productos para mostrar solo los de la categoría seleccionada.
+        categoria_seleccionada = get_object_or_404(Categoria, slug=categoria_slug)
+        productos = Producto.objects.filter(disponible=True, categoria=categoria_seleccionada)
+        titulo = f"Productos - {categoria_seleccionada.nombre}"
+    else:
+        productos = Producto.objects.filter(disponible=True)
+        titulo = "Todos los Productos"
 
-    context = {
-        'categoria': categoria,
-        'categorias': categorias,
+    categorias = Categoria.objects.all() 
+
+    # ¡CORRECCIÓN! El nombre de la plantilla debe ser 'productos/lista_productos.html'
+    return render(request, 'productos/lista_productos.html', {
         'productos': productos,
-        'titulo_pagina': 'Nuestros Productos',
-    }
-    return render(request, 'productos/lista_productos.html', context)
+        'categorias': categorias,
+        'categoria_seleccionada': categoria_seleccionada,
+        'titulo_pagina': titulo
+    })
+
 
 def detalle_producto(request, id, slug):
     """
-    Vista para mostrar los detalles de un producto específico.
-    Se usan tanto el ID como el slug en la URL para mayor SEO y robustez.
+    Muestra los detalles de un producto específico.
     """
-    producto = get_object_or_404(Producto,
-                                 id=id,
-                                 slug=slug,
-                                 disponible=True)
-    # Recupera el producto usando su ID y slug, y asegura que esté disponible.
-    # Si no lo encuentra, lanza un error 404.
+    producto = get_object_or_404(Producto, id=id, slug=slug, disponible=True)
+    return render(request, 'productos/detalle_producto.html', {'producto': producto, 'titulo_pagina': producto.nombre})
 
-    context = {
-        'producto': producto,
-        'titulo_pagina': producto.nombre, # El título de la página será el nombre del producto.
-    }
-    return render(request, 'productos/detalle_producto.html', context)
+
+def add_to_cart_simple(request, product_id):
+    """
+    Vista simple para agregar un producto al carrito directamente desde la lista de productos.
+    """
+    product = get_object_or_404(Producto, id=product_id)
+    cantidad = 1
+
+    cart = request.session.get('cart', {})
+    product_id_str = str(product.id)
+
+    if product_id_str in cart:
+        cart[product_id_str]['cantidad'] += cantidad
+    else:
+        cart[product_id_str] = {'cantidad': cantidad, 'precio': str(product.precio)}
+
+    request.session['cart'] = cart
+    request.session.modified = True
+
+    messages.success(request, f"'{product.nombre}' ha sido agregado a tu carrito.")
+    # Redirige a la misma página para que el usuario siga comprando
+    return redirect(request.META.get('HTTP_REFERER', 'core:home'))
+

@@ -44,11 +44,13 @@
                     </ul>
 
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> {# Alineado a la derecha #}
-                        {# Botón de Carrito #}
+                        {# Botón de Carrito con contador #}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'core:checkout' %}"> {# Asume una URL llamada 'checkout' para el carrito #}
+                            <a class="nav-link" href="{% url 'core:cart_view' %}"> {# ¡CORREGIDO! Ahora apunta a la vista del carrito #}
                                 <i class="fas fa-shopping-cart"></i> Carrito
-                                <span class="badge bg-primary rounded-pill ms-1">0</span> {# ms-1 para margen a la izquierda del badge #}
+                                {% if cart_item_count > 0 %}
+                                    <span class="badge bg-primary rounded-pill ms-1">{{ cart_item_count }}</span> {# ms-1 para margen a la izquierda del badge #}
+                                {% endif %}
                             </a>
                         </li>
 

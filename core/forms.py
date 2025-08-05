@@ -92,3 +92,5 @@ class PedidoAnonimoForm(forms.ModelForm):
                isinstance(field.widget, forms.Select):
                 field.widget.attrs['class'] = 'form-control'
             # Puedes añadir más personalización aquí si es necesario
+
+            
