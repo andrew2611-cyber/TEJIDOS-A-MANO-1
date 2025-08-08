@@ -19,7 +19,7 @@
                 <th>Precio</th>
                 <th>Disponible</th>
                 <th>Fecha Creación</th>
-                <th>Acciones</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -45,14 +45,7 @@
                     {% endif %}
                 </td>
                 <td>{{ producto.fecha_creacion|date:"Y-m-d H:i" }}</td>
-                <td>
-                    <a href="{% url 'core:producto_editar_admin' producto.pk %}" class="btn btn-sm btn-warning me-2" title="Editar">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a href="{% url 'core:producto_eliminar_admin' producto.pk %}" class="btn btn-sm btn-danger" title="Eliminar">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
-                </td>
+                
             </tr>
             {% empty %}
             <tr>

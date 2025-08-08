@@ -1,0 +1,76 @@
+{% extends 'core/dashboard_base.html' %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0 text-gray-800">{{ titulo_pagina }}</h1>
+    <a href="{% url 'core:pedido_lista_admin' %}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i> Volver a Pedidos
+    </a>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Información del Pedido #{{ pedido.id }}</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Detalles del Cliente</h5>
+                <p><strong>Nombre:</strong> {{ pedido.nombre_completo }}</p>
+                <p><strong>Email:</strong> {{ pedido.email }}</p>
+                <p><strong>Teléfono:</strong> {{ pedido.telefono|default:"N/A" }}</p>
+                {# Esta línea es la que probablemente causaba el error si tu modelo no tenía 'tempodireccion_user' #}
+                <p><strong>Dirección:</strong> {{ pedido.tempodireccion_user }}</p>
+                <p><strong>Ciudad:</strong> {{ pedido.ciudad }}</p>
+                <p><strong>Código Postal:</strong> {{ pedido.codigo_postal|default:"N/A" }}</p>
+                <p><strong>País:</strong> {{ pedido.pais }}</p>
+            </div>
+            <div class="col-md-6">
+                <h5>Detalles del Pedido</h5>
+                <p><strong>Fecha del Pedido:</strong> {{ pedido.fecha_pedido|date:"d M Y H:i" }}</p>
+                <p><strong>Estado:</strong> <span class="badge bg-{% if pedido.estado == 'pendiente' %}warning{% elif pedido.estado == 'procesando' %}info{% elif pedido.estado == 'enviado' %}primary{% elif pedido.estado == 'completado' %}success{% elif pedido.estado == 'cancelado' %}danger{% endif %}">{{ pedido.get_estado_display }}</span></p>
+                <p><strong>Total del Pedido:</strong> ${{ pedido.total_pedido|floatformat:2 }}</p>
+                {# Si tu modelo no tenía un campo 'notas', esta línea también podría haber causado un error #}
+                {# <p><strong>Notas:</strong> {{ pedido.notas|default:"Ninguna" }}</p> #}
+            </div>
+        </div>
+
+        <h5 class="mt-4">Productos del Pedido</h5>
+        {# Si la vista no pasaba items_pedido correctamente o usaba itempedido_set, esta sección podría estar vacía #}
+        {% if items_pedido %}
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items_pedido %}
+                    <tr>
+                        <td>{{ item.producto.nombre }}</td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>${{ item.precio|floatformat:2 }}</td>
+                        <td>${{ item.subtotal|floatformat:2 }}</td> {# O item.get_cost, dependiendo de tu modelo #}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info" role="alert">
+            No hay productos asociados a este pedido.
+        </div>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{% url 'core:pedido_lista_admin' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i> Volver a la Lista de Pedidos
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

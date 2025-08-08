@@ -19,7 +19,7 @@
                 <th>Nombre</th>
                 <th>Slug</th>
                 <th>Descripción</th>
-                <th>Acciones</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -29,14 +29,7 @@
                 <td>{{ categoria.nombre }}</td>
                 <td>{{ categoria.slug }}</td>
                 <td>{{ categoria.descripcion|default:"N/A" }}</td>
-                <td>
-                    <a href="{% url 'core:categoria_editar_admin' pk=categoria.pk %}" class="btn btn-warning btn-sm" title="Editar Categoría">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a href="{% url 'core:categoria_eliminar_admin' pk=categoria.pk %}" class="btn btn-danger btn-sm" title="Eliminar Categoría">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
-                </td>
+                
             </tr>
             {% empty %}
             <tr>

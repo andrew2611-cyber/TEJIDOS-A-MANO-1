@@ -1,4 +1,4 @@
-# core/urls.py - ¡VERSIÓN AMPLIADA PARA EL DASHBOARD Y CARRITO!
+# core/urls.py - ¡VERSIÓN ANTERIOR SOLICITADA!
 
 from django.urls import path
 from . import views
@@ -19,10 +19,10 @@ urlpatterns = [
     path('profile/edit/', views.profile_edit_view, name='profile_edit'),
 
     # URLs de Carrito y Pedido
-    path('carrito/', views.cart_view, name='cart_view'), # Nueva URL para ver el carrito
-    path('carrito/add/<int:product_id>/', views.add_to_cart, name='add_to_cart'), # Nueva URL para añadir al carrito
-    path('carrito/remove/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'), # Nueva URL para eliminar del carrito
-    path('carrito/update/', views.update_cart, name='update_cart'), # Nueva URL para actualizar el carrito
+    path('carrito/', views.cart_view, name='cart_view'),
+    path('carrito/add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+    path('carrito/remove/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
+    path('carrito/update/', views.update_cart, name='update_cart'),
     path('checkout/', views.checkout_view, name='checkout'),
     path('pedido-confirmado/<int:pedido_id>/', views.pedido_confirmado_view, name='pedido_confirmado'),
 
@@ -33,20 +33,31 @@ urlpatterns = [
     # Rutas para Productos
     path('dashboard/productos/', views.producto_lista_admin, name='producto_lista_admin'),
     path('dashboard/productos/crear/', views.producto_crear_admin, name='producto_crear_admin'),
-    path('dashboard/productos/editar/<int:pk>/', views.producto_editar_admin, name='producto_editar_admin'),
-    path('dashboard/productos/eliminar/<int:pk>/', views.producto_eliminar_admin, name='producto_eliminar_admin'),
+    
 
     # Rutas para Categorías
     path('dashboard/categorias/', views.categoria_lista_admin, name='categoria_lista_admin'),
     path('dashboard/categorias/crear/', views.categoria_crear_admin, name='categoria_crear_admin'),
-    path('dashboard/categorias/editar/<int:pk>/', views.categoria_editar_admin, name='categoria_editar_admin'),
-    path('dashboard/categorias/eliminar/<int:pk>/', views.categoria_eliminar_admin, name='categoria_eliminar_admin'),
+   
 
-    # Rutas para Pedidos
+    # Rutas para Pedidos (SIN pedido_cambiar_estado_admin)
     path('dashboard/pedidos/', views.pedido_lista_admin, name='pedido_lista_admin'),
+    path('dashboard/pedidos/<int:pk>/detalle/', views.pedido_detalle_admin, name='pedido_detalle_admin'),
+
 
     # Rutas para Usuarios
     path('dashboard/usuarios/', views.usuario_lista_admin, name='usuario_lista_admin'),
-    path('dashboard/usuarios/editar/<int:pk>/', views.usuario_editar_admin, name='usuario_editar_admin'),
-    path('dashboard/usuarios/eliminar/<int:pk>/', views.usuario_eliminar_admin, name='usuario_eliminar_admin'),
+    
+
+    # --- RUTAS PARA CURSOS EN EL DASHBOARD ---
+    path('dashboard/cursos/', views.curso_lista_admin, name='curso_lista_admin'),
+    path('dashboard/cursos/crear/', views.curso_crear_admin, name='curso_crear_admin'),
+    
+    path('dashboard/cursos/<int:pk>/inscripciones/', views.inscripciones_curso_admin, name='inscripciones_curso_admin'),
+    
+    # Ruta para resultados de búsqueda
+    path('buscar/', views.search_results, name='search_results'),
+
+    # Ruta para página especial
+    path('pagina-especial/', views.pagina_especial, name='pagina_especial'),
 ]

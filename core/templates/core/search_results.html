@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Resultados de búsqueda</h2>
+    {% if query %}
+        <p>Buscaste: <strong>{{ query }}</strong></p>
+    {% endif %}
+    {% if resultados %}
+        <div class="row">
+            {% for item in resultados %}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        {% if item.imagen_principal %}
+                            <img src="{{ item.imagen_principal.url }}" class="card-img-top" alt="{{ item.nombre }}">
+                        {% else %}
+                            <img src="{% static 'img/placeholder.png' %}" class="card-img-top" alt="Sin imagen">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.nombre }}</h5>
+                            <p class="card-text">{{ item.descripcion|default_if_none:""|truncatewords:20 }}</p>
+                            <a href="{{ item.get_absolute_url }}" class="btn btn-primary">Ver más</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning mt-3">No se encontraron resultados para tu búsqueda.</div>
+    {% endif %}
+</div>
+{% endblock %}

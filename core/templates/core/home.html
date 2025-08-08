@@ -2,6 +2,11 @@
 {% load static %}
 
 {% block content %}
+<!-- Hero Banner Mejorado -->
+<div class="hero-banner" style="width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;background:#fff;">
+    <img src="{% static 'img/fondo.png' %}" alt="Hero Banner" class="img-fluid hero-banner-img" />
+</div>
+
 <div class="container my-5">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-4">
         {% for producto in productos_destacados %}

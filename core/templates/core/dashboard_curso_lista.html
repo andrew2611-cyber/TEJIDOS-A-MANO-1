@@ -1,0 +1,67 @@
+{% extends 'core/dashboard_base.html' %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0 text-gray-800">{{ titulo_pagina }}</h1>
+    <a href="{% url 'core:curso_crear_admin' %}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i> Crear Nuevo Curso
+    </a>
+</div>
+
+{% if cursos %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Lista de Cursos</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Precio Referencia</th>
+                        <th>Disponible</th>
+                        <th>Creado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for curso in cursos %}
+                    <tr>
+                        <td>{{ curso.id }}</td>
+                        <td>{{ curso.nombre }}</td>
+                        <td>
+                            {% if curso.precio_referencia %}
+                                ${{ curso.precio_referencia|floatformat:2 }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if curso.disponible %}
+                                <span class="badge bg-success">Sí</span>
+                            {% else %}
+                                <span class="badge bg-danger">No</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ curso.creado|date:"d M Y H:i" }}</td>
+                        <td>
+                            
+                            <a href="{% url 'core:inscripciones_curso_admin' curso.pk %}" class="btn btn-sm btn-info" title="Ver Inscripciones">
+                                <i class="fas fa-users"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">
+    No hay cursos registrados aún. <a href="{% url 'core:curso_crear_admin' %}" class="alert-link">¡Crea el primero!</a>
+</div>
+{% endif %}
+{% endblock %}

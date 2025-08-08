@@ -1,3 +1,7 @@
+# Modelos principales para la gestión de productos y categorías.
+# Relacionan productos con categorías y gestionan atributos clave como stock y disponibilidad.
+# Si se agregan nuevos campos, documentar su propósito y uso.
+
 # productos/models.py
 
 from django.db import models
@@ -35,8 +39,10 @@ class Producto(models.Model):
     def __str__(self):
         return self.nombre
 
-    # Añade este método save() para autogenerar el slug
     def save(self, *args, **kwargs):
+        """
+        Autogenera el slug único para el producto basado en el nombre.
+        """
         if not self.slug: # Si el slug está vacío
             base_slug = slugify(self.nombre)
             unique_slug = base_slug

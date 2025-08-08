@@ -471,3 +471,25 @@ p.mt-3.text-center {
 .social-icons .youtube:hover {
     color: #FF0000; /* YouTube */
 }
+
+/* Aplica a la clase hero-banner-img para imágenes de banner en la página de inicio */
+.hero-banner-img {
+    width: 100%; /* La imagen cubre todo el ancho disponible */
+    height: auto; /* La altura se ajusta automáticamente para mantener la proporción */
+    max-width: 1200px; /* Opcional: limita el ancho máximo en pantallas grandes */
+    display: block; /* Asegura que la imagen se comporte como un bloque */
+    margin: 0 auto; /* Centra la imagen horizontalmente */
+    object-fit: contain; /* Evita recortes y mantiene la proporción */
+}
+
+/* Aplica a la clase hero-banner para el contenedor del banner en la página de inicio */
+.hero-banner {
+    width: 100vw; /* El banner ocupa todo el ancho de la ventana */
+    position: relative; /* Posicionamiento relativo para el contenedor */
+    left: 50%; /* Desplazamiento a la izquierda del 50% */
+    right: 50%; /* Desplazamiento a la derecha del 50% */
+    margin-left: -50vw; /* Compensa el desplazamiento a la izquierda */
+    margin-right: -50vw; /* Compensa el desplazamiento a la derecha */
+    background: #fff; /* Fondo blanco para el banner */
+    overflow-x: hidden; /* Oculta cualquier desbordamiento horizontal */
+}

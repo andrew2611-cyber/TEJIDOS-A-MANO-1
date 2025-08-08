@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="mb-4">¡Bienvenido a la Página Especial!</h1>
+            <p class="lead">Aquí puedes mostrar contenido exclusivo, promociones, novedades o cualquier información especial para tus usuarios.</p>
+            <img src="{% static 'img/zapatilla.png' %}" alt="Logo Zapatilla" style="height: 120px;">
+            <div class="mt-4">
+                <a href="{% url 'core:home' %}" class="btn btn-primary">Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

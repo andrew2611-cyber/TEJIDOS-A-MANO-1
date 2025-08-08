@@ -5,6 +5,10 @@ from django.contrib import messages
 from .models import Producto, Categoria 
 from decimal import Decimal
 
+# Vistas principales para la gestión de productos y categorías.
+# Cada vista debe tener un comentario explicativo sobre su propósito y uso.
+# Si se agregan nuevas vistas, documentar su funcionalidad y parámetros importantes.
+
 def lista_productos(request, categoria_slug=None):
     """
     Muestra la lista de productos disponibles, con la opción de filtrar por categoría.

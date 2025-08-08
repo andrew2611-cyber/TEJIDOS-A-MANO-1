@@ -14,7 +14,7 @@
                 <th>Es Staff</th>
                 <th>Último Login</th>
                 <th>Fecha Registro</th>
-                <th>Acciones</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -39,14 +39,7 @@
                 </td>
                 <td>{{ usuario.last_login|date:"d M Y H:i"|default:"Nunca" }}</td>
                 <td>{{ usuario.date_joined|date:"d M Y H:i" }}</td>
-                <td>
-                    <a href="{% url 'core:usuario_editar_admin' pk=usuario.pk %}" class="btn btn-warning btn-sm" title="Editar Usuario">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a href="{% url 'core:usuario_eliminar_admin' pk=usuario.pk %}" class="btn btn-danger btn-sm" title="Eliminar Usuario">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
-                </td>
+                
             </tr>
             {% empty %}
             <tr>

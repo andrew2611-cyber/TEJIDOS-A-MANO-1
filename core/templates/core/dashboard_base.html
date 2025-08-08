@@ -96,6 +96,10 @@
                 <a href="{% url 'core:usuario_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'usuario_lista_admin' %}active{% endif %}">
                     <i class="fas fa-users me-2"></i> Usuarios
                 </a>
+                {# NUEVO ENLACE PARA CURSOS #}
+                <a href="{% url 'core:curso_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'curso_lista_admin' %}active{% endif %}">
+                    <i class="fas fa-book-open me-2"></i> Cursos
+                </a>
                 
                 <a href="{% url 'core:home' %}" class="list-group-item list-group-item-action mt-3">
                     <i class="fas fa-arrow-left me-2"></i> Volver a la Tienda
@@ -108,7 +112,7 @@
         <div id="page-content-wrapper">
             <nav class="navbar navbar-expand-lg navbar-light navbar-admin border-bottom">
                 <div class="container-fluid">
-                    <button class="btn btn-primary" id="sidebarToggle">Toggle Sidebar</button>
+                    
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                             <li class="nav-item dropdown">

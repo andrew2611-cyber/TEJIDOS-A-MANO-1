@@ -1,9 +1,12 @@
 {% extends 'core/dashboard_base.html' %}
-{% load static %}
+{% load static %} {# Asegúrate de tener esto si usas archivos estáticos #}
 
 {% block dashboard_content %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">{{ titulo_pagina }}</h1>
+    <a href="{% url 'core:categoria_lista_admin' %}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i> Volver a Categorías
+    </a>
 </div>
 
 <div class="card shadow-sm">
@@ -13,15 +16,12 @@
     <div class="card-body">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {% if form.errors %}
+            
+            {# Muestra los errores no de campo (ej. errores de formulario generales) #}
+            {% if form.non_field_errors %}
                 <div class="alert alert-danger" role="alert">
                     <strong>¡Error!</strong> Por favor, corrige los siguientes errores:
                     <ul>
-                        {% for field in form %}
-                            {% for error in field.errors %}
-                                <li>{{ field.label }}: {{ error }}</li>
-                            {% endfor %}
-                        {% endfor %}
                         {% for error in form.non_field_errors %}
                             <li>{{ error }}</li>
                         {% endfor %}
@@ -29,15 +29,19 @@
                 </div>
             {% endif %}
 
-            <div class="mb-3">
-                <label for="{{ form.nombre.id_for_label }}" class="form-label">Nombre</label>
-                {{ form.nombre }}
-            </div>
-
-            <div class="mb-3">
-                <label for="{{ form.descripcion.id_for_label }}" class="form-label">Descripción</label>
-                {{ form.descripcion }}
-            </div>
+            {# Renderiza los campos del formulario dinámicamente, incluyendo 'slug' #}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }} {# Esto renderiza el input con el name y id correctos #}
+                    {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
 
             <button type="submit" class="btn btn-success me-2">Guardar</button>
             <a href="{% url 'core:categoria_lista_admin' %}" class="btn btn-secondary">Cancelar</a>

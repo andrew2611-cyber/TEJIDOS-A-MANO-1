@@ -17,75 +17,58 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="{% url 'core:home' %}">Tejidos a Mano </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0"> {# Alineado a la izquierda #}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'core:home' %}">
-                                <i class="fas fa-home me-1"></i> Inicio
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'productos:lista_productos' %}">
-                                <i class="fas fa-box me-1"></i> Productos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'servicios:lista_servicios' %}">
-                                <i class="fas fa-concierge-bell me-1"></i> Servicios
-                            </a>
-                        </li>
-                        {# Se han eliminado "Contáctanos" y "Sobre Nosotros" de aquí #}
-                    </ul>
-
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> {# Alineado a la derecha #}
-                        {# Botón de Carrito con contador #}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'core:cart_view' %}"> {# ¡CORREGIDO! Ahora apunta a la vista del carrito #}
-                                <i class="fas fa-shopping-cart"></i> Carrito
-                                {% if cart_item_count > 0 %}
-                                    <span class="badge bg-primary rounded-pill ms-1">{{ cart_item_count }}</span> {# ms-1 para margen a la izquierda del badge #}
+        <div class="container-fluid py-2 border-bottom" style="background: #fff;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <a href="{% url 'core:home' %}" style="display:inline-block;">
+                        <img src="{% static 'img/zapatilla.png' %}" alt="Logo Zapatilla" style="height: 48px; margin-right: 8px;">
+                        <span class="fw-bold align-middle" style="font-size: 1.5rem; color: #d6a04a; margin-left: 8px;">ZC</span>
+                    </a>
+                </div>
+                <div class="d-flex flex-grow-1 justify-content-center">
+                    <a href="{% url 'servicios:lista_servicios' %}" class="fw-bold mx-4 text-dark text-decoration-none">APRENDE CON NOSOTROS</a>
+                    <a href="{% url 'productos:lista_productos' %}" class="fw-bold mx-4 text-dark text-decoration-none">TIENDA</a>
+                    <a href="{% url 'core:contact' %}" class="fw-bold mx-4 text-dark text-decoration-none">CONTACTO</a>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button class="btn bg-transparent p-0 me-3" type="button" data-bs-toggle="collapse" data-bs-target="#searchBarCollapse" aria-expanded="false" aria-controls="searchBarCollapse">
+                        <i class="fas fa-search fs-3"></i>
+                    </button>
+                    <div class="collapse mt-2" id="searchBarCollapse">
+                        <form class="d-flex" role="search" method="get" action="{% url 'core:search_results' %}" style="margin-right: 16px;">
+                            <input class="form-control me-2" type="search" name="q" placeholder="Buscar..." aria-label="Buscar" style="min-width: 250px; max-width: 350px;">
+                            <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+                    <a href="{% url 'core:cart_view' %}" class="me-3">
+                        <i class="fas fa-shopping-cart fs-3"></i>
+                    </a>
+                    <span class="me-3"><i class="fas fa-star fs-3" style="color: #FFD700;"></i></span>
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="navbarUserDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-1"></i> Hola, {{ user.username }}!
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
+                                {% if user.is_staff or user.is_superuser %}
+                                    <li><a class="dropdown-item" href="{% url 'core:dashboard_home' %}">Dashboard</a></li>
+                                    <li><hr class="dropdown-divider"></li>
                                 {% endif %}
-                            </a>
-                        </li>
-
-                        {% if user.is_authenticated %}
-                            {# Menú desplegable para el usuario autenticado #}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user me-1"></i> Hola, {{ user.username }}!
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
-                                    {# Enlace al Dashboard, visible solo para administradores #}
-                                    {% if user.is_staff or user.is_superuser %}
-                                        <li><a class="dropdown-item" href="{% url 'core:dashboard_home' %}">Dashboard</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                    {% endif %}
-                                    <li><a class="dropdown-item" href="{% url 'core:profile' %}">Mi Perfil</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'core:logout' %}">Cerrar Sesión</a></li>
-                                </ul>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'core:login' %}">
-                                    <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'core:register' %}">
-                                    <i class="fas fa-user-plus me-1"></i> Registrarse
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
+                                <li><a class="dropdown-item" href="{% url 'core:profile' %}">Mi Perfil</a></li>
+                                <li><a class="dropdown-item" href="{% url 'core:logout' %}">Cerrar Sesión</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'core:login' %}" class="me-2 fw-bold text-dark text-decoration-none">
+                            <i class="fas fa-sign-in-alt me-1"></i> 
+                        </a>
+                        <a href="{% url 'core:register' %}" class="fw-bold text-dark text-decoration-none">
+                            <i class="fas fa-user-plus me-1"></i> 
+                        </a>
+                    {% endif %}
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
 
     <main class="content">

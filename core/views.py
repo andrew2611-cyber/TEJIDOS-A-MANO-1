@@ -4,13 +4,13 @@ from decimal import Decimal
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from django.contrib.auth.models import Group 
+from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
 from django.db import transaction
 
 # Importaciones correctas y consolidadas
-from productos.models import Producto, Categoria 
-from .models import Pedido, ItemPedido 
+from productos.models import Producto, Categoria
+from .models import Pedido, ItemPedido
 from .forms import PedidoAnonimoForm
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
@@ -26,23 +26,22 @@ from django.http import JsonResponse
 # Importar los formularios de Producto y Categoría
 from productos.forms import ProductoForm, CategoriaForm
 
+# --- NUEVAS IMPORTACIONES PARA GESTIÓN DE CURSOS ---
+from servicios.models import Servicio, InscripcionCurso # Importamos los modelos de servicios
+from servicios.forms import ServicioForm as CursoServicioForm, InscripcionCursoForm # Importamos los formularios de servicios
+# Renombramos ServicioForm a CursoServicioForm para evitar conflicto con ProductoForm si existiera un ServicioForm en productos
+
 
 # --- FUNCIÓNES DE AYUDA ---
 
 User = get_user_model()
 
 def is_admin_user(user):
-    """
-    Verifica si el usuario es superusuario, staff, o pertenece al grupo 'Administradores'.
-    """
     if user.is_authenticated:
         return user.is_staff or user.is_superuser or user.groups.filter(name='Administradores').exists()
     return False
 
 def admin_required(function=None, redirect_field_name='next', login_url='core:login'):
-    """
-    Decorator for views that checks that the user is logged in and is an admin.
-    """
     actual_decorator = user_passes_test(
         is_admin_user,
         login_url=login_url,
@@ -56,7 +55,7 @@ def admin_required(function=None, redirect_field_name='next', login_url='core:lo
 # --- VISTAS PÚBLICAS (ya existentes) ---
 
 def home(request):
-    productos_destacados = Producto.objects.filter(disponible=True).order_by('-creado')[:8] 
+    productos_destacados = Producto.objects.filter(disponible=True).order_by('-creado')[:8]
     categorias = Categoria.objects.all().order_by('nombre')
 
     context = {
@@ -92,7 +91,7 @@ def profile(request):
 def register_view(request):
     if request.user.is_authenticated:
         if is_admin_user(request.user):
-            return redirect('core:dashboard_home') 
+            return redirect('core:dashboard_home')
         else:
             return redirect('core:home')
 
@@ -138,7 +137,7 @@ def register_view(request):
 def login_view(request):
     if request.user.is_authenticated:
         if is_admin_user(request.user):
-            return redirect('core:dashboard_home') 
+            return redirect('core:dashboard_home')
         else:
             return redirect('core:home')
 
@@ -153,7 +152,7 @@ def login_view(request):
                 messages.success(request, f"¡Bienvenido de nuevo, {username}!")
 
                 if is_admin_user(user):
-                    return redirect('core:dashboard_home') 
+                    return redirect('core:dashboard_home')
                 else:
                     next_page = request.GET.get('next')
                     return redirect(next_page or 'core:home')
@@ -256,14 +255,11 @@ def checkout_view(request):
                 })
                 plain_message = strip_tags(html_message)
 
-                email_subject = f"Confirmación de tu Pedido #{pedido.id} en Mi Tienda"
-                recipient_list = [pedido.email]
-
                 email = EmailMessage(
                     email_subject,
                     plain_message,
                     settings.DEFAULT_FROM_EMAIL,
-                    recipient_list,
+                    [pedido.email],
                 )
                 email.content_subtype = "html"
                 email.send()
@@ -312,7 +308,7 @@ def pedido_confirmado_view(request, pedido_id):
 
 # --- VISTAS DEL DASHBOARD (NUEVAS Y AMPLIADAS) ---
 
-@admin_required(login_url='core:login') 
+@admin_required(login_url='core:login')
 def dashboard_home(request):
     """
     Vista de la página principal del Dashboard.
@@ -324,6 +320,10 @@ def dashboard_home(request):
     total_pedidos = Pedido.objects.count()
     pedidos_pendientes = Pedido.objects.filter(estado='pendiente').count()
     total_usuarios = User.objects.count()
+    # NUEVO: Contar el total de cursos y las inscripciones
+    total_cursos = Servicio.objects.count()
+    total_inscripciones = InscripcionCurso.objects.count()
+
 
     context = {
         'total_productos': total_productos,
@@ -332,6 +332,8 @@ def dashboard_home(request):
         'total_pedidos': total_pedidos,
         'total_categorias': total_categorias,
         'total_usuarios': total_usuarios,
+        'total_cursos': total_cursos, # Añadido al contexto
+        'total_inscripciones': total_inscripciones, # Añadido al contexto
         'titulo_pagina': 'Dashboard de Administración',
     }
     return render(request, 'core/dashboard_home.html', context)
@@ -356,7 +358,7 @@ def producto_crear_admin(request):
     Vista para crear un nuevo producto.
     """
     if request.method == 'POST':
-        form = ProductoForm(request.POST, request.FILES) 
+        form = ProductoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, "¡Producto creado exitosamente!")
@@ -386,14 +388,14 @@ def producto_editar_admin(request, pk):
             messages.success(request, f"¡Producto '{producto.nombre}' actualizado exitosamente!")
             return redirect('core:producto_lista_admin')
         else:
-            messages.error(request, "Error al actualizar el producto. Por favor, revisa los datos.")
+            messages.error(request, "Hubo un error al actualizar el producto. Por favor, revisa los datos.")
     else:
         form = ProductoForm(instance=producto)
 
     context = {
         'form': form,
         'titulo_pagina': f'Editar Producto: {producto.nombre}',
-        'producto': producto, 
+        'producto': producto,
     }
     return render(request, 'core/dashboard_producto_form.html', context)
 
@@ -410,7 +412,7 @@ def producto_eliminar_admin(request, pk):
         return redirect('core:producto_lista_admin')
 
     context = {
-        'producto': producto, 
+        'producto': producto,
         'titulo_pagina': f'Confirmar Eliminación: {producto.nombre}',
     }
     return render(request, 'core/dashboard_producto_confirm_delete.html', context)
@@ -445,10 +447,10 @@ def categoria_crear_admin(request):
             messages.error(request, "Error al crear la categoría. Por favor, revisa los datos.")
     else:
         form = CategoriaForm()
-    
+
     context = {
         'form': form,
-        'titulo_pagina': 'Crear Nueva Categoría',
+        'titulo_pagina': 'Crear Nuevo Producto',
     }
     return render(request, 'core/dashboard_categoria_form.html', context)
 
@@ -505,6 +507,44 @@ def pedido_lista_admin(request):
     }
     return render(request, 'core/dashboard_pedidos_lista.html', context)
 
+# --- NUEVA VISTA PARA CAMBIAR EL ESTADO DEL PEDIDO ---
+@admin_required(login_url='core:login')
+def pedido_cambiar_estado_admin(request, pk):
+    """
+    Permite al administrador cambiar el estado de un pedido específico.
+    """
+    pedido = get_object_or_404(Pedido, pk=pk)
+    if request.method == 'POST':
+        nuevo_estado = request.POST.get('estado')
+        if nuevo_estado and nuevo_estado in [choice[0] for choice in Pedido.ESTADO_CHOICES]:
+            pedido.estado = nuevo_estado
+            pedido.save()
+            messages.success(request, f"El estado del pedido #{pedido.id} ha sido actualizado a '{pedido.get_estado_display()}'.")
+        else:
+            messages.error(request, "Estado inválido proporcionado.")
+        return redirect('core:pedido_lista_admin')
+    # Si se accede por GET, simplemente redirigimos de vuelta a la lista de pedidos
+    return redirect('core:pedido_lista_admin')
+
+
+# --- NUEVA VISTA PARA VER DETALLES DEL PEDIDO (SOLICITADA) ---
+@admin_required(login_url='core:login')
+def pedido_detalle_admin(request, pk):
+    """
+    Muestra los detalles de un pedido específico para el administrador.
+    """
+    pedido = get_object_or_404(Pedido, pk=pk)
+    # CORRECCIÓN: Usamos 'items' que es el related_name en tu modelo ItemPedido
+    items_pedido = pedido.items.all()
+
+    context = {
+        'pedido': pedido,
+        'items_pedido': items_pedido,
+        'titulo_pagina': f'Detalles del Pedido #{pedido.id}',
+    }
+    return render(request, 'core/dashboard_pedido_detalle.html', context)
+
+
 @admin_required(login_url='core:login')
 def usuario_lista_admin(request):
     """
@@ -529,7 +569,7 @@ def usuario_editar_admin(request, pk):
         user_to_edit.save()
         messages.success(request, f'El estado de {user_to_edit.username} ha sido actualizado.')
         return redirect('core:usuario_lista_admin')
-    
+
     context = {
         'user_to_edit': user_to_edit,
         'titulo_pagina': 'Editar Usuario',
@@ -547,11 +587,11 @@ def usuario_eliminar_admin(request, pk):
         if user_to_delete == request.user:
             messages.error(request, 'No puedes borrar tu propia cuenta.')
             return redirect('core:usuario_lista_admin')
-            
+
         user_to_delete.delete()
         messages.success(request, f'El usuario "{user_to_delete.username}" ha sido borrado exitosamente.')
         return redirect('core:usuario_lista_admin')
-    
+
     context = {
         'user_to_delete': user_to_delete,
         'titulo_pagina': 'Confirmar Borrado',
@@ -602,10 +642,10 @@ def add_to_cart(request, product_id):
         try:
             product = get_object_or_404(Producto, id=product_id)
             cantidad = int(request.POST.get('cantidad', 1))
-            
+
             cart = request.session.get('cart', {})
             product_id_str = str(product.id)
-            
+
             if product_id_str in cart:
                 cart[product_id_str]['cantidad'] += cantidad
                 messages.success(request, f"Se han agregado {cantidad} unidades más de '{product.nombre}' a tu carrito.")
@@ -618,10 +658,10 @@ def add_to_cart(request, product_id):
 
             request.session['cart'] = cart
             request.session.modified = True
-            
+
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return JsonResponse({'message': 'Producto agregado al carrito con éxito', 'cart_count': len(cart)})
-            
+
             # ¡CORRECCIÓN! Redirige a la vista del carrito con el nombre correcto.
             return redirect('core:cart_view')
 
@@ -639,7 +679,7 @@ def remove_from_cart(request, product_id):
     """
     cart = request.session.get('cart', {})
     product_id_str = str(product_id)
-    
+
     if product_id_str in cart:
         product = get_object_or_404(Producto, id=product_id)
         del cart[product_id_str]
@@ -679,3 +719,120 @@ def update_cart(request):
             messages.error(request, "El producto no se encontró en tu carrito.")
 
     return redirect('core:cart_view')
+
+
+# --- NUEVAS VISTAS DE ADMINISTRACIÓN DE CURSOS ---
+
+@admin_required(login_url='core:login')
+def curso_lista_admin(request):
+    """
+    Muestra la lista de todos los cursos para el administrador.
+    Permite ver, editar, eliminar y añadir nuevos cursos.
+    """
+    cursos = Servicio.objects.all().order_by('nombre')
+    context = {
+        'cursos': cursos,
+        'titulo_pagina': 'Gestión de Cursos',
+    }
+    return render(request, 'core/dashboard_curso_lista.html', context) # Ruta de plantilla en core
+
+@admin_required(login_url='core:login')
+def curso_crear_admin(request):
+    """
+    Permite al administrador crear un nuevo curso.
+    """
+    if request.method == 'POST':
+        form = CursoServicioForm(request.POST, request.FILES) # Usamos CursoServicioForm
+        if form.is_valid():
+            form.save()
+            messages.success(request, '¡Curso creado exitosamente!')
+            return redirect('core:curso_lista_admin')
+        else:
+            messages.error(request, 'Hubo un error al crear el curso. Por favor, revisa los datos.')
+    else:
+        form = CursoServicioForm() # Usamos CursoServicioForm
+
+    context = {
+        'form': form,
+        'titulo_pagina': 'Crear Nuevo Curso',
+    }
+    return render(request, 'core/dashboard_curso_form.html', context) # Ruta de plantilla en core
+
+@admin_required(login_url='core:login')
+def curso_editar_admin(request, pk):
+    """
+    Permite al administrador editar un curso existente.
+    """
+    curso = get_object_or_404(Servicio, pk=pk)
+    if request.method == 'POST':
+        form = CursoServicioForm(request.POST, request.FILES, instance=curso) # Usamos CursoServicioForm
+        if form.is_valid():
+            form.save()
+            messages.success(request, '¡Curso actualizado exitosamente!')
+            return redirect('core:curso_lista_admin')
+        else:
+            messages.error(request, 'Hubo un error al actualizar el curso. Por favor, revisa los datos.')
+    else:
+        form = CursoServicioForm(instance=curso) # Usamos CursoServicioForm
+
+    context = {
+        'form': form,
+        'curso': curso,
+        'titulo_pagina': f'Editar Curso: {curso.nombre}',
+    }
+    return render(request, 'core/dashboard_curso_form.html', context) # Ruta de plantilla en core
+
+@admin_required(login_url='core:login')
+def curso_eliminar_admin(request, pk):
+    """
+    Permite al administrador eliminar un curso.
+    """
+    curso = get_object_or_404(Servicio, pk=pk)
+    if request.method == 'POST':
+        curso.delete()
+        messages.success(request, '¡Curso eliminado exitosamente!')
+        return redirect('core:curso_lista_admin')
+
+    # Si se accede por GET, simplemente mostramos una página de confirmación (opcional)
+    context = {
+        'curso': curso,
+        'titulo_pagina': f'Confirmar Eliminación: {curso.nombre}',
+    }
+    return render(request, 'core/dashboard_curso_confirm_delete.html', context) # Ruta de plantilla en core
+
+
+@admin_required(login_url='core:login')
+def inscripciones_curso_admin(request, pk):
+    """
+    Muestra la lista de inscripciones para un curso específico.
+    """
+    curso = get_object_or_404(Servicio, pk=pk)
+    inscripciones = InscripcionCurso.objects.filter(curso=curso).order_by('-fecha_inscripcion')
+
+    context = {
+        'curso': curso,
+        'inscripciones': inscripciones,
+        'titulo_pagina': f'Inscripciones para: {curso.nombre}',
+    }
+    return render(request, 'core/dashboard_inscripciones_curso.html', context) # Ruta de plantilla en core
+
+
+def search_results(request):
+    query = request.GET.get('q', '')
+    from productos.models import Producto
+    resultados = Producto.objects.filter(nombre__icontains=query) if query else Producto.objects.none()
+    context = {
+        'query': query,
+        'resultados': resultados,
+    }
+    return render(request, 'core/search_results.html', context)
+
+
+def pagina_especial(request):
+    """
+    Vista para la página especial del botón debajo del logo.
+    """
+    context = {
+        'titulo_pagina': 'Página Especial',
+    }
+    return render(request, 'core/pagina_especial.html', context)
