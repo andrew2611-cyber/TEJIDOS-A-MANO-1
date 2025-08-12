@@ -493,3 +493,231 @@ p.mt-3.text-center {
     background: #fff; /* Fondo blanco para el banner */
     overflow-x: hidden; /* Oculta cualquier desbordamiento horizontal */
 }
+
+/* --- Carrusel de Fondo (Home) --- */
+#carrusel-fondo-home {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.fondo-carrusel-home {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    background: #000;
+}
+
+.fondo-carrusel-home.activo {
+    opacity: 1;
+}
+
+@media (max-width: 900px) {
+    #carrusel-fondo-home, .fondo-carrusel-home {
+        width: 100vw;
+        height: 100vh;
+        min-width: 100vw;
+        min-height: 100vh;
+        left: 0;
+        top: 0;
+    }
+}
+
+#carrusel-zapatos-home {
+    position: absolute;
+    left: 47%;
+    top: 63%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 45vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.zapato-carrusel-home {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    border-radius: 0;
+    box-shadow: none !important;
+    background: none !important;
+}
+
+.zapato-carrusel-home.activo {
+    opacity: 1;
+}
+
+/* Sombra solo para el zapato verde con amarillo (3D) */
+.zapato-carrusel-home.zapato-3d.activo {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+
+@media (max-width: 900px) {
+    #carrusel-zapatos-home {
+        width: 90vw;
+        top: 70%;
+    }
+    .zapato-carrusel-home {
+        max-width: 95vw;
+    }
+}
+
+body.home-page {
+    background: transparent !important;
+    animation: none !important;
+}
+
+/* Estilos para el texto 'Zapatillas cosidas' */
+.texto-cosidas {
+    position: relative;
+    margin-top: 40px;
+    text-align: center;
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    font-size: 6rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    transition: color 1s ease-in-out;
+    color: #d16a7a; /* Color rosado inicial, igual al zapato rosado */
+    z-index: 3;
+}
+.texto-cosidas.verde {
+    color: #2e7d32; /* Verde para el zapato verde/amarillo */
+}
+@media (max-width: 900px) {
+    .texto-cosidas {
+        font-size: 10vw;
+        margin-top: 20px;
+    }
+}
+
+/* Nuevo estilo para el texto 'Zapatillas' */
+#contenedor-texto-zapatillas {
+    position: absolute;
+    right: 34vw;
+    top: 5vh;
+    width: 22vw;
+    height: 8vw;
+    z-index: 10;
+    pointer-events: none;
+}
+.texto-zapatillas {
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    font-size: 7vw;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #222;
+    text-align: right;
+    margin: 0;
+    line-height: 1.1;
+    background: none;
+    box-shadow: none;
+}
+#contenedor-texto-cosidas {
+    position: absolute;
+    right: 23vw;
+    top: 20vh;
+    width: 22vw;
+    z-index: 10;
+    pointer-events: none;
+}
+.texto-cosidas {
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    font-size: 6vw;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-align: right;
+    margin: 0;
+    line-height: 1.1;
+    background: none;
+    box-shadow: none;
+    transition: color 1s ease-in-out;
+    color: #d16a7a;
+}
+.texto-cosidas.verde {
+    color: #2e7d32;
+}
+@media (max-width: 900px) {
+    #contenedor-texto-zapatillas {
+        right: 5vw;
+        top: 15vh;
+        width: 40vw;
+        height: 12vw;
+    }
+    .texto-zapatillas {
+        font-size: 12vw;
+    }
+    #contenedor-texto-cosidas {
+        right: 5vw;
+        top: 30vh;
+        width: 40vw;
+    }
+    .texto-cosidas {
+        font-size: 10vw;
+    }
+}
+
+/* Agregado: Estilos para el texto 'Inspiradas en las familias agrícolas' */
+#contenedor-texto-inspiradas {
+    position: absolute;
+    right: 7vw;
+    top: 7vh;
+    width: 40vw;
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    height: auto;
+}
+.texto-inspiradas {
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    font-size: 2.5vw;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #222;
+    text-align: right;
+    margin: 0;
+    line-height: 1.1;
+    background: none;
+    box-shadow: none;
+    text-transform: uppercase;
+    display: block;
+}
+.texto-agricolas {
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    font-size: 2.5vw;
+    font-weight: bold;
+    color: #222;
+    text-align: right;
+    margin: 0;
+    line-height: 1.1;
+    text-transform: uppercase;
+    display: block;
+}
+@media (max-width: 900px) {
+    #contenedor-texto-inspiradas {
+        right: 5vw;
+        top: 5vh;
+        width: 80vw;
+    }
+    .texto-inspiradas, .texto-agricolas {
+        font-size: 5vw;
+    }
+}

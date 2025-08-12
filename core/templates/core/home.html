@@ -2,43 +2,24 @@
 {% load static %}
 
 {% block content %}
-<!-- Hero Banner Mejorado -->
-<div class="hero-banner" style="width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;background:#fff;">
-    <img src="{% static 'img/fondo.png' %}" alt="Hero Banner" class="img-fluid hero-banner-img" />
+<div id="carrusel-fondo-home">
+    <img src="{% static 'img/fondo.png' %}" class="fondo-carrusel-home activo" alt="Fondo principal">
+    <img src="{% static 'img/fondo1.png' %}" class="fondo-carrusel-home" alt="Fondo alternativo">
 </div>
-
-<div class="container my-5">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-4">
-        {% for producto in productos_destacados %}
-        <div class="col">
-            <div class="card h-100 shadow-sm">
-                {% if producto.imagen_principal %}
-                    <img src="{{ producto.imagen_principal.url }}" class="card-img-top" alt="{{ producto.nombre }}">
-                {% else %}
-                  <img src="{% static 'img/placeholder.png' %}" class="card-img-top" alt="Imagen no disponible">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ producto.nombre }}</h5>
-                    <p class="card-text text-muted">{{ producto.categoria.nombre }}</p>
-                    <p class="card-text fw-bold">${{ producto.precio|floatformat:2 }}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <!-- Botón "Ver Detalle" -->
-                        <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary-custom me-2">Ver Detalle</a>
-                        
-                        <!-- Nuevo botón "Agregar al Carrito" -->
-                        <form action="{% url 'productos:agregar-carrito-simple' producto.id %}" method="post" class="ms-2">
-                            {% csrf_token %}
-                            <a href="{% url 'productos:agregar-carrito-simple' producto.id %}" class="btn btn-sm btn-success">Añadir al Carrito</a>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <div class="col-12 text-center">
-            <p>No hay productos disponibles en este momento.</p>
-        </div>
-        {% endfor %}
-    </div>
+<div id="carrusel-zapatos-home">
+    <img src="{% static 'img/fondo4.png' %}" class="zapato-carrusel-home zapato-2d activo" alt="Zapato 2D">
+    <img src="{% static 'img/fondo3.png' %}" class="zapato-carrusel-home zapato-3d" alt="Zapato 3D">
+</div>
+<div id="contenedor-texto-zapatillas">
+    <h1 class="texto-zapatillas">ZAPATILLAS</h1>
+</div>
+<div id="contenedor-texto-cosidas">
+    <h2 id="texto-cosidas" class="texto-cosidas texto-derecha">
+        COSIDAS
+    </h2>
+</div>
+<div id="contenedor-texto-inspiradas">
+    <h3 class="texto-inspiradas">INSPIRADAS EN LAS FAMILIAS</h3>
+    <h3 class="texto-agricolas">AGRICOLAS</h3>
 </div>
 {% endblock content %}
