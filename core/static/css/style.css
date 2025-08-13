@@ -38,8 +38,41 @@ footer {
     background-color: #f8f9fa; /* Fondo claro para el pie de página */
     padding: 20px 0; /* Espacio interno de 20px arriba y abajo, 0 a los lados */
     text-align: center; /* Centra el texto dentro del footer */
-    border-top: 1px solid #e9ecef; /* Borde superior suave */
 }
+
+/* --- Estilos para el bloque de agricultores en home.html --- */
+#contenedor-texto-agricultores {
+    
+ position: absolute;
+    right: 7vw;
+    top: 50vh;
+    width: 40vw;
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    height: auto;
+
+}
+
+ .texto-agricultores {
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    font-size: 1.4vw;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #222;
+    text-align: justify;
+    margin: 0;
+    line-height: 1.1;
+    background: none;
+    box-shadow: none;
+    text-transform: none;
+    display: block;
+    border-top : 1px solid #e9ecef; /* Borde superior suave */
+}
+   
+
 /* QUÉ HACE: Define los estilos básicos para el pie de página.
               Le da un color de fondo gris claro, un padding interno, centra el texto
               y le añade un borde superior. El margen superior ahora lo maneja Bootstrap (`mt-auto`).
@@ -610,8 +643,8 @@ body.home-page {
 /* Nuevo estilo para el texto 'Zapatillas' */
 #contenedor-texto-zapatillas {
     position: absolute;
-    right: 34vw;
-    top: 5vh;
+    right: 25vw;
+    top: 9vh;
     width: 22vw;
     height: 8vw;
     z-index: 10;
@@ -631,7 +664,7 @@ body.home-page {
 }
 #contenedor-texto-cosidas {
     position: absolute;
-    right: 23vw;
+    right: 11vw;
     top: 20vh;
     width: 22vw;
     z-index: 10;
@@ -676,8 +709,8 @@ body.home-page {
 /* Agregado: Estilos para el texto 'Inspiradas en las familias agrícolas' */
 #contenedor-texto-inspiradas {
     position: absolute;
-    right: 7vw;
-    top: 7vh;
+    right: 2vw;
+    top: 35vh;
     width: 40vw;
     z-index: 10;
     pointer-events: none;
@@ -688,7 +721,7 @@ body.home-page {
 }
 .texto-inspiradas {
     font-family: 'Montserrat', 'Arial', sans-serif;
-    font-size: 2.5vw;
+    font-size: 2.1vw;
     font-weight: bold;
     letter-spacing: 1px;
     color: #222;
@@ -702,7 +735,7 @@ body.home-page {
 }
 .texto-agricolas {
     font-family: 'Montserrat', 'Arial', sans-serif;
-    font-size: 2.5vw;
+    font-size: 2.1vw;
     font-weight: bold;
     color: #222;
     text-align: right;
@@ -719,5 +752,32 @@ body.home-page {
     }
     .texto-inspiradas, .texto-agricolas {
         font-size: 5vw;
+    }
+}
+
+/* Cuadro animado sincronizado con COSIDAS */
+#contenedor-cuadro-animado {
+    position: absolute;
+    left: 84vw;
+    top: 45vh;
+    width: 13vw;
+    height: 1vw;
+    z-index: 10;
+    /* pointer-events: none;  Puedes quitarlo si quieres que sea interactivo */
+}
+.cuadro-animado {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    opacity: 1;
+    background: #6c2eb6;
+    transition: background 1s, opacity 1s;
+}
+@media (max-width: 900px) {
+    #contenedor-cuadro-animado {
+        left: 40vw;
+        top: 38vh;
+        width: 80vw;
+        height: 4vw;
     }
 }

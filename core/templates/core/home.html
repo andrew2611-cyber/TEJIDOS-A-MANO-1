@@ -22,4 +22,29 @@
     <h3 class="texto-inspiradas">INSPIRADAS EN LAS FAMILIAS</h3>
     <h3 class="texto-agricolas">AGRICOLAS</h3>
 </div>
+
+<div id="contenedor-texto-agricultores">
+    <p class="texto-agricultores">
+        Comodidad y estilo, rindiendo homenaje<br>
+        Al trabajo de las familias agricultoras.<br>
+        Cada par esta elaborado<br>
+        Artesanalmente con tejidos resistentes<br>
+        Y colores vibrantes que representan la<br>
+        Conexión con la tierra y la cultura<br>
+        campesina
+    </p>
+</div>
+{# Cuadro animado sincronizado con el texto COSIDAS, fuera del contenedor de cosidas #}
+<div id="contenedor-cuadro-animado">
+    <div id="cuadro-animado" class="cuadro-animado"></div>
+</div>
+
+{% block extra_js %}
+<script src="{% static 'js/cuadro-animado.js' %}"></script>
+{% endblock extra_js %}
+
+  
 {% endblock content %}
+
+
+
