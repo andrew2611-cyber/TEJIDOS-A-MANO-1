@@ -1,3 +1,83 @@
+
+/* Fondo estático para la página de lista de servicios */
+#fondo-servicios-lista {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-image: url('../img/servicios.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+}
+
+/* Estilos específicos para la página de lista de servicios */
+.servicios-lista-page .card {
+    background: rgba(255,255,255,0.93);
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    border: none;
+}
+.servicios-lista-page .card-title {
+    color: #6d4c1b;
+    font-weight: 700;
+}
+.servicios-lista-page .btn-primary {
+    background: #388e3c;
+    border: none;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+.servicios-lista-page .btn-primary:hover {
+    background: #256b27;
+}
+/* --- Contenedores de tallas en home.html --- */
+#contenedor-tallas-info {
+    position: absolute;
+    left: 7vw;
+    top: 75vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    z-index: 20;
+}
+.tallas-disponible {
+    background: none;
+    color: #fff;
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding: 0;
+    border-radius: 0;
+    letter-spacing: 1px;
+    box-shadow: none;
+}
+.tallas-lista {
+    background: none;
+    color: #fff;
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 0;
+    border-radius: 0;
+    letter-spacing: 2px;
+    box-shadow: none;
+}
+@media (max-width: 900px) {
+    #contenedor-tallas-info {
+        left: 3vw;
+        top: 80vh;
+    }
+    .tallas-disponible, .tallas-lista {
+        font-size: 1.1rem;
+        padding: 8px 12px;
+    }
+}
 /* core/static/css/style.css */
 
 /* --- Estilos Generales y Layout --- */
@@ -24,7 +104,7 @@ body {
 .content {
     flex: 1; /* Permite que el contenido principal ocupe el espacio restante */
     /* Añadido para dar un poco de espacio entre el navbar y el contenido */
-    padding-top: 20px;
+    padding-top: 0px;
 }
 /* QUÉ HACE: Esta clase se aplica al elemento <main> en base.html.
               Con 'flex: 1;', asegura que el área del contenido principal (`<main>`)
@@ -111,6 +191,54 @@ a:hover {
 .nav-link {
     color: #5A2D0D !important; /* Otro tono de marrón para los enlaces de navegación */
     transition: color 0.3s ease; /* Añadido: Transición suave para el color al pasar el ratón */
+}
+/* --- Estilos para el almanaque simple en home.html --- */
+#almanaque-contenedor {
+    position: absolute;
+    top: 75vh;
+    right: 8vw;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    z-index: 20;
+    font-family: 'Montserrat', 'Arial', sans-serif;
+}
+#almanaque-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#almanaque-icono svg {
+    width: 54px;
+    height: 54px;
+    display: block;
+}
+#almanaque-texto {
+    display: flex;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    gap: 10px;
+}
+#almanaque-mes {
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    margin: 0 2px 0 0;
+    text-transform: uppercase;
+}
+#almanaque-anio {
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    margin-left: 2px;
 }
 /* QUÉ HACE: Estiliza los enlaces individuales dentro de la barra de navegación.
               Les da un tono de marrón ligeramente diferente. El `!important`
@@ -529,25 +657,28 @@ p.mt-3.text-center {
 
 /* --- Carrusel de Fondo (Home) --- */
 #carrusel-fondo-home {
-    position: fixed;
-    top: 0;
+    position: absolute;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
+    width: 100%;
+    height: 81vh;
+    top: 46%;
+    transform: translateY(-50%);
+    z-index: 0;
     overflow: hidden;
+    pointer-events: none;
 }
 
 .fondo-carrusel-home {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     opacity: 0;
     transition: opacity 1s ease-in-out;
     background: #000;
+    pointer-events: none;
 }
 
 .fondo-carrusel-home.activo {
@@ -555,11 +686,16 @@ p.mt-3.text-center {
 }
 
 @media (max-width: 900px) {
-    #carrusel-fondo-home, .fondo-carrusel-home {
-        width: 100vw;
-        height: 100vh;
-        min-width: 100vw;
-        min-height: 100vh;
+    #carrusel-fondo-home {
+        height: 60vh;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .fondo-carrusel-home {
+        width: 100%;
+        height: 100%;
+        min-width: 100%;
+        min-height: 100%;
         left: 0;
         top: 0;
     }
@@ -763,7 +899,6 @@ body.home-page {
     width: 13vw;
     height: 1vw;
     z-index: 10;
-    /* pointer-events: none;  Puedes quitarlo si quieres que sea interactivo */
 }
 .cuadro-animado {
     width: 100%;
@@ -771,13 +906,145 @@ body.home-page {
     border-radius: 0;
     opacity: 1;
     background: #6c2eb6;
-    transition: background 1s, opacity 1s;
+    transition: background 1s, opacity 0s;
 }
 @media (max-width: 900px) {
     #contenedor-cuadro-animado {
         left: 40vw;
         top: 38vh;
-        width: 80vw;
-        height: 4vw;
+        width: 40vw;
+        height: 3vw;
     }
+}
+@media (max-width: 600px) {
+    #contenedor-cuadro-animado {
+        left: 10vw;
+        top: 60vh;
+        width: 80vw;
+        height: 5vw;
+    }
+}
+@media (max-width: 400px) {
+    #contenedor-cuadro-animado {
+        left: 5vw;
+        top: 65vh;
+        width: 90vw;
+        height: 7vw;
+    }
+}
+
+/* Productos destacados */
+.productos-destacados-container {
+  margin-top: 61rem;
+  margin-bottom: 3rem;
+}
+.productos-destacados-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.producto-col {
+  flex: 1 1 22%;
+  min-width: 250px;
+  max-width: 300px;
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+.producto-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transition: box-shadow 0.2s;
+}
+.producto-card:hover {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+}
+.producto-img {
+  object-fit: cover;
+  height: 200px;
+  width: 100%;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.producto-card-body {
+  padding: 1rem 1.2rem 1.2rem 1.2rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.producto-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.3rem;
+}
+.producto-card-categoria {
+  font-size: 0.95rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+.producto-card-precio {
+  color: #1a7f37;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.7rem;
+}
+.producto-card-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-ver-detalle {
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.35rem 1.1rem;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-ver-detalle:hover {
+  background: #444;
+}
+.btn-agregar-carrito {
+  background: #1a7f37;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.35rem 1.1rem;
+  color: #fff;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-agregar-carrito:hover {
+  background: #145c27;
+}
+.producto-vacio {
+  text-align: center;
+  width: 100%;
+}
+
+/* Imagen 3D estática en home.html */
+#contenedor-imagen-3d-estatica {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem 0 20rem 0;
+}
+.imagen-3d-estatica {
+  max-width: 420px;
+  width: 100%;
+  height: auto;
+  /* border-radius: 1.2rem; */
+  /* box-shadow: 0 4px 24px rgba(0,0,0,0.13); */
+  /* background: #fff; */
+  object-fit: contain;
 }
