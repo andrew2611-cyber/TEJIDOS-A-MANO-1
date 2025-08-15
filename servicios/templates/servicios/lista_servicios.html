@@ -2,30 +2,69 @@
 {% load static %}
 
 {% block content %}
+<!-- Contenedor para el fondo de servicios -->
 <div id="fondo-servicios-lista"></div>
-<div class="container my-5 servicios-lista-page">
+<div class="container my-5 servicios-lista-page position-relative" style="min-height: 80vh;">
     <h1 class="text-center mb-4">{{ titulo_pagina }}</h1>
-    <p class="text-center mb-4">Estos cursos son presenciales. Haz clic en uno para inscribirte:</p>
-    <div class="row">
-        {% for servicio in servicios %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                {% if servicio.imagen %}
-                <img src="{{ servicio.imagen.url }}" class="card-img-top" alt="{{ servicio.nombre }}">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ servicio.nombre }}</h5>
-                    <p class="card-text">{{ servicio.descripcion_corta|default:"Próximamente más información..." }}</p>
-                    <a href="{% url 'servicios:detalle_servicio' servicio.slug %}" class="btn btn-primary">Ver más / Inscribirme</a>
+    <!-- Elementos totalmente independientes -->
+    <div id="titulo-artesanal-absolute-servicios">
+        <h2 class="titulo-artesanal-text">DISEÑO ARTESANAL DE CALZADO</h2>
+    </div>
+    <div id="zapato-3d-absolute-servicios">
+        <img src="{% static 'img/fondo3.png' %}" class="zapato-img-3d" alt="Zapato 3D">
+    </div>
+    <div id="descripcion-curso-servicios">
+        <p class="descripcion-curso-texto">
+            Aprende a crear zapatillas y accesorios únicos combinando técnicas tradicionales y diseño contemporáneo. Domina el arte de los tejidos artesanales.
+        </p>
+    </div>
+    <div id="tarjeta-curso-absolute-servicios">
+        <div class="card h-100 shadow-sm curso-card info-curso-card">
+            <div class="card-body">
+                <h4 class="fw-bold mb-3">Titulación</h4>
+                <p>Curso de especialista: Diseño artesanal<br>de calzado y accesorios tejidos</p>
+                <h4 class="fw-bold mt-4 mb-3">Impartido por</h4>
+                <p>Maestros artesanos y diseñadores expertos</p>
+                <h4 class="fw-bold mt-4 mb-3">Modalidad</h4>
+                <p>Presencial / Híbrido (según disponibilidad)</p>
+                <h4 class="fw-bold mt-4 mb-3">Duración</h4>
+                <p>30 horas (7 clases de 4 horas + 2 horas de asesoría personalizada para proyecto final)</p>
+                <h4 class="fw-bold mt-4 mb-3">Precio</h4>
+                <p>$$$$$$$$$$$$$$</p>
+                <h4 class="fw-bold mt-4 mb-3">Fechas y horarios</h4>
+                <p>Sábados: 10/5, 17/5, 24/5, 31/5, 14/6 y 21/6<br>de 10 h a 14 h</p>
+                <div class="d-flex gap-3 mt-4">
+                    <a href="{% url 'servicios:detalle_servicio' curso.slug %}" class="btn btn-warning fw-bold w-100" style="font-size:1.15rem;">Solicitar información</a>
                 </div>
             </div>
         </div>
-        {% empty %}
-        <div class="col">
-            <p class="text-center">No hay cursos disponibles por el momento.</p>
-        </div>
-        {% endfor %}
     </div>
+</div>
+<!-- Detalles del curso debajo de todo, fuera del container principal -->
+<div id="detalles-curso-servicios" class="detalles-curso-servicios mt-5">
+    <h5 class="detalles-titulo">Descripción</h5>
+    <h2 class="detalles-subtitulo">Detalles del curso</h2>
+    <p class="detalles-parrafo">
+        El curso de Diseño artesanal de calzado y accesorios colombianos es una experiencia formativa única que te introduce al fascinante mundo de lo hecho artesanal. Aprenderás a combinar técnicas ancestrales de tejido y bordado con las tendencias actuales de diseño, para crear zapatillas, bolsos y accesorios originales y sostenibles.<br><br>
+        Durante el programa, conocerás las fuentes de inspiración cultural, los materiales y las técnicas utilizadas por las comunidades artesanas de Colombia. Además, aprenderás a desarrollar fichas técnicas y a conceptualizar colecciones exclusivas de productos hechos a mano.
+    </p>
+    <h5 class="detalles-titulo mt-4">Plan de estudio</h5>
+    <h2 class="detalles-subtitulo">Contenido</h2>
+    <p class="detalles-parrafo">
+        Descubre los principios de la estética, la teoría del color, las combinaciones de texturas y la selección de materiales naturales como el fique, algodón, cuero y fibras recicladas.<br>
+        Experimenta con técnicas de bordado, tejido y ensamblaje utilizadas por comunidades artesanas colombianas.<br><br>
+        Comprende la anatomía del calzado artesanal y las partes esenciales de una zapatilla o sandalia.<br>
+        Crea fichas técnicas para que tus diseños puedan ser materializados posteriormente por talleres artesanales.
+    </p>
+    <h5 class="detalles-titulo mt-4">Proyecto personal</h5>
+    <p class="detalles-parrafo">
+        Al finalizar el curso, aplicarás todos los conocimientos adquiridos para crear tu propio diseño exclusivo: una zapatilla, bolso o accesorio que combine tradición y modernidad.<br>
+        Contarás con la guía de expertos para llevar tu proyecto desde la inspiración y el boceto, hasta el diseño final y la presentación profesional.
+    </p>
+    <h5 class="detalles-titulo mt-4">Visitas</h5>
+    <p class="detalles-parrafo">
+        Recibirás la visita de reconocidos artesanos y diseñadores colombianos, quienes compartirán su experiencia en la creación de piezas únicas que fusionan tradición y modernidad. Además, conocerás las oportunidades laborales y de emprendimiento que ofrece el sector artesanal colombiano, estableciendo tus primeros contactos profesionales.
+    </p>
 </div>
 {% endblock %}
 

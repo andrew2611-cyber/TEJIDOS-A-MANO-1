@@ -1,4 +1,27 @@
-
+/* Fondo decorativo SOLO para la zona principal de servicios */
+.zona-principal-servicios {
+  position: relative;
+  min-height: 480px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 2.5rem auto;
+  display: block;
+}
+.zona-principal-servicios #fondo-servicios-lista {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-image: url('../img/servicios.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 1;
+  border-radius: 2.2rem;
+  pointer-events: none;
+}
 /* Fondo estático para la página de lista de servicios */
 #fondo-servicios-lista {
     position: fixed;
@@ -11,15 +34,37 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.5;
+    opacity: 1.5;
+}
+/* Asegura que los elementos principales estén sobre el fondo */
+#titulo-artesanal-absolute-servicios,
+#zapato-3d-absolute-servicios,
+#descripcion-curso-servicios,
+#tarjeta-curso-absolute-servicios {
+  position: absolute;
+  z-index: 2;
+}
+@media (max-width: 900px) {
+  .zona-principal-servicios {
+    min-height: 320px;
+    max-width: 99vw;
+    border-radius: 1.2rem;
+  }
+  .zona-principal-servicios #fondo-servicios-lista {
+    border-radius: 1.2rem;
+  }
 }
 
 /* Estilos específicos para la página de lista de servicios */
 .servicios-lista-page .card {
-    background: rgba(255,255,255,0.93);
+    background: #fff;
     border-radius: 18px;
     box-shadow: 0 4px 18px rgba(0,0,0,0.08);
     border: none;
+}
+.servicios-lista-page .card.curso-card {
+    min-width: 320px;
+    max-width: 420px;
 }
 .servicios-lista-page .card-title {
     color: #6d4c1b;
@@ -155,7 +200,7 @@ footer {
 
 /* QUÉ HACE: Define los estilos básicos para el pie de página.
               Le da un color de fondo gris claro, un padding interno, centra el texto
-              y le añade un borde superior. El margen superior ahora lo maneja Bootstrap (`mt-auto`).
+              y le añade un borde superior. El margen superior ahora lo maneja Bootstrap (`mt-auto`). 
    DÓNDE ESTÁ EN HTML: Aplica a la etiqueta `<footer>` en `base.html`. */
 
 /* Aplica a todas las etiquetas <a> */
@@ -738,6 +783,22 @@ p.mt-3.text-center {
     box-shadow: 0 8px 32px rgba(0,0,0,0.25);
 }
 
+/* Zapato 3D en lista_servicios.html (sin animación) */
+.zapato-carrusel-home.zapato-3d.static {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    opacity: 1;
+    max-width: 500px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    background: none;
+}
+
 @media (max-width: 900px) {
     #carrusel-zapatos-home {
         width: 90vw;
@@ -1047,4 +1108,217 @@ body.home-page {
   /* box-shadow: 0 4px 24px rgba(0,0,0,0.13); */
   /* background: #fff; */
   object-fit: contain;
+}
+
+/* --- Posicionamiento absoluto y limpio para cada elemento --- */
+.zapato-3d-absolute {
+  position: absolute;
+  top: 120px;  /* Cambia este valor para mover el zapato verticalmente */
+  left: 80px;  /* Cambia este valor para mover el zapato horizontalmente */
+  z-index: 2;
+  background: none !important;
+  box-shadow: none !important;
+}
+.zapato-img-3d {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  display: block;
+  /* box-shadow: 0 8px 32px rgba(0,0,0,0.25); */ /* Eliminado el cuadro translúcido */
+  background: none !important;
+}
+
+.titulo-artesanal-absolute {
+  position: absolute;
+  top: 40px;   /* Cambia este valor para mover el texto verticalmente */
+  left: 40px;  /* Cambia este valor para mover el texto horizontalmente */
+  z-index: 3;
+}
+.titulo-artesanal-text {
+  color: #fff;
+  font-size: 2rem;
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+}
+
+.tarjeta-curso-absolute {
+  position: absolute;
+  top: 60px;   /* Cambia este valor para mover la tarjeta verticalmente */
+  right: 40px; /* Cambia este valor para mover la tarjeta horizontalmente */
+  z-index: 4;
+  width: 420px;
+}
+
+#contenedor-zapato-3d {
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* --- Estilos personalizados para lista_servicios.html --- */
+#contenedor-titulo-curso {
+  margin-bottom: 1.5rem;
+}
+#contenedor-zapato-3d {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+#contenedor-titulo-artesanal {
+  margin-bottom: 1.5rem;
+}
+.titulo-artesanal-text {
+  color: #fff;
+  font-size: 2rem;
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  text-align: center;
+}
+.tarjeta-curso-absolute-static {
+  position: static;
+  width: 100%;
+  max-width: 420px;
+}
+@media (max-width: 900px) {
+  .tarjeta-curso-absolute-static {
+    max-width: 100%;
+  }
+}
+
+/* --- Estilos independientes para lista_servicios.html --- */
+#contenedor-titulo-artesanal-indep {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+#contenedor-zapato-3d-indep {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: flex-start;
+}
+#contenedor-tarjeta-curso-indep {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 900px) {
+  #contenedor-tarjeta-curso-indep {
+    justify-content: center;
+  }
+  #contenedor-zapato-3d-indep {
+    justify-content: center;
+  }
+  #contenedor-titulo-artesanal-indep {
+    text-align: center;
+  }
+}
+
+/* --- Estilos para independencia total en lista_servicios.html --- */
+#titulo-artesanal-absolute-servicios {
+  position: absolute;
+  top: 60px;
+  left: -10vw;
+  z-index: 10;
+}
+#zapato-3d-absolute-servicios {
+  position: absolute;
+  top: 200px;
+  left: -10vw;
+  z-index: 11;
+}
+#tarjeta-curso-absolute-servicios {
+  position: absolute;
+  top: 100px;
+  right: -9vw ;
+  z-index: 12;
+  width: 420px;
+  max-width: 95vw;
+}
+@media (max-width: 900px) {
+  #titulo-artesanal-absolute-servicios {
+    position: static;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  #zapato-3d-absolute-servicios {
+    position: static;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  #tarjeta-curso-absolute-servicios {
+    position: static;
+    width: 100%;
+    margin: 0 auto 2rem auto;
+  }
+}
+
+/* --- Estilo para la descripción debajo de los zapatos en lista_servicios.html --- */
+#descripcion-curso-servicios {
+  position: absolute;
+  top: 35vw;
+  left: -15vw;
+  z-index: 11;
+  max-width: 900px;
+}
+.descripcion-curso-texto {
+  color: #fff;
+  font-size: 1.2rem;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 400;
+  text-align: left;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  margin: 0;
+}
+@media (max-width: 900px) {
+  #descripcion-curso-servicios {
+    position: static;
+    max-width: 100%;
+    margin: 2rem auto 1.5rem auto;
+    text-align: center;
+  }
+  .descripcion-curso-texto {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+}
+
+/* --- Estilos para detalles del curso debajo de los elementos principales --- */
+.detalles-curso-servicios {
+  max-width: 650px;
+  margin: 5rem auto 2rem auto;
+  padding: 0 1.5rem;
+  color: #222;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+.detalles-titulo {
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: #444;
+  margin-bottom: 0.2rem;
+  margin-top: 2.5rem;
+}
+.detalles-subtitulo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #222;
+  margin-bottom: 1rem;
+}
+.detalles-parrafo {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+}
+@media (max-width: 900px) {
+  .detalles-curso-servicios {
+    max-width: 98vw;
+    margin: 2.5rem auto 1.5rem auto;
+    padding: 0 0.5rem;
+  }
+  .detalles-subtitulo {
+    font-size: 1.1rem;
+  }
 }

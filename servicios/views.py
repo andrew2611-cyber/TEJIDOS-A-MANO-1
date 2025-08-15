@@ -14,12 +14,12 @@ from .forms import InscripcionCursoForm, ServicioForm
 
 def lista_servicios(request):
     """
-    Muestra la lista de cursos/servicios disponibles al público.
+    Muestra el único curso/servicio disponible al público.
     """
-    servicios = Servicio.objects.filter(disponible=True)
+    curso = Servicio.objects.filter(disponible=True).first()
     context = {
-        'servicios': servicios,
-        'titulo_pagina': 'Cursos Presenciales',
+        'curso': curso,
+        'titulo_pagina': 'Curso Presencial',
     }
     return render(request, 'servicios/lista_servicios.html', context)
 
