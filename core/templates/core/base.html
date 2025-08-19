@@ -90,30 +90,55 @@
         </div>
     </main>
 
-    <footer class="mt-auto py-4 text-center"> {# Añadí py-4 para padding vertical, mt-auto para pegar al final #}
-        <div class="container">
-            <p class="mb-2">© {% now "Y" %} Tejidos a Mano . Todos los derechos reservados.</p>
-            <div class="footer-links mb-3">
-                <a href="{% url 'core:about' %}" class="text-decoration-none mx-2 footer-link-text">Sobre Nosotros</a> |
-                <a href="{% url 'core:contact' %}" class="text-decoration-none mx-2 footer-link-text">Contacto</a>
+    <!-- Footer tipo card moderno -->
+    <footer class="footer-nuevo">
+      <div class="footer-card-externo">
+        <div class="footer-card-interno">
+          <div class="footer-row-principal">
+            <div class="footer-col-logo">
+              <div class="footer-logo-row">
+                <img src="{% static 'img/zapatilla.png' %}" alt="Logo Zapatilla" class="footer-logo-img">
+                <span class="footer-logo-text">ZC</span>
+              </div>
+              <p class="footer-desc-text">Descubre una colección única de zapatillas y accesorios inspirados en las familias agricultoras y la riqueza cultural de nuestras raíces.</p>
+              <div class="footer-social-row">
+                <a href="#" class="footer-social-icon whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="footer-social-icon instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="footer-social-icon facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              </div>
             </div>
-            <div class="social-icons">
-                <a href="https://www.instagram.com/tu_usuario_instagram/" target="_blank" class="social-icon-link instagram mx-2" aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://www.facebook.com/tu_usuario_facebook/" target="_blank" class="social-icon-link facebook mx-2" aria-label="Facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="https://www.tiktok.com/@tu_usuario_tiktok" target="_blank" class="social-icon-link tiktok mx-2" aria-label="TikTok">
-                    <i class="fab fa-tiktok"></i>
-                </a>
-                <a href="http://googleusercontent.com/youtube.com/6" target="_blank" class="social-icon-link youtube mx-2" aria-label="YouTube">
-                    <i class="fab fa-youtube"></i>
-                </a>
+            <div class="footer-col-links">
+              <div class="footer-links-group">
+                <span class="footer-links-title">PRODUCTO</span>
+                <a href="#" class="footer-link">NOVEDADES</a>
+              </div>
+              <div class="footer-links-group">
+                <span class="footer-links-title">RECURSOS</span>
+                <a href="#" class="footer-link">TUTORIALES</a>
+                <a href="#" class="footer-link">SOPORTE</a>
+              </div>
+              <div class="footer-links-group">
+                <span class="footer-links-title">COMPAÑÍA</span>
+                <a href="#" class="footer-link">NOSOTROS</a>
+                <a href="#" class="footer-link">CONTACTO</a>
+              </div>
             </div>
-           
+          </div>
         </div>
+        <hr class="footer-divider">
+        <div class="footer-row-bottom">
+          <div class="footer-copy">
+            2025 Todos los derechos reservados.
+          </div>
+          <div class="footer-bottom-links">
+            <a href="#" class="footer-bottom-link">Políticas de privacidad</a>
+            <a href="#" class="footer-bottom-link">Términos de servicio</a>
+            <a href="#" class="footer-bottom-link">Configuración de Cookies</a>
+          </div>
+        </div>
+      </div>
     </footer>
+    <!-- Fin Footer tipo card moderno -->
 
     {# Bootstrap Bundle with Popper (version 5.3.3) #}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

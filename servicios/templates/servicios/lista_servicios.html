@@ -2,8 +2,9 @@
 {% load static %}
 
 {% block content %}
-<!-- Contenedor para el fondo de servicios -->
-<div id="fondo-servicios-lista"></div>
+<div id="fondo-servicios-home">
+    <img src="{% static 'img/servicios.png' %}" class="fondo-servicios-home fondo-servicios-home-activo" alt="Fondo servicios">
+</div>
 <div class="container my-5 servicios-lista-page position-relative" style="min-height: 80vh;">
     <h1 class="text-center mb-4">{{ titulo_pagina }}</h1>
     <!-- Elementos totalmente independientes -->
@@ -65,6 +66,17 @@
     <p class="detalles-parrafo">
         Recibirás la visita de reconocidos artesanos y diseñadores colombianos, quienes compartirán su experiencia en la creación de piezas únicas que fusionan tradición y modernidad. Además, conocerás las oportunidades laborales y de emprendimiento que ofrece el sector artesanal colombiano, estableciendo tus primeros contactos profesionales.
     </p>
+</div>
+<!-- Imágenes de instructores debajo del bloque de detalles del curso, una al lado de la otra y centrables -->
+<div class="contenedor-instructores-ajustable mt-5 mb-5">
+    <div class="instructor-servicio-img-container instructor-hover-img">
+        <img src="{% static 'img/mujer1.png' %}" alt="Instructor 1" class="instructor-servicio-img instructor-img-oscura">
+        <img src="{% static 'img/mujer.png' %}" alt="Instructor 1 color" class="instructor-servicio-img instructor-img-color">
+    </div>
+    <div class="instructor-servicio-img-container instructor-hover-img">
+        <img src="{% static 'img/hombre1.png' %}" alt="Instructor 2" class="instructor-servicio-img instructor-img-oscura">
+        <img src="{% static 'img/hombre.png' %}" alt="Instructor 2 color" class="instructor-servicio-img instructor-img-color">
+    </div>
 </div>
 {% endblock %}
 
