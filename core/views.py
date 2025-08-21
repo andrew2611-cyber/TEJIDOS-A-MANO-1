@@ -55,11 +55,8 @@ def admin_required(function=None, redirect_field_name='next', login_url='core:lo
 # --- VISTAS PÚBLICAS (ya existentes) ---
 
 def home(request):
-    productos_destacados = Producto.objects.filter(disponible=True).order_by('-creado')[:8]
     categorias = Categoria.objects.all().order_by('nombre')
-
     context = {
-        'productos_destacados': productos_destacados,
         'categorias': categorias,
         'titulo_pagina': 'Inicio - Zapatos y Mochilas Tejidos a Mano',
     }

@@ -6,7 +6,6 @@
     <img src="{% static 'img/fondo.png' %}" class="fondo-carrusel-home activo" alt="Fondo principal">
     <img src="{% static 'img/fondo1.png' %}" class="fondo-carrusel-home" alt="Fondo alternativo">
 </div>
-<!-- Nueva sección de productos destacados -->
 
 <div id="carrusel-zapatos-home">
     <img src="{% static 'img/fondo4.png' %}" class="zapato-carrusel-home zapato-2d activo" alt="Zapato 2D">
@@ -17,7 +16,8 @@
 </div>
 <div id="contenedor-texto-cosidas">
     <h2 id="texto-cosidas" class="texto-cosidas texto-derecha">
-        COSIDAS
+        TEJIDAS
+        
     </h2>
 </div>
 <div id="contenedor-texto-inspiradas">
@@ -63,45 +63,27 @@
     </span>
 </div>
 
-
-<!-- Sección de productos destacados (sin estilos inline ni clases personalizadas) -->
-<div class="productos-destacados-container">
-    <div class="productos-destacados-row">
-        {% for producto in productos_destacados %}
-        <div class="producto-col">
-            <div class="producto-card">
-                {% if producto.imagen_principal %}
-                    <img src="{{ producto.imagen_principal.url }}" class="producto-img" alt="{{ producto.nombre }}">
-                {% else %}
-                  <img src="{% static 'img/placeholder.png' %}" class="producto-img" alt="Imagen no disponible">
-                {% endif %}
-                <div class="producto-card-body">
-                    <h5 class="producto-card-title">{{ producto.nombre }}</h5>
-                    <p class="producto-card-categoria">{{ producto.categoria.nombre }}</p>
-                    <p class="producto-card-precio">${{ producto.precio|floatformat:2 }}</p>
-                    <div class="producto-card-btns">
-                        <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary-custom me-2">Ver Detalle</a>
-                        <form action="{% url 'productos:agregar-carrito-simple' producto.id %}" method="post" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-success">Añadir al Carrito</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <div class="producto-col producto-vacio">
-            <p>No hay productos disponibles en este momento.</p>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-
-
-
 <!-- Contenedor de imagen 3D estática -->
 <div id="contenedor-imagen-3d-estatica">
     <img src="{% static 'img/MOCHILA3D.png' %}" alt="Imagen 3D Estática" class="imagen-3d-estatica">
+</div>
+
+<!-- Tarjetas en blanco debajo del diseño de los zapatos -->
+<div class="categorias-home-container">
+  <div class="row categorias-tarjetas-row">
+    <div class="categoria-tarjeta-col">
+      <div class="categoria-tarjeta"></div>
+    </div>
+    <div class="categoria-tarjeta-col">
+      <div class="categoria-tarjeta"></div>
+    </div>
+    <div class="categoria-tarjeta-col">
+      <div class="categoria-tarjeta"></div>
+    </div>
+    <div class="categoria-tarjeta-col">
+      <div class="categoria-tarjeta"></div>
+    </div>
+  </div>
 </div>
 
 {% block extra_js %}
@@ -109,7 +91,6 @@
 <script src="{% static 'js/almanaque.js' %}"></script>
 {% endblock extra_js %}
 
-  
 {% endblock content %}
 
 
