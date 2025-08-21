@@ -39,11 +39,12 @@ class ProductoForm(forms.ModelForm):
 class CategoriaForm(forms.ModelForm):
     class Meta:
         model = Categoria
-        fields = ['nombre', 'slug', 'descripcion']
+        fields = ['nombre', 'slug', 'descripcion', 'imagen_fondo']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'slug': forms.TextInput(attrs={'class': 'form-control'}),
             'descripcion': forms.Textarea(attrs={'rows': 3, 'cols': 40, 'class': 'form-control'}),
+            'imagen_fondo': forms.Select(attrs={'class': 'form-control'}),
         }
 
     def clean_nombre(self):

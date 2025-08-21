@@ -13,6 +13,28 @@ class Categoria(models.Model):
     slug = models.SlugField(max_length=100, unique=True, help_text="URL amigable (ej: zapatos-mujer)")
     descripcion = models.TextField(blank=True, null=True)
 
+    # Nuevo campo para imagen de fondo de la tarjeta (solo elige entre imágenes existentes)
+    FONDO_CHOICES = [
+        ('fondo.png', 'Fondo 1'),
+        ('fondo1.png', 'Fondo 2'),
+        ('fondo3.png', 'Fondo 3'),
+        ('fondo4.png', 'Fondo 4'),
+        ('mujer.png', 'Mujer'),
+        ('mujer1.png', 'Mujer 2'),
+        ('hombre.png', 'Hombre'),
+        ('hombre1.png', 'Hombre 2'),
+        ('servicios.png', 'Servicios'),
+        ('imagen1defondo.png', 'tarjetas'),
+    ]
+    imagen_fondo = models.CharField(
+        max_length=64,
+        choices=FONDO_CHOICES,
+        default='fondo.png',
+        help_text="Imagen de fondo de la tarjeta (elige una de las imágenes del proyecto)"
+    )
+    imagen_3d = models.ImageField(upload_to='productos_3d/', blank=True, null=True, help_text="Imagen 3D del producto para la categoría")
+    imagen_principal = models.ImageField(upload_to='productos_categoria/', blank=True, null=True, help_text="Imagen principal del producto para mostrar en la tarjeta de la categoría")
+
     class Meta:
         verbose_name_plural = "Categorías"
         ordering = ['nombre']

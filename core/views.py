@@ -833,3 +833,16 @@ def pagina_especial(request):
         'titulo_pagina': 'Página Especial',
     }
     return render(request, 'core/pagina_especial.html', context)
+
+@admin_required(login_url='core:login')
+def eliminar_categoria(request, pk):
+    """
+    Elimina una categoría por su ID y redirige al listado de categorías del dashboard.
+    """
+    categoria = get_object_or_404(Categoria, pk=pk)
+    if request.method == 'POST':
+        categoria.delete()
+        messages.success(request, f'La categoría "{categoria.nombre}" ha sido eliminada correctamente.')
+        return redirect('core:categoria_lista_admin')
+    # Si se accede por GET, mostrar confirmación (opcional, aquí redirigimos directo)
+    return redirect('core:categoria_lista_admin')

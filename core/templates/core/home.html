@@ -71,18 +71,19 @@
 <!-- Tarjetas en blanco debajo del diseño de los zapatos -->
 <div class="categorias-home-container">
   <div class="row categorias-tarjetas-row">
-    <div class="categoria-tarjeta-col">
-      <div class="categoria-tarjeta"></div>
-    </div>
-    <div class="categoria-tarjeta-col">
-      <div class="categoria-tarjeta"></div>
-    </div>
-    <div class="categoria-tarjeta-col">
-      <div class="categoria-tarjeta"></div>
-    </div>
-    <div class="categoria-tarjeta-col">
-      <div class="categoria-tarjeta"></div>
-    </div>
+    {% for categoria in categorias %}
+      <div class="categoria-tarjeta-col">
+        <div class="categoria-tarjeta" style="background: url('{% static 'img/' %}{{ categoria.imagen_fondo }}') center center/cover no-repeat, #fff; position: relative;">
+          {% if categoria.imagen_principal %}
+            <img src="{{ categoria.imagen_principal.url }}" alt="Producto principal" class="categoria-imagen-principal" style="position: absolute; top: 50%; left: 50%; width: 70%; height: 70%; object-fit: contain; z-index: 2; transform: translate(-50%, -50%); pointer-events: none;" />
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <div class="categoria-tarjeta-col">
+        <div class="categoria-tarjeta"></div>
+      </div>
+    {% endfor %}
   </div>
 </div>
 

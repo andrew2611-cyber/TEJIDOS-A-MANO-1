@@ -37,6 +37,7 @@ urlpatterns = [
     # Rutas para Categorías
     path('dashboard/categorias/', views.categoria_lista_admin, name='categoria_lista_admin'),
     path('dashboard/categorias/crear/', views.categoria_crear_admin, name='categoria_crear_admin'),
+    path('dashboard/categorias/<int:pk>/eliminar/', views.eliminar_categoria, name='eliminar_categoria'),
    
 
     # Rutas para Pedidos (SIN pedido_cambiar_estado_admin)

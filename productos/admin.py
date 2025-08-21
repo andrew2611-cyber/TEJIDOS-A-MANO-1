@@ -6,11 +6,12 @@ from .models import Categoria, Producto, ImagenProducto # Importa los modelos qu
 # Registrar el modelo Categoria
 @admin.register(Categoria) # Decorador de Django que simplifica el registro del modelo en el admin. Equivalente a `admin.site.register(Categoria, CategoriaAdmin)`.
 class CategoriaAdmin(admin.ModelAdmin): # Define una clase de opciones para cómo se verá el modelo Categoria en el admin.
-    list_display = ('nombre', 'slug',)
+    list_display = ('nombre', 'slug', 'imagen_fondo')
     # `list_display`: Una tupla de nombres de campos que se mostrarán en la lista de objetos del admin.
     prepopulated_fields = {'slug': ('nombre',)}
     # `prepopulated_fields`: Un diccionario que autocompleta ciertos campos (aquí 'slug')
     # basándose en otros campos (aquí 'nombre') mientras el usuario escribe en el admin. Muy útil para slugs.
+    list_editable = ('imagen_fondo',)
 
 # Inline para añadir múltiples imágenes a un producto desde su formulario
 class ImagenProductoInline(admin.TabularInline): # Define un "inline" para el modelo ImagenProducto. Los inlines permiten editar modelos relacionados en la misma página del modelo principal.
