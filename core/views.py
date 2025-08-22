@@ -435,7 +435,7 @@ def categoria_crear_admin(request):
     Vista para crear una nueva categoría.
     """
     if request.method == 'POST':
-        form = CategoriaForm(request.POST)
+        form = CategoriaForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, "¡Categoría creada exitosamente!")
@@ -458,7 +458,7 @@ def categoria_editar_admin(request, pk):
     """
     categoria = get_object_or_404(Categoria, pk=pk)
     if request.method == 'POST':
-        form = CategoriaForm(request.POST, instance=categoria)
+        form = CategoriaForm(request.POST, request.FILES, instance=categoria)
         if form.is_valid():
             form.save()
             messages.success(request, f"¡Categoría '{categoria.nombre}' actualizada exitosamente!")

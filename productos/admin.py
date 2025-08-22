@@ -21,10 +21,10 @@ class ImagenProductoInline(admin.TabularInline): # Define un "inline" para el mo
 # Registrar el modelo Producto
 @admin.register(Producto)
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'categoria', 'precio', 'disponible', 'creado', 'actualizado')
-    list_filter = ('disponible', 'creado', 'actualizado', 'categoria')
+    list_display = ('nombre', 'categoria', 'precio', 'disponible', 'creado', 'actualizado', 'imagen_fondo')
+    list_filter = ('disponible', 'creado', 'actualizado', 'categoria', 'imagen_fondo')
     # `list_filter`: Permite añadir filtros en la barra lateral del admin para estos campos.
-    list_editable = ('precio', 'disponible')
+    list_editable = ('precio', 'disponible', 'imagen_fondo')
     # `list_editable`: Permite editar directamente estos campos desde la vista de lista de productos, sin tener que entrar a cada detalle.
     prepopulated_fields = {'slug': ('nombre',)}
 

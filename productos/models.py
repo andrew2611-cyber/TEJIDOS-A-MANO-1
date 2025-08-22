@@ -15,16 +15,12 @@ class Categoria(models.Model):
 
     # Nuevo campo para imagen de fondo de la tarjeta (solo elige entre imágenes existentes)
     FONDO_CHOICES = [
-        ('fondo.png', 'Fondo 1'),
-        ('fondo1.png', 'Fondo 2'),
-        ('fondo3.png', 'Fondo 3'),
-        ('fondo4.png', 'Fondo 4'),
-        ('mujer.png', 'Mujer'),
-        ('mujer1.png', 'Mujer 2'),
-        ('hombre.png', 'Hombre'),
-        ('hombre1.png', 'Hombre 2'),
-        ('servicios.png', 'Servicios'),
+        
         ('imagen1defondo.png', 'tarjetas'),
+        ('tarjeta4.png', 'tarjeta4'),
+        ('tarjeta2.png', 'tarjeta2'),
+        ('tarjeta3.png', 'tarjeta3'),
+
     ]
     imagen_fondo = models.CharField(
         max_length=64,
@@ -32,7 +28,6 @@ class Categoria(models.Model):
         default='fondo.png',
         help_text="Imagen de fondo de la tarjeta (elige una de las imágenes del proyecto)"
     )
-    imagen_3d = models.ImageField(upload_to='productos_3d/', blank=True, null=True, help_text="Imagen 3D del producto para la categoría")
     imagen_principal = models.ImageField(upload_to='productos_categoria/', blank=True, null=True, help_text="Imagen principal del producto para mostrar en la tarjeta de la categoría")
 
     class Meta:
@@ -53,6 +48,19 @@ class Producto(models.Model):
     disponible = models.BooleanField(default=True)
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
+
+    FONDO_CHOICES = [
+        ('fondo_zapatos_rosados.png', 'Zapatos Rosados'),
+        ('tarjeta4.png', 'Tarjeta 4'),
+        ('tarjeta2.png', 'Tarjeta 2'),
+        ('tarjeta3.png', 'Tarjeta 3'),
+    ]
+    imagen_fondo = models.CharField(
+        max_length=64,
+        choices=FONDO_CHOICES,
+        default='fondo_zapatos_rosados.png',
+        help_text="Imagen de fondo de la tarjeta del producto (elige una de las imágenes del proyecto)"
+    )
 
     class Meta:
         ordering = ['-creado']

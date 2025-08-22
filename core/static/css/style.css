@@ -1095,6 +1095,7 @@ body.home-page {
 /* Imagen 3D estática en home.html */
 #contenedor-imagen-3d-estatica {
   width: 100%;
+  top: 1vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1802,7 +1803,7 @@ body.home-page {
 /* Nuevos estilos para tarjetas en blanco */
 .categorias-home-container {
   max-width: 1200px;
-  margin: 3rem auto 3rem auto;
+  margin: 63rem auto 3rem auto;
   padding: 0 1rem;
   display: flex;
   justify-content: center;
@@ -1835,6 +1836,53 @@ body.home-page {
 .categoria-tarjeta:hover {
   box-shadow: 0 8px 32px rgba(0,0,0,0.16);
 }
+
+/* Imagen principal de la categoría en la tarjeta (home) */
+.categoria-imagen-principal {
+  display: block;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+  z-index: 2;
+  transform: translate(-50%, -60%);
+  pointer-events: none;
+}
+
+.categoria-nombre {
+  position: absolute;
+  top: 0.7rem;
+  right: 1.1rem;
+  left: auto;
+  bottom: auto;
+  width: auto;
+  text-align: right;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(34,34,34,0.32);
+  padding: 0.18rem 0.9rem 0.18rem 0.7rem;
+  border-radius: 0.7rem;
+  margin: 0;
+  z-index: 4;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+@media (max-width: 900px) {
+  .categoria-nombre {
+    font-size: 0.98rem;
+    top: 0.5rem;
+    right: 0.6rem;
+    left: auto;
+    padding: 0.13rem 0.6rem 0.13rem 0.5rem;
+    text-align: right;
+  }
+}
+
 @media (max-width: 900px) {
   .categorias-tarjetas-row {
     flex-direction: column;
@@ -1847,4 +1895,127 @@ body.home-page {
   .categoria-tarjeta {
     padding: 1rem 0.7rem 1.2rem 0.7rem;
   }
+}
+
+/* --- Botón Comprar en tarjetas de categoría (home) --- */
+.categoria-tarjeta .btn-comprar {
+  background: linear-gradient(90deg, #ff5f8f 0%, #ff3c3c 100%);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.22rem 0.85rem;
+  font-size: 0.89rem;
+  position: absolute;
+  left: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(255, 92, 120, 0.13);
+  text-align: left;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+.categoria-tarjeta .btn-comprar:hover {
+  background: linear-gradient(90deg, #ff3c3c 0%, #ff5f8f 100%);
+  color: #fff;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 18px rgba(255, 92, 120, 0.18);
+}
+@media (max-width: 900px) {
+  .categoria-tarjeta .btn-comprar {
+    left: 0.7rem;
+    right: 0.7rem;
+    width: auto;
+    min-width: 80px;
+    font-size: 0.82rem;
+    padding: 0.16rem 0.55rem;
+  }
+}
+
+/* Tarjetas de productos sin fondo ni borde, solo contenido flotante */
+.card.producto-float {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.card.producto-float .card-img-top {
+    border-radius: 18px;
+    height: 200px;
+    object-fit: cover;
+}
+.card.producto-float .card-body {
+    padding: 0;
+    margin-top: 1.2rem;
+    background: transparent !important;
+}
+.card.producto-float .card-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+.card.producto-float .card-text.text-muted {
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+}
+.card.producto-float .card-text.fw-bold {
+    font-size: 1.1rem;
+    color: #1a7f37;
+    margin-bottom: 1rem;
+}
+.card.producto-float .d-flex.gap-2.mt-2 {
+    margin-top: 0.7rem;
+}
+
+/* Tarjeta de producto flotante con imagen de fondo y producto superpuesto */
+.card.producto-float {
+    overflow: hidden;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 18px;
+    position: relative;
+}
+.img-fondo-producto {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    z-index: 1;
+    border-radius: 18px;
+}
+.card.producto-float .card-img-top.position-relative {
+    width: 70%;
+    height: 140px;
+    object-fit: contain;
+    margin: 30px auto 0 auto;
+    display: block;
+    z-index: 2;
+    background: transparent;
+    position: relative;
+}
+.card.producto-float .card-body {
+    position: relative;
+    z-index: 3;
+    background: transparent;
+    margin-top: 35px;
+    padding-bottom: 0.5rem;
+}
+.card.producto-float .card-title {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+.card.producto-float .card-text.text-muted {
+    font-size: 0.97rem;
+    margin-bottom: 0.25rem;
+}
+.card.producto-float .card-text.fw-bold {
+    font-size: 1.08rem;
+    color: #1a7f37;
+    margin-bottom: 1rem;
+}
+.card.producto-float .d-flex.gap-2.mt-2 {
+    margin-top: 0.7rem;
 }

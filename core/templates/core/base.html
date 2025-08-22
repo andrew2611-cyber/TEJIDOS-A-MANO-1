@@ -48,7 +48,7 @@
                     {% if user.is_authenticated %}
                         <div class="dropdown">
                             <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="navbarUserDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user me-1"></i> Hola, {{ user.username }}!
+                                <i class="fas fa-user me-1"></i>  {{ user.username }}!
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
                                 {% if user.is_staff or user.is_superuser %}

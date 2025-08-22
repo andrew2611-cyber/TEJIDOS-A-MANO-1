@@ -12,12 +12,13 @@ class ProductoForm(forms.ModelForm):
 
     class Meta:
         model = Producto
-        fields = ['nombre', 'descripcion', 'precio', 'imagen_principal', 'disponible', 'categoria']
+        fields = ['nombre', 'descripcion', 'precio', 'imagen_principal', 'imagen_fondo', 'disponible', 'categoria']
         widgets = {
             'categoria': forms.Select(attrs={'class': 'form-control'}),
             'disponible': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'precio': forms.NumberInput(attrs={'class': 'form-control'}),
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'imagen_fondo': forms.Select(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -39,12 +40,13 @@ class ProductoForm(forms.ModelForm):
 class CategoriaForm(forms.ModelForm):
     class Meta:
         model = Categoria
-        fields = ['nombre', 'slug', 'descripcion', 'imagen_fondo']
+        fields = ['nombre', 'slug', 'descripcion', 'imagen_fondo', 'imagen_principal']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'slug': forms.TextInput(attrs={'class': 'form-control'}),
             'descripcion': forms.Textarea(attrs={'rows': 3, 'cols': 40, 'class': 'form-control'}),
             'imagen_fondo': forms.Select(attrs={'class': 'form-control'}),
+            'imagen_principal': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
     def clean_nombre(self):

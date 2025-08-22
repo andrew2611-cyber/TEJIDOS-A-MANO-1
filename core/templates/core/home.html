@@ -64,9 +64,7 @@
 </div>
 
 <!-- Contenedor de imagen 3D estática -->
-<div id="contenedor-imagen-3d-estatica">
-    <img src="{% static 'img/MOCHILA3D.png' %}" alt="Imagen 3D Estática" class="imagen-3d-estatica">
-</div>
+
 
 <!-- Tarjetas en blanco debajo del diseño de los zapatos -->
 <div class="categorias-home-container">
@@ -75,8 +73,10 @@
       <div class="categoria-tarjeta-col">
         <div class="categoria-tarjeta" style="background: url('{% static 'img/' %}{{ categoria.imagen_fondo }}') center center/cover no-repeat, #fff; position: relative;">
           {% if categoria.imagen_principal %}
-            <img src="{{ categoria.imagen_principal.url }}" alt="Producto principal" class="categoria-imagen-principal" style="position: absolute; top: 50%; left: 50%; width: 70%; height: 70%; object-fit: contain; z-index: 2; transform: translate(-50%, -50%); pointer-events: none;" />
+            <img src="{{ categoria.imagen_principal.url }}" alt="Producto principal" class="categoria-imagen-principal" />
           {% endif %}
+          <div class="categoria-nombre">{{ categoria.nombre }}</div>
+          <a href="{% url 'productos:lista_productos' %}" class="btn btn-comprar">Comprar</a>
         </div>
       </div>
     {% empty %}
@@ -86,6 +86,12 @@
     {% endfor %}
   </div>
 </div>
+
+<div id="contenedor-imagen-3d-estatica">
+    <img src="{% static 'img/MOCHILA3D.png' %}" alt="Imagen 3D Estática" class="imagen-3d-estatica">
+</div>
+
+
 
 {% block extra_js %}
 <script src="{% static 'js/cuadro-animado.js' %}"></script>
