@@ -40,11 +40,26 @@
                         <div class="contenedor-imagen-producto">
                             <img src="{% static 'img/' %}{{ producto.imagen_fondo }}" class="img-fondo-producto" alt="Fondo producto">
                             {% if producto.imagen_principal %}
-                            <img src="{{ producto.imagen_principal.url }}" class="img-principal-producto" alt="{{ producto.nombre }}">
+                            <img src="{{ producto.imagen_principal.url }}" class="img-principal-producto" alt="{{ producto.nombre }}" data-bs-toggle="modal" data-bs-target="#modalImagen{{ producto.id }}" style="cursor: zoom-in;">
                             {% else %}
                             <img src="/static/img/placeholder.png" class="img-principal-producto" alt="Imagen no disponible">
                             {% endif %}
                         </div>
+                        <!-- Modal para ampliar imagen principal -->
+                        {% if producto.imagen_principal %}
+                        <div class="modal fade" id="modalImagen{{ producto.id }}" tabindex="-1" aria-labelledby="modalImagenLabel{{ producto.id }}" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header border-0 pb-0">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                              </div>
+                              <div class="modal-body text-center">
+                                <img src="{{ producto.imagen_principal.url }}" alt="{{ producto.nombre }}" class="img-fluid rounded">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {% endif %}
                         <div class="card-body">
                             <h5 class="card-title mb-1">{{ producto.nombre }}</h5>
                             <p class="card-text text-muted mb-1">{{ producto.categoria.nombre }}</p>
