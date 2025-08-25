@@ -56,9 +56,14 @@ def admin_required(function=None, redirect_field_name='next', login_url='core:lo
 
 def home(request):
     categorias = Categoria.objects.all().order_by('nombre')
+    favoritos_ids = request.session.get('favoritos', [])
+    productos_favoritos = []
+    if favoritos_ids:
+        productos_favoritos = list(Producto.objects.filter(id__in=favoritos_ids)[:3])
     context = {
         'categorias': categorias,
         'titulo_pagina': 'Inicio - Zapatos y Mochilas Tejidos a Mano',
+        'productos_favoritos': productos_favoritos,
     }
     return render(request, 'core/home.html', context)
 

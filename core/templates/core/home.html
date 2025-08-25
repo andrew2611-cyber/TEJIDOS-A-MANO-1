@@ -43,7 +43,7 @@
 <!-- Contenedores de tallas -->
 <div id="contenedor-tallas-info">
     <div class="tallas-disponible">DISPONIBLE EN VARIAS TALLAS</div>
-    <div class="tallas-lista">28&nbsp;&nbsp;30&nbsp;&nbsp;32&nbsp;&nbsp;34&nbsp;&nbsp;36&nbsp;&nbsp;38</div>
+    <div class="tallas-lista">22&nbsp;&nbsp;24&nbsp;&nbsp;26&nbsp;&nbsp;28&nbsp;&nbsp;36&nbsp;&nbsp;44</div>
 </div>
 <!-- Contenedor del almanaque simple -->
 <div id="almanaque-contenedor">
@@ -91,7 +91,35 @@
     <img src="{% static 'img/MOCHILA3D.png' %}" alt="Imagen 3D Estática" class="imagen-3d-estatica">
 </div>
 
-
+{# Bloque de productos favoritos del cliente (máximo 3, carrusel simple) #}
+{% with favoritos=request.session.favoritos|default_if_none:"" %}
+{% if favoritos and productos_favoritos %}
+<div class="favoritos-home-container mt-4">
+    <h4 class="mb-3">Tus Favoritos</h4>
+    <div class="row row-cols-1 row-cols-md-3 g-3 justify-content-center" id="favoritos-home-row">
+        {% for producto in productos_favoritos %}
+        <div class="col">
+            <div class="card h-100 producto-float position-relative">
+                <div class="contenedor-imagen-producto">
+                    <img src="{% static 'img/' %}{{ producto.imagen_fondo }}" class="img-fondo-producto" alt="Fondo producto">
+                    {% if producto.imagen_principal %}
+                    <img src="{{ producto.imagen_principal.url }}" class="img-principal-producto" alt="{{ producto.nombre }}">
+                    {% else %}
+                    <img src="/static/img/placeholder.png" class="img-principal-producto" alt="Imagen no disponible">
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title mb-1">{{ producto.nombre }}</h5>
+<p class="card-text text-muted mb-3">{{ producto.categoria.nombre }}</p>
+<a href="{% url 'productos:lista_productos' %}" class="btn btn-sm btn-comprar">Comprar</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endwith %}
 
 {% block extra_js %}
 <script src="{% static 'js/cuadro-animado.js' %}"></script>
