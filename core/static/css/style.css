@@ -2019,3 +2019,117 @@ body.home-page {
 .card.producto-float .d-flex.gap-2.mt-2 {
     margin-top: 0.7rem;
 }
+
+/* Iconos superpuestos en la tarjeta de producto */
+.iconos-producto-superior {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 10;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+.icono-carrito, .icono-estrella {
+    color: #fff;
+    background: rgba(34,34,34,0.7);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+}
+.icono-carrito:hover {
+    background: #198754;
+    color: #fff;
+}
+.icono-estrella {
+    color: #ffd700;
+    background: rgba(34,34,34,0.7);
+}
+
+/* --- Tarjeta de producto con imagen de fondo y principal superpuesta --- */
+.contenedor-imagen-producto {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 18px;
+}
+.img-fondo-producto {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  z-index: 1;
+}
+.img-principal-producto {
+  position: relative;
+  z-index: 2;
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+  border-radius: 12px;
+  background: transparent;
+  box-shadow: none;
+}
+.iconos-producto-superior {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.icono-carrito, .icono-estrella {
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  padding: 6px 7px;
+  font-size: 1.1em;
+  color: #8B4513;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+.icono-carrito:hover, .icono-estrella:hover {
+  background: #f5e6da;
+  color: #A0522D;
+}
+
+/* Ajuste para la tarjeta de producto */
+.card.producto-float {
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+  border: none;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .contenedor-imagen-producto {
+    height: 160px;
+  }
+  .img-principal-producto {
+    max-width: 90%;
+    max-height: 90%;
+  }
+  .iconos-producto-superior {
+    left: 8px;
+    top: 8px;
+    gap: 4px;
+  }
+}

@@ -147,5 +147,6 @@
     {% if request.resolver_match.url_name == 'home' %}
         <script src="{% static 'js/carrusel-fondo-home.js' %}"></script>
     {% endif %}
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

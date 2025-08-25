@@ -604,10 +604,11 @@ def cart_view(request):
     cart = request.session.get('cart', {})
     productos_en_carrito = []
     total_carrito = Decimal('0.00')
+    ids_a_eliminar = []
 
     for product_id, item_data in cart.items():
         try:
-            product = get_object_or_404(Producto, id=product_id)
+            product = Producto.objects.get(id=product_id)
             cantidad = item_data.get('cantidad', 1)
             precio_unitario = product.precio
             subtotal = precio_unitario * cantidad
@@ -619,9 +620,15 @@ def cart_view(request):
             })
             total_carrito += subtotal
         except Producto.DoesNotExist:
-            del cart[product_id]
-            request.session.modified = True
-            messages.warning(request, f"Un producto en tu carrito ya no está disponible y fue eliminado.")
+            ids_a_eliminar.append(product_id)
+
+    # Elimina productos inválidos del carrito y actualiza la sesión solo una vez
+    if ids_a_eliminar:
+        for pid in ids_a_eliminar:
+            del cart[pid]
+        request.session['cart'] = cart
+        request.session.modified = True
+        messages.warning(request, "Uno o más productos en tu carrito ya no están disponibles y fueron eliminados.")
 
     context = {
         'productos_en_carrito': productos_en_carrito,

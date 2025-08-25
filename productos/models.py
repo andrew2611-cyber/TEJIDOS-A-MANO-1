@@ -17,7 +17,7 @@ class Categoria(models.Model):
     FONDO_CHOICES = [
         
         ('imagen1defondo.png', 'tarjetas'),
-        ('tarjeta4.png', 'tarjeta4'),
+        ('tarjeta1.png', 'tarjeta1'),
         ('tarjeta2.png', 'tarjeta2'),
         ('tarjeta3.png', 'tarjeta3'),
 
@@ -52,8 +52,10 @@ class Producto(models.Model):
     FONDO_CHOICES = [
         ('fondo_zapatos_rosados.png', 'Zapatos Rosados'),
         ('tarjeta4.png', 'Tarjeta 4'),
-        ('tarjeta2.png', 'Tarjeta 2'),
-        ('tarjeta3.png', 'Tarjeta 3'),
+        ('tarjeta5.png', 'Tarjeta 5'),
+        ('tarjeta7.png', 'Tarjeta 7'),
+        ('tarjeta8.png', 'Tarjeta 8'),
+
     ]
     imagen_fondo = models.CharField(
         max_length=64,

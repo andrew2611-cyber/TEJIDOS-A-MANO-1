@@ -29,19 +29,29 @@
                 {% for producto in productos %}
                 <div class="col">
                     <div class="card h-100 producto-float position-relative">
-                        <img src="{% static 'img/' %}{{ producto.imagen_fondo }}" class="img-fondo-producto" alt="Fondo producto">
-                        {% if producto.imagen_principal %}
-                        <img src="{{ producto.imagen_principal.url }}" class="card-img-top position-relative" alt="{{ producto.nombre }}">
-                        {% else %}
-                        <img src="/static/img/placeholder.png" class="card-img-top position-relative" alt="Imagen no disponible">
-                        {% endif %}
+                        <div class="iconos-producto-superior">
+                            <a href="{% url 'productos:agregar-carrito-simple' producto.id %}" class="icono-carrito" title="Añadir al carrito">
+                                <i class="fa fa-shopping-cart"></i>
+                            </a>
+                            <span class="icono-estrella" title="Favorito">
+                                <i class="fa fa-star"></i>
+                            </span>
+                        </div>
+                        <div class="contenedor-imagen-producto">
+                            <img src="{% static 'img/' %}{{ producto.imagen_fondo }}" class="img-fondo-producto" alt="Fondo producto">
+                            {% if producto.imagen_principal %}
+                            <img src="{{ producto.imagen_principal.url }}" class="img-principal-producto" alt="{{ producto.nombre }}">
+                            {% else %}
+                            <img src="/static/img/placeholder.png" class="img-principal-producto" alt="Imagen no disponible">
+                            {% endif %}
+                        </div>
                         <div class="card-body">
                             <h5 class="card-title mb-1">{{ producto.nombre }}</h5>
                             <p class="card-text text-muted mb-1">{{ producto.categoria.nombre }}</p>
                             <p class="card-text fw-bold mb-3">${{ producto.precio|floatformat:2 }}</p>
                             <div class="d-flex gap-2 mt-2">
-                                <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary-custom me-2" style="min-width: 100px;">Ver Detalle</a>
-                                <a href="{% url 'productos:agregar-carrito-simple' producto.id %}" class="btn btn-sm btn-success" style="min-width: 120px;">Añadir al Carrito</a>
+                                <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary-custom me-2">Ver Detalle</a>
+                                <a href="{% url 'productos:agregar-carrito-simple' producto.id %}" class="btn btn-sm btn-success">Añadir al Carrito</a>
                             </div>
                         </div>
                     </div>
