@@ -253,7 +253,7 @@ def checkout_view(request):
                 plain_message = strip_tags(html_message)
 
                 email = EmailMessage(
-                    email_subject,
+                    email_subject, # type: ignore
                     plain_message,
                     settings.DEFAULT_FROM_EMAIL,
                     [pedido.email],
@@ -853,3 +853,25 @@ def eliminar_categoria(request, pk):
         return redirect('core:categoria_lista_admin')
     # Si se accede por GET, mostrar confirmación (opcional, aquí redirigimos directo)
     return redirect('core:categoria_lista_admin')
+
+@login_required
+def favoritos_view(request):
+    favoritos_ids = request.session.get('favoritos', [])
+    productos = Producto.objects.filter(id__in=favoritos_ids)
+    return render(request, 'core/favoritos.html', {'productos': productos})
+
+@login_required
+def agregar_favorito(request, producto_id):
+    favoritos = request.session.get('favoritos', [])
+    if producto_id not in favoritos:
+        favoritos.append(producto_id)
+        request.session['favoritos'] = favoritos
+    return JsonResponse({'success': True})
+
+@login_required
+def quitar_favorito(request, producto_id):
+    favoritos = request.session.get('favoritos', [])
+    if producto_id in favoritos:
+        favoritos.remove(producto_id)
+        request.session['favoritos'] = favoritos
+    return JsonResponse({'success': True})

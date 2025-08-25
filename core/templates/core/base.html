@@ -44,7 +44,9 @@
                     <a href="{% url 'core:cart_view' %}" class="me-3">
                         <i class="fas fa-shopping-cart fs-3"></i>
                     </a>
-                    <span class="me-3"><i class="fas fa-star fs-3" style="color: #FFD700;"></i></span>
+                    <a href="{% url 'core:favoritos' %}" class="me-3" title="Ver favoritos">
+                        <i class="fas fa-star fs-3" style="color: #FFD700;"></i>
+                    </a>
                     {% if user.is_authenticated %}
                         <div class="dropdown">
                             <button class="btn btn-link dropdown-toggle text-dark fw-bold" type="button" id="navbarUserDropdown" data-bs-toggle="dropdown" aria-expanded="false">

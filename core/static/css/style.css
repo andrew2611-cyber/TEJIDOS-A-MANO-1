@@ -2052,6 +2052,16 @@ body.home-page {
     color: #ffd700;
     background: rgba(34,34,34,0.7);
 }
+.icono-estrella.favorito-activo i {
+  color: #FFD700;
+}
+.icono-estrella i {
+  color: #bbb;
+  transition: color 0.2s;
+}
+.icono-estrella {
+  cursor: pointer;
+}
 
 /* --- Tarjeta de producto con imagen de fondo y principal superpuesta --- */
 .contenedor-imagen-producto {

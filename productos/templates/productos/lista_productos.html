@@ -33,9 +33,11 @@
                             <a href="{% url 'productos:agregar-carrito-simple' producto.id %}" class="icono-carrito" title="Añadir al carrito">
                                 <i class="fa fa-shopping-cart"></i>
                             </a>
-                            <span class="icono-estrella" title="Favorito">
+                            {% with favoritos=request.session.favoritos|default_if_none:"" %}
+                            <span class="icono-estrella{% if producto.id in favoritos %} favorito-activo{% endif %}" title="Favorito" data-producto-id="{{ producto.id }}">
                                 <i class="fa fa-star"></i>
                             </span>
+                            {% endwith %}
                         </div>
                         <div class="contenedor-imagen-producto">
                             <img src="{% static 'img/' %}{{ producto.imagen_fondo }}" class="img-fondo-producto" alt="Fondo producto">
@@ -80,3 +82,7 @@
     </div>
 </div>
 {% endblock content %}
+
+{% block extra_js %}
+<script src="{% static 'js/favoritos.js' %}"></script>
+{% endblock extra_js %}

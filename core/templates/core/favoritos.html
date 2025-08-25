@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Mis Favoritos</h1>
+    {% if productos %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for producto in productos %}
+        <div class="col">
+            <div class="card h-100 producto-float position-relative">
+                <div class="contenedor-imagen-producto">
+                    <img src="{% static 'img/' %}{{ producto.imagen_fondo }}" class="img-fondo-producto" alt="Fondo producto">
+                    {% if producto.imagen_principal %}
+                    <img src="{{ producto.imagen_principal.url }}" class="img-principal-producto" alt="{{ producto.nombre }}">
+                    {% else %}
+                    <img src="/static/img/placeholder.png" class="img-principal-producto" alt="Imagen no disponible">
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title mb-1">{{ producto.nombre }}</h5>
+                    <p class="card-text text-muted mb-1">{{ producto.categoria.nombre }}</p>
+                    <p class="card-text fw-bold mb-3">${{ producto.precio|floatformat:2 }}</p>
+                    <div class="d-flex gap-2 mt-2">
+                        <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary-custom me-2">Ver Detalle</a>
+                        {% with favoritos=request.session.favoritos|default_if_none:"" %}
+                        <span class="icono-estrella{% if producto.id in favoritos %} favorito-activo{% endif %}" title="Favorito" data-producto-id="{{ producto.id }}">
+                            <i class="fa fa-star"></i>
+                        </span>
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="alert alert-info">No tienes productos favoritos aún.</p>
+    {% endif %}
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script src="{% static 'js/favoritos.js' %}"></script>
+{% endblock extra_js %}
