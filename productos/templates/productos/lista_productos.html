@@ -65,7 +65,16 @@
                         <div class="card-body">
                             <h5 class="card-title mb-1">{{ producto.nombre }}</h5>
                             <p class="card-text text-muted mb-1">{{ producto.categoria.nombre }}</p>
-                            <p class="card-text fw-bold mb-3">${{ producto.precio|floatformat:2 }}</p>
+                            {% if producto.colores_list %}
+                                <div style="font-size:1.01rem; color:#222; margin-bottom:8px;">
+                                    {% for color in producto.colores_list %}
+                                        <span style="border-right:1px solid #aaa; padding-right:12px; margin-right:12px;">{{ color }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if producto.tallas %}
+                                <div style="font-size:0.99rem; color:#222; margin-bottom:8px;">{{ producto.tallas }}</div>
+                            {% endif %}
                             <div class="d-flex gap-2 mt-2">
                                 <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary-custom me-2">Ver Detalle</a>
                                 <a href="{% url 'productos:agregar-carrito-simple' producto.id %}" class="btn btn-sm btn-success">Añadir al Carrito</a>

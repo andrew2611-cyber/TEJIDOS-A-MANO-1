@@ -9,10 +9,12 @@ from .models import Producto, Categoria, ImagenProducto # Asegúrate de que Imag
 
 class ProductoForm(forms.ModelForm):
     descripcion = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}))
+    tallas = forms.CharField(required=False, help_text="Ejemplo: 36,37,38,39", widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 36,37,38,39'}))
+    colores = forms.CharField(required=False, help_text="Ejemplo: Rojo, Azul, Verde", widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: Rojo, Azul, Verde'}))
 
     class Meta:
         model = Producto
-        fields = ['nombre', 'descripcion', 'precio', 'imagen_principal', 'imagen_fondo', 'disponible', 'categoria']
+        fields = ['nombre', 'descripcion', 'precio', 'imagen_principal', 'imagen_fondo', 'disponible', 'categoria', 'tallas', 'colores']
         widgets = {
             'categoria': forms.Select(attrs={'class': 'form-control'}),
             'disponible': forms.CheckboxInput(attrs={'class': 'form-check-input'}),

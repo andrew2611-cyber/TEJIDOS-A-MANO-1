@@ -66,6 +66,9 @@ class Producto(models.Model):
         default='fondo_zapatos_rosados.png',
         help_text="Imagen de fondo de la tarjeta del producto (elige una de las imágenes del proyecto)"
     )
+    # NUEVO: campos para tallas y colores
+    tallas = models.CharField(max_length=120, blank=True, help_text="Ejemplo: 36,37,38,39")
+    colores = models.CharField(max_length=120, blank=True, help_text="Ejemplo: Rojo, Azul, Verde")
 
     class Meta:
         ordering = ['-creado']
@@ -92,6 +95,18 @@ class Producto(models.Model):
     def get_absolute_url(self):
         return reverse('productos:detalle_producto', args=[self.id, self.slug])
 
+
+class StockProducto(models.Model):
+    producto = models.ForeignKey(Producto, related_name='stock_detalle', on_delete=models.CASCADE)
+    talla = models.CharField(max_length=32)
+    color = models.CharField(max_length=32)
+    cantidad = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ('producto', 'talla', 'color')
+
+    def __str__(self):
+        return f"{self.producto.nombre} - Talla: {self.talla} - Color: {self.color} ({self.cantidad})"
 
 class ImagenProducto(models.Model):
     producto = models.ForeignKey(Producto, related_name='imagenes', on_delete=models.CASCADE)

@@ -24,7 +24,14 @@ def lista_productos(request, categoria_slug=None):
 
     categorias = Categoria.objects.all() 
 
-    # ¡CORRECCIÓN! El nombre de la plantilla debe ser 'productos/lista_productos.html'
+    # Procesar colores para cada producto
+    for producto in productos:
+        if producto.colores:
+            import re
+            producto.colores_list = [c.strip() for c in re.split(r',|;|\|', producto.colores) if c.strip()]
+        else:
+            producto.colores_list = []
+
     return render(request, 'productos/lista_productos.html', {
         'productos': productos,
         'categorias': categorias,

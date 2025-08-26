@@ -220,11 +220,18 @@ def checkout_view(request):
             cantidad = item_data.get('cantidad', 1)
             precio_unitario = product.precio
             subtotal = precio_unitario * cantidad
+            # Procesar colores como lista
+            colores_list = []
+            if hasattr(product, 'colores') and product.colores:
+                # Admite coma, punto y coma o barra vertical como separador
+                import re
+                colores_list = [c.strip() for c in re.split(r',|;|\|', product.colores) if c.strip()]
             productos_en_carrito.append({
                 'product': product,
                 'cantidad': cantidad,
                 'precio_unitario': precio_unitario,
-                'subtotal': subtotal
+                'subtotal': subtotal,
+                'colores_list': colores_list
             })
             total_carrito += subtotal
         except Producto.DoesNotExist:
@@ -625,11 +632,18 @@ def cart_view(request):
             cantidad = item_data.get('cantidad', 1)
             precio_unitario = product.precio
             subtotal = precio_unitario * cantidad
+            # Procesar colores como lista
+            colores_list = []
+            if hasattr(product, 'colores') and product.colores:
+                # Admite coma, punto y coma o barra vertical como separador
+                import re
+                colores_list = [c.strip() for c in re.split(r',|;|\|', product.colores) if c.strip()]
             productos_en_carrito.append({
                 'product': product,
                 'cantidad': cantidad,
                 'precio_unitario': precio_unitario,
-                'subtotal': subtotal
+                'subtotal': subtotal,
+                'colores_list': colores_list
             })
             total_carrito += subtotal
         except Producto.DoesNotExist:
@@ -846,7 +860,7 @@ def search_results(request):
         )
         # Buscar por nombre de categoría si no hay resultados directos
         if not resultados.exists():
-            categoria = Categoria.objects.filter(nombre__icontains=query).first()
+            categoria = Categoria.objects.filter(nombre__icontains(query)).first()
             if categoria:
                 resultados = Producto.objects.filter(categoria=categoria)
     context = {
