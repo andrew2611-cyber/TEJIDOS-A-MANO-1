@@ -31,6 +31,7 @@ from servicios.models import Servicio, InscripcionCurso # Importamos los modelos
 from servicios.forms import ServicioForm as CursoServicioForm, InscripcionCursoForm # Importamos los formularios de servicios
 # Renombramos ServicioForm a CursoServicioForm para evitar conflicto con ProductoForm si existiera un ServicioForm en productos
 
+from django.db.models import Q
 
 # --- FUNCIÓNES DE AYUDA ---
 
@@ -60,6 +61,13 @@ def home(request):
     productos_favoritos = []
     if favoritos_ids:
         productos_favoritos = list(Producto.objects.filter(id__in=favoritos_ids)[:3])
+    else:
+        # Mostrar los 3 productos más favoritos globalmente si no hay favoritos en sesión
+        from django.db.models import Count
+        productos_favoritos = list(
+            Producto.objects.annotate(num_favoritos=Count('id', filter=None))
+            .order_by('-num_favoritos', '-creado')[:3]
+        )
     context = {
         'categorias': categorias,
         'titulo_pagina': 'Inicio - Zapatos y Mochilas Tejidos a Mano',
@@ -827,9 +835,20 @@ def inscripciones_curso_admin(request, pk):
 
 
 def search_results(request):
-    query = request.GET.get('q', '')
-    from productos.models import Producto
-    resultados = Producto.objects.filter(nombre__icontains=query) if query else Producto.objects.none()
+    query = request.GET.get('q', '').strip()
+    from productos.models import Producto, Categoria
+    resultados = Producto.objects.none()
+    if query:
+        # Buscar productos por nombre o descripción
+        resultados = Producto.objects.filter(
+            Q(nombre__icontains=query) |
+            Q(descripcion__icontains=query)
+        )
+        # Buscar por nombre de categoría si no hay resultados directos
+        if not resultados.exists():
+            categoria = Categoria.objects.filter(nombre__icontains=query).first()
+            if categoria:
+                resultados = Producto.objects.filter(categoria=categoria)
     context = {
         'query': query,
         'resultados': resultados,

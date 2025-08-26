@@ -7,6 +7,9 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify # Importa slugify
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
@@ -100,3 +103,16 @@ class ImagenProducto(models.Model):
 
     def __str__(self):
         return f"Imagen de {self.producto.nombre}"
+
+class Favorito(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favoritos')
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='favoritos')
+    creado = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('usuario', 'producto')
+        verbose_name = 'Favorito'
+        verbose_name_plural = 'Favoritos'
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.producto.nombre}"

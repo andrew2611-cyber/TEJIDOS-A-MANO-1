@@ -573,6 +573,29 @@ a:hover {
 /* QUÉ HACE: Estiliza los mensajes de error de Bootstrap, haciéndolos un poco más compactos
               y con bordes redondeados. */
 
+/* --- ALERTAS/MENSAJES DJANGO --- */
+.alert {
+  z-index: 2000;
+  position: relative;
+  margin-top: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 18px 0 rgba(0,0,0,0.08);
+  border-radius: 18px;
+  font-size: 1.13rem;
+  font-weight: 500;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 600px) {
+  .alert {
+    max-width: 98vw;
+    font-size: 1rem;
+    padding: 12px 10px;
+  }
+}
+/* --- FIN ALERTAS/MENSAJES DJANGO --- */
+
 /* Aplica al `<a>` dentro del `<p class="mt-3 text-center">`
    DÓNDE ESTÁ EN HTML: `login.html`, `register.html`. */
 p.mt-3.text-center a {

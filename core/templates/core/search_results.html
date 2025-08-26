@@ -7,22 +7,25 @@
         <p>Buscaste: <strong>{{ query }}</strong></p>
     {% endif %}
     {% if resultados %}
-        <div class="row">
-            {% for item in resultados %}
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100">
-                        {% if item.imagen_principal %}
-                            <img src="{{ item.imagen_principal.url }}" class="card-img-top" alt="{{ item.nombre }}">
+        <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+            {% for producto in resultados %}
+            <div class="col">
+                <div class="card h-100 producto-float position-relative">
+                    <div class="contenedor-imagen-producto">
+                        <img src="{% static 'img/' %}{{ producto.imagen_fondo|default:'fondo.png' }}" class="img-fondo-producto" alt="Fondo producto">
+                        {% if producto.imagen_principal %}
+                        <img src="{{ producto.imagen_principal.url }}" class="img-principal-producto" alt="{{ producto.nombre }}">
                         {% else %}
-                            <img src="{% static 'img/placeholder.png' %}" class="card-img-top" alt="Sin imagen">
+                        <img src="{% static 'img/placeholder.png' %}" class="img-principal-producto" alt="Imagen no disponible">
                         {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item.nombre }}</h5>
-                            <p class="card-text">{{ item.descripcion|default_if_none:""|truncatewords:20 }}</p>
-                            <a href="{{ item.get_absolute_url }}" class="btn btn-primary">Ver más</a>
-                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title mb-1">{{ producto.nombre }}</h5>
+                        <p class="card-text text-muted mb-3">{{ producto.categoria.nombre }}</p>
+                        <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary">Ver más</a>
                     </div>
                 </div>
+            </div>
             {% endfor %}
         </div>
     {% else %}
