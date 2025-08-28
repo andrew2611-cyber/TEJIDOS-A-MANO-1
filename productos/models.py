@@ -131,3 +131,25 @@ class Favorito(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} - {self.producto.nombre}"
+
+class Entrada(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    talla = models.CharField(max_length=32, blank=True, null=True)
+    color = models.CharField(max_length=32, blank=True, null=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+    motivo = models.CharField(max_length=255, blank=True, null=True)
+    def __str__(self):
+        return f"Entrada: {self.producto} x{self.cantidad} (${self.precio}) Talla: {self.talla} Color: {self.color} Motivo: {self.motivo}"
+
+class Salida(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    talla = models.CharField(max_length=32, blank=True, null=True)
+    color = models.CharField(max_length=32, blank=True, null=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+    motivo = models.CharField(max_length=255, blank=True, null=True)
+    def __str__(self):
+        return f"Salida: {self.producto} x{self.cantidad} (${self.precio}) Talla: {self.talla} Color: {self.color} Motivo: {self.motivo}"

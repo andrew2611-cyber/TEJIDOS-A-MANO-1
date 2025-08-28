@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 
 # Importaciones correctas y consolidadas
-from productos.models import Producto, Categoria
+from productos.models import Producto, Categoria, Entrada, Salida
 from .models import Pedido, ItemPedido
 from .forms import PedidoAnonimoForm
 from .forms import CustomUserCreationForm, CustomUserChangeForm
@@ -32,6 +32,11 @@ from servicios.forms import ServicioForm as CursoServicioForm, InscripcionCursoF
 # Renombramos ServicioForm a CursoServicioForm para evitar conflicto con ProductoForm si existiera un ServicioForm en productos
 
 from django.db.models import Q
+
+# --- VISTA ADMINISTRADOR: ENTRADAS Y SALIDAS ---
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 # --- FUNCIÓNES DE AYUDA ---
 
@@ -259,6 +264,16 @@ def checkout_view(request):
                     producto=item['product'],
                     precio=item['precio_unitario'],
                     cantidad=item['cantidad']
+                )
+                # Registrar salida automática con motivo "Compra"
+                from productos.models import Salida
+                Salida.objects.create(
+                    producto=item['product'],
+                    cantidad=item['cantidad'],
+                    precio=item['precio_unitario'],
+                    talla=getattr(item['product'], 'tallas', None),
+                    color=getattr(item['product'], 'colores', None),
+                    motivo='Compra'
                 )
 
             del request.session['cart']
@@ -561,6 +576,26 @@ def pedido_detalle_admin(request, pk):
     }
     return render(request, 'core/dashboard_pedido_detalle.html', context)
 
+@admin_required(login_url='core:login')
+def pedido_pdf(request, pk):
+    """
+    Genera y descarga el PDF de un pedido específico (solo admin).
+    """
+    pedido = get_object_or_404(Pedido, pk=pk)
+    items_pedido = pedido.items.all()
+    template = get_template('core/reporte_pedido_pdf.html')
+    context = {
+        'pedido': pedido,
+        'items_pedido': items_pedido,
+    }
+    html = template.render(context)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="pedido_{pedido.id}.pdf"'
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse('Error al generar el PDF', status=500)
+    return response
+
 
 @admin_required(login_url='core:login')
 def usuario_lista_admin(request):
@@ -856,7 +891,7 @@ def search_results(request):
         # Buscar productos por nombre o descripción
         resultados = Producto.objects.filter(
             Q(nombre__icontains=query) |
-            Q(descripcion__icontains=query)
+            Q(descripcion__icontains(query))
         )
         # Buscar por nombre de categoría si no hay resultados directos
         if not resultados.exists():
@@ -913,3 +948,116 @@ def quitar_favorito(request, producto_id):
         favoritos.remove(producto_id)
         request.session['favoritos'] = favoritos
     return JsonResponse({'success': True})
+
+@admin_required(login_url='core:login')
+def entradas_salidas_admin(request):
+    """
+    Muestra las tablas de Entradas y Salidas y el formulario de entrada (solo admin).
+    """
+    if request.method == 'POST':
+        producto_id = request.POST.get('producto')
+        cantidad = request.POST.get('cantidad')
+        precio = request.POST.get('precio')
+        talla = request.POST.get('talla')
+        color = request.POST.get('color')
+        motivo = request.POST.get('motivo')
+        if producto_id and cantidad and precio and motivo:
+            producto = Producto.objects.get(id=producto_id)
+            Entrada.objects.create(
+                producto=producto,
+                cantidad=cantidad,
+                precio=precio,
+                talla=talla,
+                color=color,
+                motivo=motivo
+            )
+            messages.success(request, 'Entrada registrada correctamente.')
+            return redirect('core:entradas_salidas_admin')
+        else:
+            messages.error(request, 'Todos los campos obligatorios deben estar completos.')
+    productos = Producto.objects.all().order_by('nombre')
+    entradas = Entrada.objects.select_related('producto').order_by('-fecha')
+    salidas = Salida.objects.select_related('producto').order_by('-fecha')
+    context = {
+        'productos': productos,
+        'entradas': entradas,
+        'salidas': salidas,
+        'titulo_pagina': 'Entradas y Salidas',
+    }
+    return render(request, 'core/dashboard_entradas_salidas.html', context)
+
+@admin_required(login_url='core:login')
+def entradas_salidas_pdf(request):
+    """
+    Genera y descarga el PDF de Entradas y Salidas (solo admin).
+    """
+    entradas = Entrada.objects.select_related('producto').order_by('-fecha')
+    salidas = Salida.objects.select_related('producto').order_by('-fecha')
+    template = get_template('core/reporte_entradas_salidas_pdf.html')
+    context = {
+        'entradas': entradas,
+        'salidas': salidas,
+    }
+    html = template.render(context)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reporte_entradas_salidas.pdf"'
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse('Error al generar el PDF', status=500)
+    return response
+
+@admin_required(login_url='core:login')
+def salida_editar_admin(request, pk):
+    """
+    Permite al admin editar el motivo de una salida.
+    """
+    from productos.models import Salida
+    salida = get_object_or_404(Salida, pk=pk)
+    if request.method == 'POST':
+        motivo = request.POST.get('motivo')
+        if motivo:
+            salida.motivo = motivo
+            salida.save()
+            messages.success(request, 'Motivo de la salida actualizado correctamente.')
+            return redirect('core:entradas_salidas_admin')
+        else:
+            messages.error(request, 'El motivo no puede estar vacío.')
+    context = {
+        'salida': salida,
+        'titulo_pagina': f'Editar Motivo de Salida #{salida.id}',
+    }
+    return render(request, 'core/dashboard_salida_editar.html', context)
+
+@admin_required(login_url='core:login')
+def entrada_form_admin(request):
+    """
+    Vista dedicada para registrar una nueva entrada manual.
+    """
+    from productos.models import Producto, Entrada
+    if request.method == 'POST':
+        producto_id = request.POST.get('producto')
+        cantidad = request.POST.get('cantidad')
+        precio = request.POST.get('precio')
+        talla = request.POST.get('talla')
+        color = request.POST.get('color')
+        motivo = request.POST.get('motivo')
+        if producto_id and cantidad and precio and motivo:
+            producto = Producto.objects.get(id=producto_id)
+            Entrada.objects.create(
+                producto=producto,
+                cantidad=cantidad,
+                precio=precio,
+                talla=talla,
+                color=color,
+                motivo=motivo
+            )
+            messages.success(request, 'Entrada registrada correctamente.')
+            return redirect('core:entradas_salidas_admin')
+        else:
+            messages.error(request, 'Todos los campos obligatorios deben estar completos.')
+    productos = Producto.objects.all().order_by('nombre')
+    context = {
+        'productos': productos,
+        'titulo_pagina': 'Registrar Entrada',
+    }
+    return render(request, 'core/dashboard_entrada_form.html', context)

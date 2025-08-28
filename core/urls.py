@@ -43,6 +43,7 @@ urlpatterns = [
     # Rutas para Pedidos (SIN pedido_cambiar_estado_admin)
     path('dashboard/pedidos/', views.pedido_lista_admin, name='pedido_lista_admin'),
     path('dashboard/pedidos/<int:pk>/detalle/', views.pedido_detalle_admin, name='pedido_detalle_admin'),
+    path('dashboard/pedidos/<int:pk>/pdf/', views.pedido_pdf, name='pedido_pdf'),
 
 
     # Rutas para Usuarios
@@ -55,6 +56,12 @@ urlpatterns = [
     
     path('dashboard/cursos/<int:pk>/inscripciones/', views.inscripciones_curso_admin, name='inscripciones_curso_admin'),
     
+    # --- ENTRADAS Y SALIDAS ---
+    path('dashboard/entradas-salidas/', views.entradas_salidas_admin, name='entradas_salidas_admin'),
+    path('dashboard/entradas-salidas/pdf/', views.entradas_salidas_pdf, name='entradas_salidas_pdf'),
+    path('dashboard/salida/<int:pk>/editar/', views.salida_editar_admin, name='salida_editar_admin'),
+    path('dashboard/entrada/nueva/', views.entrada_form_admin, name='entrada_form_admin'),
+
     # Ruta para resultados de búsqueda
     path('buscar/', views.search_results, name='search_results'),
 

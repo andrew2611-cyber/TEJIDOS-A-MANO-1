@@ -1,0 +1,31 @@
+{% extends 'core/dashboard_base.html' %}
+{% block dashboard_content %}
+<hr>
+<div class="card mb-4">
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="motivo" class="form-label">Motivo</label>
+        <input type="text" name="motivo" id="motivo" class="form-control" value="{{ salida.motivo }}" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Editar</button>
+      <a href="{% url 'core:entradas_salidas_admin' %}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Detalles de la Salida</h5>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>ID:</strong> {{ salida.id }}</li>
+      <li class="list-group-item"><strong>Producto:</strong> {{ salida.producto }}</li>
+      <li class="list-group-item"><strong>Cantidad:</strong> {{ salida.cantidad }}</li>
+      <li class="list-group-item"><strong>Precio:</strong> ${{ salida.precio|floatformat:2 }}</li>
+      <li class="list-group-item"><strong>Talla:</strong> {{ salida.talla|default:"-" }}</li>
+      <li class="list-group-item"><strong>Color:</strong> {{ salida.color|default:"-" }}</li>
+      <li class="list-group-item"><strong>Fecha:</strong> {{ salida.fecha|date:"d M Y H:i" }}</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

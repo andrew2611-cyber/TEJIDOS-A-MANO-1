@@ -100,6 +100,10 @@
                 <a href="{% url 'core:curso_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'curso_lista_admin' %}active{% endif %}">
                     <i class="fas fa-book-open me-2"></i> Cursos
                 </a>
+                <!-- NUEVO BOTÓN ENTRADAS Y SALIDAS -->
+                <a href="{% url 'core:entradas_salidas_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'entradas_salidas_admin' %}active{% endif %}">
+                    <i class="fas fa-exchange-alt me-2"></i> Entradas y Salidas
+                </a>
                 
                 <a href="{% url 'core:home' %}" class="list-group-item list-group-item-action mt-3">
                     <i class="fas fa-arrow-left me-2"></i> Volver a la Tienda

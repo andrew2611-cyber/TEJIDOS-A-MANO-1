@@ -1,0 +1,42 @@
+{% extends 'core/dashboard_base.html' %}
+{% block dashboard_content %}
+<h1 class="mb-4">Registrar Entrada</h1>
+<hr>
+<div class="card mb-4">
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-2">
+        <label for="producto" class="form-label">Producto</label>
+        <select name="producto" id="producto" class="form-select" required>
+          {% for producto in productos %}
+          <option value="{{ producto.id }}">{{ producto }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-2">
+        <label for="cantidad" class="form-label">Cantidad</label>
+        <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" required>
+      </div>
+      <div class="mb-2">
+        <label for="precio" class="form-label">Precio</label>
+        <input type="number" step="0.01" name="precio" id="precio" class="form-control" required>
+      </div>
+      <div class="mb-2">
+        <label for="talla" class="form-label">Talla</label>
+        <input type="text" name="talla" id="talla" class="form-control">
+      </div>
+      <div class="mb-2">
+        <label for="color" class="form-label">Color</label>
+        <input type="text" name="color" id="color" class="form-control">
+      </div>
+      <div class="mb-2">
+        <label for="motivo" class="form-label">Motivo</label>
+        <input type="text" name="motivo" id="motivo" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-success">Registrar Entrada</button>
+      <a href="{% url 'core:entradas_salidas_admin' %}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

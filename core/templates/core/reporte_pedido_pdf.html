@@ -1,0 +1,41 @@
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #333; padding: 4px; }
+    th { background: #f2f2f2; }
+    h2 { margin-top: 20px; }
+    .logo-pdf { text-align: center; margin-bottom: 20px; }
+    .logo-pdf img { width: 120px; height: auto; }
+  </style>
+</head>
+<body>
+  <div class="logo-pdf">
+    <img src="core/static/img/zapatilla.png" alt="Logo Zapatilla" style="width:70px; height:auto;" />
+  </div>
+  <h2>Pedido #{{ pedido.id }}</h2>
+  <p><strong>Cliente:</strong> {{ pedido.nombre_completo }}</p>
+  <p><strong>Email:</strong> {{ pedido.email }}</p>
+  <p><strong>Fecha:</strong> {{ pedido.fecha_pedido|date:"d M Y H:i" }}</p>
+  <p><strong>Total:</strong> ${{ pedido.total_pedido|floatformat:2 }}</p>
+  <p><strong>Estado:</strong> {{ pedido.get_estado_display }}</p>
+  <h3>Productos</h3>
+  <table>
+    <tr>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Precio Unitario</th>
+      <th>Subtotal</th>
+    </tr>
+    {% for item in items_pedido %}
+    <tr>
+      <td>{{ item.producto }}</td>
+      <td>{{ item.cantidad }}</td>
+      <td>${{ item.precio|floatformat:2 }}</td>
+      <td>${{ item.subtotal|floatformat:2 }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>

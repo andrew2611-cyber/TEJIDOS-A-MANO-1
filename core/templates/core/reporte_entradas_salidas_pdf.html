@@ -1,0 +1,64 @@
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #333; padding: 4px; }
+    th { background: #f2f2f2; }
+    h2 { margin-top: 20px; }
+    .logo-pdf { text-align: center; margin-bottom: 20px; }
+    .logo-pdf img { width: 120px; height: auto; }
+  </style>
+</head>
+<body>
+  <div class="logo-pdf">
+    <img src="core/static/img/zapatilla.png" alt="Logo Zapatilla" style="width:70px; height:auto;" />
+  </div>
+  <h2>Reporte de Entradas</h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Precio</th>
+      <th>Talla</th>
+      <th>Color</th>
+      <th>Fecha</th>
+    </tr>
+    {% for entrada in entradas %}
+    <tr>
+      <td>{{ entrada.id }}</td>
+      <td>{{ entrada.producto }}</td>
+      <td>{{ entrada.cantidad }}</td>
+      <td>${{ entrada.precio|floatformat:2 }}</td>
+      <td>{{ entrada.talla|default:"-" }}</td>
+      <td>{{ entrada.color|default:"-" }}</td>
+      <td>{{ entrada.fecha|date:"d M Y H:i" }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h2>Reporte de Salidas</h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Precio</th>
+      <th>Talla</th>
+      <th>Color</th>
+      <th>Fecha</th>
+    </tr>
+    {% for salida in salidas %}
+    <tr>
+      <td>{{ salida.id }}</td>
+      <td>{{ salida.producto }}</td>
+      <td>{{ salida.cantidad }}</td>
+      <td>${{ salida.precio|floatformat:2 }}</td>
+      <td>{{ salida.talla|default:"-" }}</td>
+      <td>{{ salida.color|default:"-" }}</td>
+      <td>{{ salida.fecha|date:"d M Y H:i" }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
