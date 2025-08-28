@@ -894,6 +894,11 @@ def eliminar_categoria(request, pk):
 
 @login_required
 def favoritos_view(request):
+    from django.urls import reverse
+    if not request.user.is_authenticated:
+        next_url = request.path
+        login_url = reverse('core:login')
+        return redirect(f'{login_url}?next={next_url}')
     favoritos_ids = request.session.get('favoritos', [])
     productos = Producto.objects.filter(id__in=favoritos_ids)
     return render(request, 'core/favoritos.html', {'productos': productos})

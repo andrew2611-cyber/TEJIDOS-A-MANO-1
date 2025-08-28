@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('productos/', include('productos.urls')), 
    path('servicios/', include(('servicios.urls', 'servicios'), namespace='servicios')),
+    path('accounts/', include('django.contrib.auth.urls')),  # Habilita login/logout/password reset
   
    
 
