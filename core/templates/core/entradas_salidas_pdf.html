@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Entradas y Salidas de Inventario</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 13px; }
+        h2 { margin-top: 24px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        th, td { border: 1px solid #888; padding: 4px 8px; text-align: left; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Entradas y Salidas de Inventario</h1>
+    <h2>Entradas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Talla</th>
+                <th>Color</th>
+                <th>Motivo</th>
+                <th>Usuario</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entrada in entradas %}
+            <tr>
+                <td>{{ entrada.fecha|date:"d/m/Y H:i" }}</td>
+                <td>{{ entrada.producto.nombre }}</td>
+                <td>{{ entrada.cantidad }}</td>
+                <td>{{ entrada.talla|default:'-' }}</td>
+                <td>{{ entrada.color|default:'-' }}</td>
+                <td>{{ entrada.motivo }}</td>
+                <td>{{ entrada.usuario|default:'-' }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">No hay entradas registradas.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Salidas por Pedidos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Pedido</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Cliente</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for salida in salidas %}
+            <tr>
+                <td>{{ salida.pedido.fecha_pedido|date:"d/m/Y H:i" }}</td>
+                <td>#{{ salida.pedido.id }}</td>
+                <td>{{ salida.producto.nombre }}</td>
+                <td>{{ salida.cantidad }}</td>
+                <td>{{ salida.pedido.nombre_completo }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No hay salidas registradas.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

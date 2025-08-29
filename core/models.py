@@ -61,3 +61,20 @@ class ItemPedido(models.Model):
         Retorna el costo total de este ítem (precio * cantidad).
         """
         return self.precio * self.cantidad
+
+class EntradaInventario(models.Model):
+    producto = models.ForeignKey('productos.Producto', on_delete=models.CASCADE, related_name='entradas_inventario')
+    cantidad = models.PositiveIntegerField()
+    talla = models.CharField(max_length=32, blank=True, null=True)
+    color = models.CharField(max_length=32, blank=True, null=True)
+    motivo = models.CharField(max_length=255, help_text="Motivo de la entrada (ej: llegada de proveedor, ajuste, devolución, etc.)")
+    fecha = models.DateTimeField(auto_now_add=True)
+    usuario = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Entrada de Inventario'
+        verbose_name_plural = 'Entradas de Inventario'
+        ordering = ['-fecha']
+
+    def __str__(self):
+        return f"Entrada de {self.cantidad} x {self.producto.nombre} ({self.talla or '-'} / {self.color or '-'}) - {self.motivo}"

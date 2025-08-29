@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pedido #{{ pedido.id }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 13px; }
+        h2 { margin-bottom: 0; }
+        .info { margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #888; padding: 5px; text-align: left; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h2>Detalle del Pedido #{{ pedido.id }}</h2>
+    <div class="info">
+        <strong>Cliente:</strong> {{ pedido.nombre_completo }}<br>
+        <strong>Email:</strong> {{ pedido.email }}<br>
+        <strong>Fecha:</strong> {{ pedido.fecha_pedido|date:"d/m/Y H:i" }}<br>
+        <strong>Estado:</strong> {{ pedido.get_estado_display }}<br>
+        <strong>Total:</strong> ${{ pedido.total_pedido|floatformat:2 }}
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items_pedido %}
+            <tr>
+                <td>{{ item.producto.nombre }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>${{ item.precio|floatformat:2 }}</td>
+                <td>${{ item.get_subtotal|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

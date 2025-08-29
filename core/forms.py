@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth import get_user_model
-from .models import Pedido # Importa el modelo Pedido
+from .models import Pedido, EntradaInventario # Importa el modelo Pedido y EntradaInventario
 
 User = get_user_model()
 
@@ -85,3 +85,11 @@ class PedidoAnonimoForm(forms.ModelForm):
         if not nombre or len(nombre) < 3:
             raise forms.ValidationError('El nombre completo debe tener al menos 3 caracteres.')
         return nombre
+
+class EntradaInventarioForm(forms.ModelForm):
+    class Meta:
+        model = EntradaInventario
+        fields = ['producto', 'cantidad', 'talla', 'color', 'motivo']
+        widgets = {
+            'motivo': forms.TextInput(attrs={'placeholder': 'Ej: Llegada de proveedor, ajuste de stock, etc.'}),
+        }

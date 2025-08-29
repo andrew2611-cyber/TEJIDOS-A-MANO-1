@@ -33,6 +33,13 @@ from servicios.forms import ServicioForm as CursoServicioForm, InscripcionCursoF
 
 from django.db.models import Q
 
+from .forms import EntradaInventarioForm
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+import io
+from xhtml2pdf import pisa
+
 # --- FUNCIÓNES DE AYUDA ---
 
 User = get_user_model()
@@ -563,6 +570,24 @@ def pedido_detalle_admin(request, pk):
 
 
 @admin_required(login_url='core:login')
+def pedido_pdf_admin(request, pk):
+    """
+    Genera y descarga el PDF de un pedido específico.
+    """
+    pedido = get_object_or_404(Pedido, pk=pk)
+    items_pedido = pedido.items.all()
+    context = {
+        'pedido': pedido,
+        'items_pedido': items_pedido,
+    }
+    html = render_to_string('core/pedido_pdf.html', context)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="pedido_{pedido.id}.pdf"'
+    pisa.CreatePDF(io.BytesIO(html.encode('utf-8')), dest=response)
+    return response
+
+
+@admin_required(login_url='core:login')
 def usuario_lista_admin(request):
     """
     Lista todos los usuarios en el dashboard.
@@ -860,7 +885,7 @@ def search_results(request):
         )
         # Buscar por nombre de categoría si no hay resultados directos
         if not resultados.exists():
-            categoria = Categoria.objects.filter(nombre__icontains(query)).first()
+            categoria = Categoria.objects.filter(nombre__icontains=query).first()
             if categoria:
                 resultados = Producto.objects.filter(categoria=categoria)
     context = {
@@ -918,3 +943,100 @@ def quitar_favorito(request, producto_id):
         favoritos.remove(producto_id)
         request.session['favoritos'] = favoritos
     return JsonResponse({'success': True})
+
+@admin_required(login_url='core:login')
+def entradas_salidas_admin(request):
+    """
+    Vista para mostrar el panel de Entradas y Salidas de productos.
+    Las salidas se muestran a partir de los pedidos realizados.
+    Las entradas se pueden registrar manualmente con motivo, talla y color.
+    """
+    from core.models import ItemPedido, EntradaInventario
+    salidas = ItemPedido.objects.select_related('producto', 'pedido').order_by('-pedido__fecha_pedido')
+    entradas = EntradaInventario.objects.select_related('producto', 'usuario').order_by('-fecha')
+
+    if request.method == 'POST':
+        form = EntradaInventarioForm(request.POST)
+        if form.is_valid():
+            entrada = form.save(commit=False)
+            entrada.usuario = request.user
+            entrada.save()
+            # --- ACTUALIZAR STOCK GENERAL Y POR TALLA/COLOR ---
+            from productos.models import StockProducto
+            producto = entrada.producto
+            # Actualiza el stock general del producto
+            producto.stock += entrada.cantidad
+            producto.save()
+            # Si se especifica talla y color, actualiza StockProducto
+            if entrada.talla and entrada.color:
+                stock_detalle, created = StockProducto.objects.get_or_create(
+                    producto=producto,
+                    talla=entrada.talla,
+                    color=entrada.color,
+                    defaults={'cantidad': 0}
+                )
+                stock_detalle.cantidad += entrada.cantidad
+                stock_detalle.save()
+            messages.success(request, 'Entrada de inventario registrada correctamente y stock actualizado.')
+            return redirect('core:entradas_salidas_admin')
+    else:
+        form = EntradaInventarioForm()
+
+    context = {
+        'titulo_pagina': 'Entradas y Salidas',
+        'salidas': salidas,
+        'entradas': entradas,
+        'form': form,
+    }
+    return render(request, 'core/dashboard_entradas_salidas.html', context)
+
+@admin_required(login_url='core:login')
+def registrar_entrada_inventario(request):
+    """
+    Vista para mostrar el formulario de registrar una nueva entrada de inventario.
+    """
+    from core.models import EntradaInventario
+    if request.method == 'POST':
+        form = EntradaInventarioForm(request.POST)
+        if form.is_valid():
+            entrada = form.save(commit=False)
+            entrada.usuario = request.user
+            entrada.save()
+            # --- ACTUALIZAR STOCK GENERAL Y POR TALLA/COLOR ---
+            from productos.models import StockProducto
+            producto = entrada.producto
+            producto.stock += entrada.cantidad
+            producto.save()
+            if entrada.talla and entrada.color:
+                stock_detalle, created = StockProducto.objects.get_or_create(
+                    producto=producto,
+                    talla=entrada.talla,
+                    color=entrada.color,
+                    defaults={'cantidad': 0}
+                )
+                stock_detalle.cantidad += entrada.cantidad
+                stock_detalle.save()
+            messages.success(request, 'Entrada de inventario registrada correctamente y stock actualizado.')
+            return redirect('core:entradas_salidas_admin')
+    else:
+        form = EntradaInventarioForm()
+    context = {
+        'form': form,
+        'titulo_pagina': 'Registrar Entrada de Inventario',
+    }
+    return render(request, 'core/registrar_entrada_inventario.html', context)
+
+@admin_required(login_url='core:login')
+def descargar_entradas_salidas_pdf(request):
+    from core.models import ItemPedido, EntradaInventario
+    entradas = EntradaInventario.objects.select_related('producto', 'usuario').order_by('-fecha')
+    salidas = ItemPedido.objects.select_related('producto', 'pedido').order_by('-pedido__fecha_pedido')
+    context = {
+        'entradas': entradas,
+        'salidas': salidas,
+    }
+    html = render_to_string('core/entradas_salidas_pdf.html', context)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="entradas_salidas.pdf"'
+    pisa.CreatePDF(io.BytesIO(html.encode('utf-8')), dest=response)
+    return response

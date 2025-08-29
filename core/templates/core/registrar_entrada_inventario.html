@@ -1,0 +1,17 @@
+{% extends 'core/dashboard_base.html' %}
+
+{% block dashboard_content %}
+<h1 class="h3 mb-4 text-gray-800">Registrar Entrada de Inventario</h1>
+<p class="lead">Completa el siguiente formulario para registrar una nueva entrada de inventario.</p>
+
+<div class="row">
+  <div class="col-md-8 col-lg-6">
+    <form method="post" class="card card-body shadow-sm mb-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-success"><i class="fas fa-plus me-2"></i>Registrar Entrada</button>
+      <a href="{% url 'core:entradas_salidas_admin' %}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

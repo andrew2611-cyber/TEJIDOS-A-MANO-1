@@ -43,7 +43,12 @@ urlpatterns = [
     # Rutas para Pedidos (SIN pedido_cambiar_estado_admin)
     path('dashboard/pedidos/', views.pedido_lista_admin, name='pedido_lista_admin'),
     path('dashboard/pedidos/<int:pk>/detalle/', views.pedido_detalle_admin, name='pedido_detalle_admin'),
+    path('dashboard/pedidos/<int:pk>/pdf/', views.pedido_pdf_admin, name='pedido_pdf_admin'),
 
+    # Rutas para Entradas y Salidas
+    path('dashboard/entradas-salidas/', views.entradas_salidas_admin, name='entradas_salidas_admin'),
+    path('dashboard/registrar-entrada/', views.registrar_entrada_inventario, name='registrar_entrada_inventario'),
+    path('dashboard/descargar-entradas-salidas/', views.descargar_entradas_salidas_pdf, name='descargar_entradas_salidas_pdf'),
 
     # Rutas para Usuarios
     path('dashboard/usuarios/', views.usuario_lista_admin, name='usuario_lista_admin'),

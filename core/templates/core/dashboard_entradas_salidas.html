@@ -1,0 +1,85 @@
+{% extends 'core/dashboard_base.html' %}
+
+{% block dashboard_content %}
+<h1 class="h3 mb-4 text-gray-800">Entradas y Salidas</h1>
+<p class="lead">Aquí puedes ver el historial de movimientos de inventario y registrar nuevas entradas.</p>
+
+<div class="row">
+  <div class="col-md-6 mb-4">
+    <h4 class="mb-3"><i class="fas fa-arrow-down text-success me-2"></i>Registrar Entrada de Producto</h4>
+    <a href="{% url 'core:registrar_entrada_inventario' %}" class="btn btn-success mb-3">
+      <i class="fas fa-plus me-2"></i>Registrar Entrada
+    </a>
+    <a href="{% url 'core:descargar_entradas_salidas_pdf' %}" class="btn btn-outline-primary mb-3 ms-2">
+      <i class="fas fa-file-pdf me-2"></i>Descargar PDF
+    </a>
+    <h5 class="mt-4 mb-2">Últimas Entradas</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Fecha</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Talla</th>
+            <th>Color</th>
+            <th>Motivo</th>
+            <th>Usuario</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entrada in entradas %}
+          <tr>
+            <td>{{ entrada.fecha|date:"d/m/Y H:i" }}</td>
+            <td>{{ entrada.producto.nombre }}</td>
+            <td>{{ entrada.cantidad }}</td>
+            <td>{{ entrada.talla|default:'-' }}</td>
+            <td>{{ entrada.color|default:'-' }}</td>
+            <td>{{ entrada.motivo }}</td>
+            <td>{{ entrada.usuario|default:'-' }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="text-center">No hay entradas registradas.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h4 class="mb-3"><i class="fas fa-arrow-up text-danger me-2"></i>Salidas por Pedidos</h4>
+    <a href="{% url 'core:descargar_entradas_salidas_pdf' %}" class="btn btn-outline-primary mb-3">
+      <i class="fas fa-file-pdf me-2"></i>Descargar PDF
+    </a>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Fecha</th>
+            <th>Pedido</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Cliente</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for salida in salidas %}
+          <tr>
+            <td>{{ salida.pedido.fecha_pedido|date:"d/m/Y H:i" }}</td>
+            <td>#{{ salida.pedido.id }}</td>
+            <td>{{ salida.producto.nombre }}</td>
+            <td>{{ salida.cantidad }}</td>
+            <td>{{ salida.pedido.nombre_completo }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="text-center">No hay salidas registradas.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
