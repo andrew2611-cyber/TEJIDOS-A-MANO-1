@@ -4,13 +4,39 @@
 <h1 class="h3 mb-4 text-gray-800">Registrar Entrada de Inventario</h1>
 <p class="lead">Completa el siguiente formulario para registrar una nueva entrada de inventario.</p>
 
-<div class="row">
-  <div class="col-md-8 col-lg-6">
-    <form method="post" class="card card-body shadow-sm mb-4">
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-6">
+    <form method="post" class="card card-body shadow border-0 p-4" style="background: #f8fafc;">
       {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-success"><i class="fas fa-plus me-2"></i>Registrar Entrada</button>
-      <a href="{% url 'core:entradas_salidas_admin' %}" class="btn btn-secondary ms-2">Cancelar</a>
+      <div class="mb-3">
+        {{ form.producto.label_tag }}
+        {{ form.producto }}
+        {% if form.producto.errors %}<div class="text-danger small">{{ form.producto.errors }}</div>{% endif %}
+      </div>
+      <div class="mb-3">
+        {{ form.cantidad.label_tag }}
+        {{ form.cantidad }}
+        {% if form.cantidad.errors %}<div class="text-danger small">{{ form.cantidad.errors }}</div>{% endif %}
+      </div>
+      <div class="mb-3">
+        {{ form.talla.label_tag }} <span class="text-muted small">(opcional)</span>
+        {{ form.talla }}
+        {% if form.talla.errors %}<div class="text-danger small">{{ form.talla.errors }}</div>{% endif %}
+      </div>
+      <div class="mb-3">
+        {{ form.color.label_tag }} <span class="text-muted small">(opcional)</span>
+        {{ form.color }}
+        {% if form.color.errors %}<div class="text-danger small">{{ form.color.errors }}</div>{% endif %}
+      </div>
+      <div class="mb-3">
+        {{ form.motivo.label_tag }}
+        {{ form.motivo }}
+        {% if form.motivo.errors %}<div class="text-danger small">{{ form.motivo.errors }}</div>{% endif %}
+      </div>
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-success btn-lg"><i class="fas fa-plus me-2"></i>Registrar Entrada</button>
+        <a href="{% url 'core:entradas_salidas_admin' %}" class="btn btn-secondary btn-lg">Cancelar</a>
+      </div>
     </form>
   </div>
 </div>
