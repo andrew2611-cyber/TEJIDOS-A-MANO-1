@@ -21,8 +21,8 @@
     </h2>
 </div>
 <div id="contenedor-texto-inspiradas">
-    <h3 class="texto-inspiradas">INSPIRADAS EN LAS FAMILIAS</h3>
-    <h3 class="texto-agricolas">AGRICOLAS</h3>
+    <h3 class="texto-inspiradas texto-inspiradas-mobile">INSPIRADAS EN LAS FAMILIAS</h3>
+    <h3 class="texto-agricolas texto-agricolas-mobile">AGRICOLAS</h3>
 </div>
 
 <div id="contenedor-texto-agricultores">
@@ -121,9 +121,49 @@
 {% endif %}
 {% endwith %}
 
+
+
 {% block extra_js %}
 <script src="{% static 'js/cuadro-animado.js' %}"></script>
 <script src="{% static 'js/almanaque.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var btn = document.getElementById('boton-toggle-animacion');
+  var animables = [
+    document.querySelector('.texto-zapatillas'),
+    document.querySelector('.texto-cosidas'),
+    document.querySelector('.texto-inspiradas'),
+    document.querySelector('.texto-agricolas'),
+    document.getElementById('contenedor-texto-agricultores'),
+    document.getElementById('contenedor-cuadro-animado'),
+    document.querySelector('.tallas-disponible'),
+    document.querySelector('.tallas-lista'),
+    document.getElementById('almanaque-contenedor')
+  ];
+  var oculto = false;
+  btn.addEventListener('click', function () {
+    oculto = !oculto;
+    animables.forEach(function(el) {
+      if (el) {
+        if (oculto) {
+          el.classList.add('oculto');
+          el.classList.remove('visible');
+        } else {
+          el.classList.remove('oculto');
+          el.classList.add('visible');
+        }
+      }
+    });
+    btn.textContent = oculto ? 'Mostrar diseño' : 'Ocultar diseño';
+  });
+  // Estado inicial: visible
+  animables.forEach(function(el) {
+    if (el) {
+      el.classList.add('animable-home', 'visible');
+    }
+  });
+});
+</script>
 {% endblock extra_js %}
 
 {% endblock content %}

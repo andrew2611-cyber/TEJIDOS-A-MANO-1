@@ -2,93 +2,85 @@
 {% load static %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="row">
-        <div class="col-lg-3">
-            <h4 class="mb-3">Categorías</h4>
-            <div class="list-group">
-                <a href="{% url 'productos:lista_productos' %}" class="list-group-item list-group-item-action {% if not categoria %}active{% endif %}">Todas las categorías</a>
-                {% for cat in categorias %}
-                <a href="{% url 'productos:lista_productos_por_categoria' cat.slug %}" class="list-group-item list-group-item-action {% if categoria and categoria.slug == cat.slug %}active{% endif %}">
-                    {{ cat.nombre }}
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="col-lg-9">
-            <h1 class="mb-4">
-                {% if categoria %}
-                    {{ categoria.nombre }}
-                {% else %}
-                    Todos nuestros Productos
-                {% endif %}
-            </h1>
-
-            {% if productos %}
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                {% for producto in productos %}
-                <div class="col">
-                    <div class="card h-100 producto-float position-relative">
-                        <div class="iconos-producto-superior">
-                            <a href="{% url 'productos:agregar-carrito-simple' producto.id %}" class="icono-carrito" title="Añadir al carrito">
-                                <i class="fa fa-shopping-cart"></i>
-                            </a>
-                            {% with favoritos=request.session.favoritos|default_if_none:"" %}
-                            <span class="icono-estrella{% if producto.id in favoritos %} favorito-activo{% endif %}" title="Favorito" data-producto-id="{{ producto.id }}">
-                                <i class="fa fa-star"></i>
-                            </span>
-                            {% endwith %}
-                        </div>
-                        <div class="contenedor-imagen-producto">
-                            <img src="{% static 'img/' %}{{ producto.imagen_fondo }}" class="img-fondo-producto" alt="Fondo producto">
-                            {% if producto.imagen_principal %}
-                            <img src="{{ producto.imagen_principal.url }}" class="img-principal-producto" alt="{{ producto.nombre }}" data-bs-toggle="modal" data-bs-target="#modalImagen{{ producto.id }}" style="cursor: zoom-in;">
-                            {% else %}
-                            <img src="/static/img/placeholder.png" class="img-principal-producto" alt="Imagen no disponible">
-                            {% endif %}
-                        </div>
-                        <!-- Modal para ampliar imagen principal -->
-                        {% if producto.imagen_principal %}
-                        <div class="modal fade" id="modalImagen{{ producto.id }}" tabindex="-1" aria-labelledby="modalImagenLabel{{ producto.id }}" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                              <div class="modal-header border-0 pb-0">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                              </div>
-                              <div class="modal-body text-center">
-                                <img src="{{ producto.imagen_principal.url }}" alt="{{ producto.nombre }}" class="img-fluid rounded">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title mb-1">{{ producto.nombre }}</h5>
-                            <p class="card-text text-muted mb-1">{{ producto.categoria.nombre }}</p>
-                            {% if producto.colores_list %}
-                                <div style="font-size:1.01rem; color:#222; margin-bottom:8px;">
-                                    {% for color in producto.colores_list %}
-                                        <span style="border-right:1px solid #aaa; padding-right:12px; margin-right:12px;">{{ color }}</span>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                            {% if producto.tallas %}
-                                <div style="font-size:0.99rem; color:#222; margin-bottom:8px;">{{ producto.tallas }}</div>
-                            {% endif %}
-                            <div class="d-flex gap-2 mt-2">
-                                <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary-custom me-2">Ver Detalle</a>
-                                <a href="{% url 'productos:agregar-carrito-simple' producto.id %}" class="btn btn-sm btn-success">Añadir al Carrito</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            {% else %}
-            <p class="alert alert-info">No hay productos disponibles en esta categoría.</p>
-            {% endif %}
-        </div>
+<div class="container-fluid px-2 py-3">
+  <div class="row flex-lg-nowrap flex-wrap">
+    <div class="col-12 col-lg-3 mb-3 mb-lg-0">
+      <h4 class="mb-3 text-center text-lg-start">Categorías</h4>
+      <div class="list-group">
+        <a href="{% url 'productos:lista_productos' %}" class="list-group-item list-group-item-action {% if not categoria %}active{% endif %}">Todas las categorías</a>
+        {% for cat in categorias %}
+        <a href="{% url 'productos:lista_productos_por_categoria' cat.slug %}" class="list-group-item list-group-item-action {% if categoria and categoria.slug == cat.slug %}active{% endif %}">
+          {{ cat.nombre }}
+        </a>
+        {% endfor %}
+      </div>
     </div>
+    <div class="col-12 col-lg-9">
+      <h1 class="mb-4 text-center text-lg-start" style="font-size:1.3rem;">{% if categoria %}{{ categoria.nombre }}{% else %}Todos nuestros Productos{% endif %}</h1>
+      {% if productos %}
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-3 g-lg-4">
+        {% for producto in productos %}
+        <div class="col">
+          <div class="card h-100 producto-float position-relative p-2" style="border-radius:1.1rem;">
+            <div class="iconos-producto-superior">
+              <a href="{% url 'productos:agregar-carrito-simple' producto.id %}" class="icono-carrito" title="Añadir al carrito">
+                <i class="fa fa-shopping-cart"></i>
+              </a>
+              {% with favoritos=request.session.favoritos|default_if_none:"" %}
+              <span class="icono-estrella{% if producto.id in favoritos %} favorito-activo{% endif %}" title="Favorito" data-producto-id="{{ producto.id }}">
+                <i class="fa fa-star"></i>
+              </span>
+              {% endwith %}
+            </div>
+            <div class="contenedor-imagen-producto">
+              <img src="{% static 'img/' %}{{ producto.imagen_fondo }}" class="img-fondo-producto" alt="Fondo producto">
+              {% if producto.imagen_principal %}
+              <img src="{{ producto.imagen_principal.url }}" class="img-principal-producto" alt="{{ producto.nombre }}" data-bs-toggle="modal" data-bs-target="#modalImagen{{ producto.id }}" style="cursor: zoom-in;">
+              {% else %}
+              <img src="/static/img/placeholder.png" class="img-principal-producto" alt="Imagen no disponible">
+              {% endif %}
+            </div>
+            {% if producto.imagen_principal %}
+            <div class="modal fade" id="modalImagen{{ producto.id }}" tabindex="-1" aria-labelledby="modalImagenLabel{{ producto.id }}" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                  </div>
+                  <div class="modal-body text-center">
+                    <img src="{{ producto.imagen_principal.url }}" alt="{{ producto.nombre }}" class="img-fluid rounded">
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            <div class="card-body px-1 py-2">
+              <h5 class="card-title mb-1 text-center text-lg-start" style="font-size:1.05rem;">{{ producto.nombre }}</h5>
+              <p class="card-text text-muted mb-1 text-center text-lg-start" style="font-size:0.97rem;">{{ producto.categoria.nombre }}</p>
+              {% if producto.colores_list %}
+              <div class="d-flex flex-wrap justify-content-center justify-content-lg-start" style="font-size:0.97rem; color:#222; margin-bottom:8px; gap:6px;">
+                {% for color in producto.colores_list %}
+                <span style="border-right:1px solid #aaa; padding-right:8px; margin-right:8px;">{{ color }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+              {% if producto.tallas %}
+              <div class="d-flex flex-wrap justify-content-center justify-content-lg-start" style="font-size:0.95rem; color:#222; margin-bottom:8px; gap:6px;">{{ producto.tallas }}</div>
+              {% endif %}
+              <div class="d-flex flex-column flex-sm-row gap-2 mt-2 justify-content-center justify-content-lg-start">
+                <a href="{{ producto.get_absolute_url }}" class="btn btn-sm btn-primary-custom">Ver Detalle</a>
+                <a href="{% url 'productos:agregar-carrito-simple' producto.id %}" class="btn btn-sm btn-success">Añadir al Carrito</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="alert alert-info text-center">No hay productos disponibles en esta categoría.</p>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock content %}
 

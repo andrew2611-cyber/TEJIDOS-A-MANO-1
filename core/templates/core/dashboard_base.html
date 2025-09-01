@@ -5,94 +5,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ titulo_pagina|default:"Dashboard" }} | Tejidos a Mano Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <!-- Enlace a Font Awesome para los iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Enlace al CSS personalizado del dashboard -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        
-        
-        
-        
-        /* Solo estilos para mensajes, navbar-admin se moverá a style.css si es necesario */
-        .messages {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .messages li {
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        .messages .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .messages .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
-        .messages .warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
-        .messages .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    </style>
+    <!-- Eliminado el bloque <style> para evitar duplicidad, todo está en style.css -->
 </head>
 <body class="dashboard-body">
-        <div id="wrapper" class="dashboard-main">
-            <aside id="sidebar-wrapper">
-                <div class="sidebar-heading">
-                    <i class="fas fa-store fa-lg me-2"></i> Panel de Administración
-                </div>
-                <nav class="list-group list-group-flush">
-                    <a href="{% url 'core:dashboard_home' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'dashboard_home' %}active{% endif %}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
-                    <a href="{% url 'core:producto_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'producto_lista_admin' %}active{% endif %}"><i class="fas fa-box me-2"></i> Productos</a>
-                    <a href="{% url 'core:categoria_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'categoria_lista_admin' %}active{% endif %}"><i class="fas fa-tags me-2"></i> Categorías</a>
-                    <a href="{% url 'core:pedido_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'pedido_lista_admin' %}active{% endif %}"><i class="fas fa-shopping-cart me-2"></i> Pedidos</a>
-                    <a href="{% url 'core:usuario_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'usuario_lista_admin' %}active{% endif %}"><i class="fas fa-users me-2"></i> Usuarios</a>
-                    <a href="{% url 'core:curso_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'curso_lista_admin' %}active{% endif %}"><i class="fas fa-book-open me-2"></i> Cursos</a>
-                    <a href="{% url 'core:entradas_salidas_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'entradas_salidas_admin' %}active{% endif %}"><i class="fas fa-exchange-alt me-2"></i> Entradas y Salidas</a>
-                    <a href="{% url 'core:home' %}" class="list-group-item list-group-item-action mt-3"><i class="fas fa-arrow-left me-2"></i> Volver a la Tienda</a>
-                    <a href="{% url 'core:logout' %}" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a>
-                </nav>
-            </aside>
-            <main id="page-content-wrapper">
-                <nav class="navbar navbar-expand-lg navbar-light navbar-admin border-bottom">
-                    <div class="container-fluid">
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Bienvenido, {{ request.user.username }}
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{% url 'core:profile' %}">Mi Perfil</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="{% url 'core:logout' %}">Cerrar Sesión</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-                <section class="container-fluid mt-4">
-                    {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                            {% endfor %}
+    <div id="wrapper" class="dashboard-main">
+        <aside id="sidebar-wrapper">
+            <div class="sidebar-heading d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-store fa-lg me-2"></i> Panel de Administración</span>
+                <button class="btn btn-outline-light d-lg-none py-0 px-2" id="sidebarToggle" type="button" style="font-size:1.2rem;"><i class="fas fa-bars"></i></button>
+            </div>
+            <nav class="list-group list-group-flush">
+                <a href="{% url 'core:dashboard_home' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'dashboard_home' %}active{% endif %}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+                <a href="{% url 'core:producto_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'producto_lista_admin' %}active{% endif %}"><i class="fas fa-box me-2"></i> Productos</a>
+                <a href="{% url 'core:categoria_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'categoria_lista_admin' %}active{% endif %}"><i class="fas fa-tags me-2"></i> Categorías</a>
+                <a href="{% url 'core:pedido_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'pedido_lista_admin' %}active{% endif %}"><i class="fas fa-shopping-cart me-2"></i> Pedidos</a>
+                <a href="{% url 'core:usuario_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'usuario_lista_admin' %}active{% endif %}"><i class="fas fa-users me-2"></i> Usuarios</a>
+                <a href="{% url 'core:curso_lista_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'curso_lista_admin' %}active{% endif %}"><i class="fas fa-book-open me-2"></i> Cursos</a>
+                <a href="{% url 'core:entradas_salidas_admin' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'entradas_salidas_admin' %}active{% endif %}"><i class="fas fa-exchange-alt me-2"></i> Entradas y Salidas</a>
+                <a href="{% url 'core:home' %}" class="list-group-item list-group-item-action mt-3"><i class="fas fa-arrow-left me-2"></i> Volver a la Tienda</a>
+                <a href="{% url 'core:logout' %}" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a>
+            </nav>
+        </aside>
+        <main id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light navbar-admin border-bottom">
+                <div class="container-fluid">
+                    <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggleTop" type="button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Bienvenido, {{ request.user.username }}
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{% url 'core:profile' %}">Mi Perfil</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'core:logout' %}">Cerrar Sesión</a>
+                                </div>
+                            </li>
                         </ul>
-                    {% endif %}
-                    {% block dashboard_content %}
-                    {% endblock %}
-                </section>
-            </main>
-        </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+                    </div>
+                </div>
+            </nav>
+            <section class="container-fluid mt-4">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% block dashboard_content %}
+                {% endblock %}
+            </section>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <!-- Script para el ícono del menú (Font Awesome) y el sidebar toggle -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var sidebarToggle = document.getElementById('sidebarToggle');
+            var sidebarToggleTop = document.getElementById('sidebarToggleTop');
+            var wrapper = document.getElementById('wrapper');
+            // Crear overlay si no existe
+            var overlay = document.getElementById('sidebar-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'sidebar-overlay';
+                overlay.style.display = 'none';
+                document.body.appendChild(overlay);
+            }
+            function openSidebar() {
+                wrapper.classList.add('toggled');
+                overlay.style.display = 'block';
+            }
+            function closeSidebar() {
+                wrapper.classList.remove('toggled');
+                overlay.style.display = 'none';
+            }
             if (sidebarToggle) {
                 sidebarToggle.addEventListener('click', function() {
-                    document.getElementById('wrapper').classList.toggle('toggled');
+                    if (!wrapper.classList.contains('toggled')) {
+                        openSidebar();
+                    } else {
+                        closeSidebar();
+                    }
                 });
             }
+            if (sidebarToggleTop) {
+                sidebarToggleTop.addEventListener('click', function() {
+                    if (!wrapper.classList.contains('toggled')) {
+                        openSidebar();
+                    } else {
+                        closeSidebar();
+                    }
+                });
+            }
+            overlay.addEventListener('click', function() {
+                closeSidebar();
+            });
+            // Cerrar sidebar si cambia el tamaño a grande
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 992) {
+                    closeSidebar();
+                }
+            });
         });
     </script>
 </body>
