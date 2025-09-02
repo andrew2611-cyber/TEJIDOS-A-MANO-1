@@ -29,12 +29,7 @@
                 <td>{{ categoria.nombre }}</td>
                 <td>{{ categoria.slug }}</td>
                 <td>{{ categoria.descripcion|default:"N/A" }}</td>
-                <td>
-                    <form method="post" action="{% url 'core:eliminar_categoria' categoria.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar esta categoría?');">Eliminar</button>
-                    </form>
-                </td>
+               
             </tr>
             {% empty %}
             <tr>
